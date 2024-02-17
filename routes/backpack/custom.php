@@ -19,5 +19,5 @@ Route::group([
     Route::crud('user', 'UserCrudController');
     Route::crud('bank', 'BankCrudController');
     Route::crud('app', 'AppCrudController');
-    Route::crud('deposit-history', 'DepositHistoryCrudController');
+    Route::crud('transaction', 'TransactionCrudController');
 }); // this should be the absolute last line of this file

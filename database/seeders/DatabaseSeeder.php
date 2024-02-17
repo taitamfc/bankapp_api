@@ -15,6 +15,6 @@ class DatabaseSeeder extends Seeder
         $this->call(UserSeeder::class);
         $this->call(BankSeeder::class);
         $this->call(AppsSeeder::class);
-        $this->call(DepositHistorySeeder::class);
+        $this->call(TransactionSeeder::class);
     }
 }

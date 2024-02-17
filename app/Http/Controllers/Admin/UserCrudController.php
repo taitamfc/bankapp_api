@@ -45,6 +45,10 @@ class UserCrudController extends CrudController
          * Columns can be defined using the fluent syntax:
          * - CRUD::column('price')->type('number');
          */
+        CRUD::column('main_account_balance')->type('number');
+        CRUD::column('secondary_account_balance')->type('number');
+        CRUD::column('referral_account_balance')->type('number');
+        CRUD::column('verification_status')->type('boolean');
     }
 
     /**
@@ -62,6 +66,10 @@ class UserCrudController extends CrudController
          * Fields can be defined using the fluent syntax:
          * - CRUD::field('price')->type('number');
          */
+        CRUD::field('main_account_balance')->type('number');
+        CRUD::field('secondary_account_balance')->type('number');
+        CRUD::field('referral_account_balance')->type('number');
+        CRUD::field('verification_status')->type('boolean');
     }
 
     /**

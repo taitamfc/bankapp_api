@@ -6,7 +6,7 @@ use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class DepositHistory extends Model
+class Transaction extends Model
 {
     use CrudTrait;
     use HasFactory;
@@ -17,7 +17,7 @@ class DepositHistory extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'deposit_histories';
+    protected $table = 'transactions';
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
