@@ -16,10 +16,15 @@ class AuthController extends Controller
     {
         $this->middleware('auth:api', ['except' => ['login', 'register']]);
     }
-
+    
+    public function username()
+    {
+        return 'phone';
+    }
+    
     public function login(LoginAdminRequest $request)
     {
-        $credentials = $request->only('email', 'password');
+        $credentials = $request->only('phone', 'password');
         $token = Auth::attempt($credentials);
         
         if (!$token) {
@@ -45,7 +50,10 @@ class AuthController extends Controller
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
+            'phone' => $request->phone,
             'password' => Hash::make($request->password),
+            'password_confirmation' => Hash::make($request->password_confirmation),
+            'referral_code' => $request->referral_code
         ]);
 
         return response()->json([
