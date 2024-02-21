@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\UserBankController;
 use App\Http\Controllers\Api\AppController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\TransactionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,6 +35,10 @@ Route::apiResource('app', AppController::class);
 
 // User
 Route::apiResource('user', UserController::class);
+
+// Transaction
+Route::get('transactions',[TransactionController::class,'index']);
+
 
 //Auth
 Route::controller(AuthController::class)->group(function () {

@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Http\Resources\UserResource;
+use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\UserUpdateRequest;
+
 
 class UserController extends Controller
 {
@@ -19,16 +22,20 @@ class UserController extends Controller
         return $res;
     }
 
-    public function update(Request $request)
+    public function update(UserUpdateRequest $request,$id)
     {
-        $userBank = new User;
-        $userBank->user_id = $request->user_id;
-        $userBank->bank_id = $request->bank_id;
-        $userBank->save();
-        $res = [
+        $user = User::findOrFail($id);
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->phone = $request->phone;
+        $user->password = Hash::make($request->password);
+        $user->referral_code = $request->referral_code;
+        $user->save();
+
+        return response()->json([
             'success' => true,
-            'data' => $userBank
-        ];
-        return response()->json($res, 200);
+            'message' => 'User updated successfully',
+            'data' => $user
+        ]);
     }
 }
