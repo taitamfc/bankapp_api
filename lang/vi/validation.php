@@ -131,7 +131,7 @@ return [
     'prohibited_if' => 'The :attribute field is prohibited when :other is :value.',
     'prohibited_unless' => 'The :attribute field is prohibited unless :other is in :values.',
     'prohibits' => 'The :attribute field prohibits :other from being present.',
-    'regex' => 'The :attribute field format is invalid.',
+    'regex' => 'Phải có ít nhất 1 ký tự viết hoa!',
     'required' => 'Không được để trống!',
     'required_array_keys' => 'The :attribute field must contain entries for: :values.',
     'required_if' => 'The :attribute field is required when :other is :value.',
@@ -141,7 +141,7 @@ return [
     'required_with_all' => 'The :attribute field is required when :values are present.',
     'required_without' => 'The :attribute field is required when :values is not present.',
     'required_without_all' => 'The :attribute field is required when none of :values are present.',
-    'same' => 'The :attribute field must match :other.',
+    'same' => 'Mật Khẩu cũ và mật Khẩu mới không trùng khớp!',
     'size' => [
         'array' => 'The :attribute field must contain :size items.',
         'file' => 'The :attribute field must be :size kilobytes.',
@@ -157,6 +157,7 @@ return [
     'url' => 'The :attribute field must be a valid URL.',
     'ulid' => 'The :attribute field must be a valid ULID.',
     'uuid' => 'The :attribute field must be a valid UUID.',
+    
 
     /*
     |--------------------------------------------------------------------------
