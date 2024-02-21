@@ -4,6 +4,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\BankController;
 use App\Http\Controllers\Api\UserBankController;
+use App\Http\Controllers\Api\AppController;
+use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\AuthController;
 
 /*
@@ -26,6 +28,14 @@ Route::apiResource('banks', BankController::class);
 
 // User Bank
 Route::post('userbank/store',[UserBankController::class,'store']);
+
+// App
+Route::apiResource('app', AppController::class);
+
+// User
+Route::apiResource('user', UserController::class);
+
+//Auth
 Route::controller(AuthController::class)->group(function () {
     Route::post('/auth/login', 'login');
     Route::post('/auth/register', 'register');

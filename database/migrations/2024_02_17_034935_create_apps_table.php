@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name')->nullable(); // Ngân hàng
             $table->boolean('status')->default(0);//Tinh trang
+            $table->string('image')->nullable();//ảnh
             $table->string('android_version')->nullable(); // Phiên bản Android
             $table->string('ios_version')->nullable(); // Phiên bản IOS
             $table->string('android_download_link')->nullable(); // Link tải Android
