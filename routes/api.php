@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\AppController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\TransactionController;
+use App\Http\Controllers\Api\ChangePassWordController;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,4 +47,7 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('/auth/register', 'register');
     Route::post('/auth/logout', 'logout');
     Route::post('/auth/refresh', 'refresh');
+    Route::post('/auth/change-password','changePassword');
+    Route::post('/auth/change-second-password','secondpassword');
+
 });

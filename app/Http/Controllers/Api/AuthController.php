@@ -8,6 +8,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\LoginAdminRequest;
+use App\Http\Requests\PasswordRequest;
+use App\Http\Requests\SecondPasswordRequest;
 use App\Http\Requests\RegisterAdminRequest;
 
 class AuthController extends Controller
@@ -81,5 +83,41 @@ class AuthController extends Controller
                 'type' => 'bearer',
             ]
         ]);
+    }
+
+    public function changepassword(PasswordRequest $request)
+    {
+        $user = User::findOrFail(Auth::id());
+        if (Hash::check($request->old_password, $user->password)) {
+                $user->password = Hash::make($request->new_password);
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Cập Nhật Mật Khẩu Thành Công!',
+                    'data' => $user
+                ]);
+        }else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Thất bại, mật khẩu cũ không đúng!',
+            ]);
+        }
+    }
+
+    public function secondpassword(SecondPasswordRequest $request)
+    {
+        $user = User::findOrFail(Auth::id());
+        if (Hash::check($request->old_password, $user->password_confirmation)) {
+                $user->password_confirmation = Hash::make($request->new_password);
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Cập Nhật Mật Khẩu Cấp 2 Thành Công!',
+                    'data' => $user
+                ]);
+        }else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Thất bại, mật khẩu cũ không đúng!',
+            ]);
+        }
     }
 }
