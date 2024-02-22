@@ -10,7 +10,9 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\RechargeRequest;
 use App\Http\Requests\EarnMoneyRequest;
 use App\Notifications\EarnMoneyNotification;
+use App\Notifications\PayMoneyNotification;
 use App\Models\User;
+use App\Models\VerifyCode;
 
 
 class TransactionController extends Controller
@@ -109,15 +111,31 @@ class TransactionController extends Controller
 
     public function sendMailEarnMoney(Request $request)
     {
-        $user = User::where('id', Auth::id())->firstOrFail();
-    
-        $verify_code = mt_rand(100000, 999999);
-        
-        $user->notify(new EarnMoneyNotification($verify_code));
-
+        $user = User::where('id', Auth::id())->firstOrFail();  
+        $code_earnmoney = mt_rand(100000, 999999);       
+        $verify_code = new VerifyCode;
+        $verify_code->type = 'EARNMONEY';
+        $verify_code->code = $code_earnmoney;
+        $verify_code->save();
+        $user->notify(new EarnMoneyNotification($code_earnmoney));
         return response()->json([
             'success' => true,
             'message' => 'Mã xác nhận đã được gửi vào Email của bạn!',
+        ]);
+    }
+
+    public function sendMailPayMoney(Request $request)
+    {
+        $user = User::where('id', Auth::id())->firstOrFail();  
+        $code_earnmoney = mt_rand(100000, 999999);       
+        $verify_code = new VerifyCode;
+        $verify_code->type = 'PAYMONEY';
+        $verify_code->code = $code_earnmoney;
+        $verify_code->save();
+        $user->notify(new PayMoneyNotification($code_earnmoney));
+        return response()->json([
+            'success' => true,
+            'message' => 'Mã xác nhận chuyển tiền đã được gửi vào Email của bạn!',
         ]);
     }
 }

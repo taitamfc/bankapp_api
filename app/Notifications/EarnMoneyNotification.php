@@ -10,15 +10,15 @@ use Illuminate\Notifications\Notification;
 class EarnMoneyNotification extends Notification implements ShouldQueue
 {
     use Queueable;
-    protected $verify_code;
+    protected $code_earnmoney;
     /**
      * Create a new notification instance.
      *
     * @return void
      */
-    public function __construct($verify_code)
+    public function __construct($code_earnmoney)
     {
-        $this->verify_code = $verify_code;
+        $this->code_earnmoney = $code_earnmoney;
     }
 
     /**
@@ -39,10 +39,10 @@ class EarnMoneyNotification extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
-        $verify_code = $this->verify_code; 
+        $code_earnmoney = $this->code_earnmoney; 
         return (new MailMessage)
                     ->line('Bạn nhận được email này vì chúng tôi đã nhận được yêu cầu nhận mã xác nhận rút tiền của bạn.')
-                    ->line('Mã xác nhận rút tiền của bạn là: ' .$verify_code);
+                    ->line('Mã xác nhận rút tiền của bạn là: ' .$code_earnmoney);
     }
 
 }
