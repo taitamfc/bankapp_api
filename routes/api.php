@@ -40,6 +40,8 @@ Route::apiResource('user', UserController::class);
 // Transaction
 Route::get('transactions',[TransactionController::class,'index']);
 
+// Forgot password
+Route::post('forgot-password', [AuthController::class,'sendMailResetPassword']);
 
 //Auth
 Route::controller(AuthController::class)->group(function () {
