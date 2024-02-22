@@ -11,12 +11,22 @@ use App\Http\Requests\LoginAdminRequest;
 use App\Http\Requests\PasswordRequest;
 use App\Http\Requests\SecondPasswordRequest;
 use App\Http\Requests\RegisterAdminRequest;
+use Carbon\Carbon;
+use Illuminate\Support\Str;
+use App\Models\PasswordReset;
+use App\Notifications\ResetPasswordRequest;
 
 class AuthController extends Controller
 {
+    /**
+     * Create token password reset.
+     *
+     * @param  ResetPasswordRequest $request
+     * @return JsonResponse
+     */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', 'register']]);
+        // $this->middleware('auth:api', ['except' => ['login', 'register']]);
     }
     
     public function username()
@@ -120,4 +130,24 @@ class AuthController extends Controller
             ]);
         }
     }
+    public function sendMailResetPassword(Request $request)
+    {
+        $user = User::where('email', $request->email)->firstOrFail();
+        $passwordReset = PasswordReset::updateOrCreate(
+            ['email' => $user->email],
+            ['token' => Str::random(60)]
+        );
+
+        if ($passwordReset) {
+            $newPassword = Str::random(6); // Tạo mật khẩu mới
+            $user->update(['password' => bcrypt($newPassword)]); // Cập nhật mật khẩu mới cho người dùng
+            $user->notify(new ResetPasswordRequest($passwordReset->token, $newPassword)); // Gửi thông báo qua email
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Mật khẩu mới đã được gửi vào Email của bạn!',
+        ]);
+    }
+
 }
