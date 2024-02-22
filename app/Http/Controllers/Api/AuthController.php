@@ -11,10 +11,15 @@ use App\Http\Requests\LoginAdminRequest;
 use App\Http\Requests\PasswordRequest;
 use App\Http\Requests\SecondPasswordRequest;
 use App\Http\Requests\RegisterAdminRequest;
+use App\Http\Requests\ForgotPasswordRequest;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use App\Models\PasswordReset;
 use App\Notifications\ResetPasswordRequest;
+use App\Notifications\PasswordNotification;
+use App\Notifications\SecondPassNotification;
+use App\Models\VerifyCode;
+
 
 class AuthController extends Controller
 {
@@ -130,7 +135,7 @@ class AuthController extends Controller
             ]);
         }
     }
-    public function sendMailResetPassword(Request $request)
+    public function sendMailResetPassword(ForgotPasswordRequest $request)
     {
         $user = User::where('email', $request->email)->firstOrFail();
         $passwordReset = PasswordReset::updateOrCreate(
@@ -150,4 +155,33 @@ class AuthController extends Controller
         ]);
     }
 
+    public function sendMailPassOtp(Request $request)
+    {
+        $user = User::where('id', Auth::id())->firstOrFail();  
+        $code_earnmoney = mt_rand(100000, 999999);       
+        $verify_code = new VerifyCode;
+        $verify_code->type = 'PASSWORD';
+        $verify_code->code = $code_earnmoney;
+        $verify_code->save();
+        $user->notify(new PasswordNotification($code_earnmoney));
+        return response()->json([
+            'success' => true,
+            'message' => 'Mã xác nhận khôi phục mật khẩu đã được gửi vào Email của bạn!',
+        ]);
+    }
+
+    public function sendMailSecondPass(Request $request)
+    {
+        $user = User::where('id', Auth::id())->firstOrFail();  
+        $code_earnmoney = mt_rand(100000, 999999);       
+        $verify_code = new VerifyCode;
+        $verify_code->type = 'SECONDPASS';
+        $verify_code->code = $code_earnmoney;
+        $verify_code->save();
+        $user->notify(new SecondPassNotification($code_earnmoney));
+        return response()->json([
+            'success' => true,
+            'message' => 'Mã xác nhận khôi phục mật khẩu cấp 2 đã được gửi vào Email của bạn!',
+        ]);
+    }
 }
