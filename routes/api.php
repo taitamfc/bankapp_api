@@ -38,10 +38,19 @@ Route::apiResource('app', AppController::class);
 Route::apiResource('user', UserController::class);
 
 // Transaction
-Route::get('transactions',[TransactionController::class,'index']);
+Route::post('transactions',[TransactionController::class,'index']);
 
 // Forgot password
 Route::post('forgot-password', [AuthController::class,'sendMailResetPassword']);
+
+// PaymentDeposit
+Route::post('recharge', [TransactionController::class,'recharge']);
+Route::post('list-recharge', [TransactionController::class,'listRecharge']);
+
+// PaymentEarnMoney
+Route::post('payment-earn-money', [TransactionController::class,'paymentEarnMoney']);
+Route::post('list-earnmoney', [TransactionController::class,'listEarnMoney']);
+Route::post('sendmail-earnmoney', [TransactionController::class,'sendMailEarnMoney']);
 
 //Auth
 Route::controller(AuthController::class)->group(function () {
@@ -51,5 +60,4 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('/auth/refresh', 'refresh');
     Route::post('/auth/change-password','changePassword');
     Route::post('/auth/change-second-password','secondpassword');
-
 });

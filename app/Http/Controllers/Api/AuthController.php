@@ -11,6 +11,7 @@ use App\Http\Requests\LoginAdminRequest;
 use App\Http\Requests\PasswordRequest;
 use App\Http\Requests\SecondPasswordRequest;
 use App\Http\Requests\RegisterAdminRequest;
+use App\Http\Requests\ForgotPasswordRequest;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use App\Models\PasswordReset;
@@ -130,7 +131,7 @@ class AuthController extends Controller
             ]);
         }
     }
-    public function sendMailResetPassword(Request $request)
+    public function sendMailResetPassword(ForgotPasswordRequest $request)
     {
         $user = User::where('email', $request->email)->firstOrFail();
         $passwordReset = PasswordReset::updateOrCreate(
