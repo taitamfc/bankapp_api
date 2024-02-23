@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\TransactionController;
 use App\Http\Controllers\Api\ChangePassWordController;
+use App\Http\Controllers\Api\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -48,10 +49,14 @@ Route::post('recharge', [TransactionController::class,'recharge']);
 Route::post('list-recharge', [TransactionController::class,'listRecharge']);
 
 // PaymentEarnMoney
+Route::get('index-earn-money', [TransactionController::class,'indexEarnMoney']);
 Route::post('payment-earn-money', [TransactionController::class,'paymentEarnMoney']);
 Route::post('list-earnmoney', [TransactionController::class,'listEarnMoney']);
 Route::post('sendmail-earnmoney', [TransactionController::class,'sendMailEarnMoney']);
 Route::post('sendmail-paymoney', [TransactionController::class,'sendMailPayMoney']);
+
+// Home 
+Route::get('home', [HomeController::class,'index']);
 
 //Auth
 Route::controller(AuthController::class)->group(function () {

@@ -6,13 +6,16 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    /**
+     * Run the migrations.
+     */
     public function up(): void
     {
-        Schema::create('verify_codes', function (Blueprint $table) {
+        Schema::create('news', function (Blueprint $table) {
             $table->id();
-            $table->string('type');
-            $table->string('code');
-            $table->foreignId('user_id')->constrained('users');//User ID
+            $table->string('title');
+            $table->text('content');
+            $table->boolean('status')->default(0);
             $table->timestamps();
         });
     }
@@ -22,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('verify_codes');
+        Schema::dropIfExists('news');
     }
 };

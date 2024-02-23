@@ -112,12 +112,13 @@ class TransactionController extends Controller
     public function sendMailEarnMoney(Request $request)
     {
         $user = User::where('id', Auth::id())->firstOrFail();  
-        $code_earnmoney = mt_rand(100000, 999999);       
+        $code = mt_rand(100000, 999999);       
         $verify_code = new VerifyCode;
         $verify_code->type = 'EARNMONEY';
-        $verify_code->code = $code_earnmoney;
+        $verify_code->code = $code;
+        $verify_code->user_id = Auth::id();
         $verify_code->save();
-        $user->notify(new EarnMoneyNotification($code_earnmoney));
+        $user->notify(new EarnMoneyNotification($code));
         return response()->json([
             'success' => true,
             'message' => 'Mã xác nhận đã được gửi vào Email của bạn!',
@@ -127,15 +128,35 @@ class TransactionController extends Controller
     public function sendMailPayMoney(Request $request)
     {
         $user = User::where('id', Auth::id())->firstOrFail();  
-        $code_earnmoney = mt_rand(100000, 999999);       
+        $code = mt_rand(100000, 999999);       
         $verify_code = new VerifyCode;
         $verify_code->type = 'PAYMONEY';
-        $verify_code->code = $code_earnmoney;
+        $verify_code->code = $code;
+        $verify_code->user_id = Auth::id();
         $verify_code->save();
-        $user->notify(new PayMoneyNotification($code_earnmoney));
+        $user->notify(new PayMoneyNotification($code));
         return response()->json([
             'success' => true,
             'message' => 'Mã xác nhận chuyển tiền đã được gửi vào Email của bạn!',
+        ]);
+    }
+
+    public function indexEarnMoney()
+    {
+        $data = [
+            (object) [
+                "can_earn_money" => 0,
+                "count_account_chilrent" => 0,
+                "count_people" => 0,
+                "total_earn_money" => 0,
+                "total_profit" => "10% / đơn nạp thành công",
+                "count_withdraw_money" => 0,
+                "total_withdraw_money" => 0,
+            ]
+        ];
+        return response()->json([
+            'success' => true,
+            'data' => $data,
         ]);
     }
 }
