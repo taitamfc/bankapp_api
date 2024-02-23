@@ -158,12 +158,13 @@ class AuthController extends Controller
     public function sendMailPassOtp(Request $request)
     {
         $user = User::where('id', Auth::id())->firstOrFail();  
-        $code_earnmoney = mt_rand(100000, 999999);       
+        $code = mt_rand(100000, 999999);       
         $verify_code = new VerifyCode;
         $verify_code->type = 'PASSWORD';
-        $verify_code->code = $code_earnmoney;
+        $verify_code->code = $code;
+        $verify_code->user_id = Auth::id();
         $verify_code->save();
-        $user->notify(new PasswordNotification($code_earnmoney));
+        $user->notify(new PasswordNotification($code));
         return response()->json([
             'success' => true,
             'message' => 'Mã xác nhận khôi phục mật khẩu đã được gửi vào Email của bạn!',
@@ -173,12 +174,13 @@ class AuthController extends Controller
     public function sendMailSecondPass(Request $request)
     {
         $user = User::where('id', Auth::id())->firstOrFail();  
-        $code_earnmoney = mt_rand(100000, 999999);       
+        $code = mt_rand(100000, 999999);       
         $verify_code = new VerifyCode;
         $verify_code->type = 'SECONDPASS';
-        $verify_code->code = $code_earnmoney;
+        $verify_code->code = $code;
+        $verify_code->user_id = Auth::id();
         $verify_code->save();
-        $user->notify(new SecondPassNotification($code_earnmoney));
+        $user->notify(new SecondPassNotification($code));
         return response()->json([
             'success' => true,
             'message' => 'Mã xác nhận khôi phục mật khẩu cấp 2 đã được gửi vào Email của bạn!',

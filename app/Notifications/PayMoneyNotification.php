@@ -10,13 +10,13 @@ use Illuminate\Notifications\Notification;
 class PayMoneyNotification extends Notification
 {
     use Queueable;
-    protected $code_earnmoney;
+    protected $code;
     /**
      * Create a new notification instance.
      */
-    public function __construct($code_earnmoney)
+    public function __construct($code)
     {
-        $this->code_earnmoney = $code_earnmoney;
+        $this->code = $code;
     }
 
     /**
@@ -34,10 +34,10 @@ class PayMoneyNotification extends Notification
      */
     public function toMail(object $notifiable): MailMessage
     {
-        $code_earnmoney = $this->code_earnmoney;
+        $code = $this->code;
         return (new MailMessage)
             ->line('Bạn nhận được email này vì chúng tôi đã nhận được yêu cầu nhận mã xác nhận chuyển tiền của bạn.')
-            ->line('Mã xác nhận chuyển tiền của bạn là: ' .$code_earnmoney);
+            ->line('Mã xác nhận chuyển tiền của bạn là: ' .$code);
     }
 
     /**
