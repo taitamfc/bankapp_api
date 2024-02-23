@@ -8,13 +8,15 @@ use App\Models\User;
 use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\UserUpdateRequest;
+use Illuminate\Support\Facades\Auth;
 
 
 class UserController extends Controller
 {
-    public function show(string $id)
+    public function show()
     {
-        $data = new UserResource(User::findOrFail($id));
+        $user_id = Auth::id();
+        $data = new UserResource(User::findOrFail($user_id));
         $res = [
             'success' => true,
             'data' => $data,
@@ -22,9 +24,10 @@ class UserController extends Controller
         return $res;
     }
 
-    public function update(UserUpdateRequest $request,$id)
+    public function update(UserUpdateRequest $request)
     {
-        $user = User::findOrFail($id);
+        $user_id = Auth::id();
+        $user = User::findOrFail($user_id);
         $user->name = $request->name;
         $user->email = $request->email;
         $user->phone = $request->phone;
@@ -34,7 +37,7 @@ class UserController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'User updated successfully',
+            'message' => 'Cập nhật hồ sơ thành công!',
             'data' => $user
         ]);
     }
