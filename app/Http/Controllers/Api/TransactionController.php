@@ -30,25 +30,25 @@ class TransactionController extends Controller
 
     public function recharge(RechargeRequest $request)
     {
-        $user_id = Auth::id();
-        $transaction = new Transaction;
-        $transaction->reference = 2;
-        $transaction->amount = $request->amount;
-        $transaction->received = $request->amount;
-        $transaction->type = 'RECHARGE';
-        $transaction->type_money = 'VND';
-        $transaction->status = 0;
-        $transaction->user_id = $user_id;
-        $transaction->bank_name = $request->bank_name;
-        $transaction->bank_number = $request->bank_number;
-        $transaction->bank_user = $request->bank_user;
-        $transaction->save();
-        $res = [
-            'success' => true,
-            'message' => 'Nạp tiền thành công!',
-            'data' => $transaction
-        ];
-        return response()->json($res, 200);
+            $user_id = Auth::id();
+            $transaction = new Transaction;
+            $transaction->reference = 2;
+            $transaction->amount = $request->amount;
+            $transaction->received = $request->amount;
+            $transaction->type = 'RECHARGE';
+            $transaction->type_money = 'VND';
+            $transaction->status = 0;
+            $transaction->user_id = $user_id;
+            $transaction->bank_name = $request->bank_name;
+            $transaction->bank_number = $request->bank_number;
+            $transaction->bank_user = $request->bank_user;
+            $transaction->save();
+            $res = [
+                'success' => true,
+                'message' => 'Nạp tiền thành công!',
+                'data' => $transaction
+            ];
+            return response()->json($res, 200);  
     }
 
     public function listRecharge(Request $request)
@@ -71,25 +71,38 @@ class TransactionController extends Controller
     public function paymentEarnMoney(EarnMoneyRequest $request)
     {
         $user_id = Auth::id();
-        $transaction = new Transaction;
-        $transaction->reference = 3;
-        $transaction->amount = $request->amount;
-        $transaction->received = $request->amount;
-        $transaction->type = 'EARNMONEY';
-        $transaction->type_money = 'VND';
-        $transaction->status = 0;
-        $transaction->user_id = $user_id;
-        $transaction->bank_name = $request->bank_name;
-        $transaction->bank_number = $request->bank_number;
-        $transaction->bank_user = $request->bank_user;
-        $transaction->verify_code = $request->verify_code;
-        $transaction->save();
-        $res = [
-            'success' => true,
-            'message' => 'Yêu cầu rút tiền đã được gửi đi thành công!',
-            'data' => $transaction
-        ];
-        return response()->json($res, 200);
+        $verify_code = VerifyCode::where('user_id', $user_id)
+                        ->where('type', 'EARNMONEY')
+                        ->orderBy('id', 'desc')
+                        ->first();
+        $code = $verify_code->code;
+        if ($request->verify_code == $code) {
+            $transaction = new Transaction;
+            $transaction->reference = 3;
+            $transaction->amount = $request->amount;
+            $transaction->received = $request->amount;
+            $transaction->type = 'EARNMONEY';
+            $transaction->type_money = 'VND';
+            $transaction->status = 0;
+            $transaction->user_id = $user_id;
+            $transaction->bank_name = $request->bank_name;
+            $transaction->bank_number = $request->bank_number;
+            $transaction->bank_user = $request->bank_user;
+            $transaction->verify_code = $code;
+            $transaction->save();
+            $res = [
+                'success' => true,
+                'message' => 'Yêu cầu rút tiền đã được gửi đi thành công!',
+                'data' => $transaction
+            ];
+            return response()->json($res, 200);
+        }else {
+            $res = [
+                'success' => false,
+                'message' => 'Mã xác nhận sai, vui lòng kiểm tra lại!',
+            ];
+            return response()->json($res);
+        }
     }
 
     public function listEarnMoney(Request $request)
@@ -158,5 +171,28 @@ class TransactionController extends Controller
             'success' => true,
             'data' => $data,
         ]);
+    }
+
+    public function payMoney(Request $request)
+    {
+        $user_id = Auth::id();
+        $verify_code = VerifyCode::where('user_id', $user_id)
+                        ->where('type', 'PAYMONEY')
+                        ->orderBy('id', 'desc')
+                        ->first();
+        $code = $verify_code->code;
+        if ($request->verify_code == $code) {
+            $res = [
+                'success' => true,
+                'message' => 'Yêu cầu chuyển tiền đã được gửi đi thành công!',
+            ];
+            return response()->json($res, 200);
+        }else {
+            $res = [
+                'success' => false,
+                'message' => 'Mã xác nhận sai, vui lòng kiểm tra lại!',
+            ];
+            return response()->json($res);
+        }
     }
 }
