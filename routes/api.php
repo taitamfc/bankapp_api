@@ -54,6 +54,7 @@ Route::post('payment-earn-money', [TransactionController::class,'paymentEarnMone
 Route::post('list-earnmoney', [TransactionController::class,'listEarnMoney']);
 Route::post('sendmail-earnmoney', [TransactionController::class,'sendMailEarnMoney']);
 Route::post('sendmail-paymoney', [TransactionController::class,'sendMailPayMoney']);
+Route::post('paymoney', [TransactionController::class,'payMoney']);
 
 // Home 
 Route::get('home', [HomeController::class,'index']);
@@ -68,4 +69,6 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('/auth/change-second-password','secondpassword');
     Route::post('/auth/sendmail-password-otp','sendMailPassOtp');
     Route::post('/auth/sendmail-second-password','sendMailSecondPass');
+    Route::post('/auth/reset-password-otp','resetPasswordOtp');
+    Route::post('/auth/reset-second-password-otp','resetSecondPasswordOtp');
 });
