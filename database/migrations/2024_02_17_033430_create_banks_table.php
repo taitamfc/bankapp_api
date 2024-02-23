@@ -25,6 +25,10 @@ return new class extends Migration
             $table->float('app_transfer_fee_percentage')->default(0.1); // Giá chuyển tiền trong APP (phần trăm)
             $table->double('auto_check_account_fee')->default(2000); // Giá kiểm tra STK tự động
             $table->text('important_note')->nullable(); // Lưu ý quan trọng
+            $table->string('android_version')->nullable(); // Phiên bản Android
+            $table->string('ios_version')->nullable(); // Phiên bản IOS
+            $table->string('android_download_link')->nullable(); // Link tải Android
+            $table->string('ios_download_link')->nullable(); // Link tải IOS
             $table->timestamps();
         });
     }

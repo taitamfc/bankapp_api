@@ -4,12 +4,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\BankController;
 use App\Http\Controllers\Api\UserBankController;
-use App\Http\Controllers\Api\AppController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\TransactionController;
 use App\Http\Controllers\Api\ChangePassWordController;
 use App\Http\Controllers\Api\HomeController;
+use App\Http\Controllers\Api\NewController;
+use App\Http\Controllers\Api\OwnerBankController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,33 +32,38 @@ Route::apiResource('banks', BankController::class);
 
 // User Bank
 Route::post('userbank/store',[UserBankController::class,'store']);
+Route::put('user_banks/{bank_id}',[UserBankController::class,'update']);
 
-// App
-Route::apiResource('app', AppController::class);
 
 // User
-Route::apiResource('user', UserController::class);
-
+Route::get('users/profile', [UserController::class,'show']);
+Route::put('users/profile', [UserController::class,'update']);
 // Transaction
-Route::post('transactions',[TransactionController::class,'index']);
+Route::post('transactions/history',[TransactionController::class,'index']);
 
 // Forgot password
 Route::post('forgot-password', [AuthController::class,'sendMailResetPassword']);
 
 // PaymentDeposit
-Route::post('recharge', [TransactionController::class,'recharge']);
-Route::post('list-recharge', [TransactionController::class,'listRecharge']);
+Route::post('deposits', [TransactionController::class,'deposits']);
+Route::post('payments/deposits', [TransactionController::class,'listDeposits']);
 
 // PaymentEarnMoney
-Route::get('index-earn-money', [TransactionController::class,'indexEarnMoney']);
-Route::post('payment-earn-money', [TransactionController::class,'paymentEarnMoney']);
-Route::post('list-earnmoney', [TransactionController::class,'listEarnMoney']);
+Route::get('payment/earn-money', [TransactionController::class,'indexEarnMoney']);
+Route::post('payments/withdraw', [TransactionController::class,'withdraw']);
+Route::post('payments/withdraws', [TransactionController::class,'paymentWithdraw']);
 Route::post('sendmail-earnmoney', [TransactionController::class,'sendMailEarnMoney']);
-Route::post('sendmail-paymoney', [TransactionController::class,'sendMailPayMoney']);
-Route::post('paymoney', [TransactionController::class,'payMoney']);
+Route::post('sendmail-transfer', [TransactionController::class,'sendMailTransfer']);
+Route::post('payments/transfer', [TransactionController::class,'transfer']);
 
 // Home 
 Route::get('home', [HomeController::class,'index']);
+
+// News
+Route::get('news', [NewController::class,'index']);
+
+// Owner Bank
+Route::get('owner_banks', [OwnerBankController::class,'index']);
 
 //Auth
 Route::controller(AuthController::class)->group(function () {

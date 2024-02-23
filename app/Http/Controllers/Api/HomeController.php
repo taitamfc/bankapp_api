@@ -4,12 +4,10 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\News;
 class HomeController extends Controller
 {
     public function index()
     {
-        $news = News::all();
         $data = [
             "count_deposit" => 0,
             "count_paymoney" => 0,
@@ -23,7 +21,6 @@ class HomeController extends Controller
             "count_bill_fluctuations" => 0,
             "count_account_chilrent_deposit" => 0,
             "total_money_create_bill_chilrent" => 0,
-            "news" => $news,
         ];
         return response()->json([
             'success' => true,

@@ -11,15 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('apps', function (Blueprint $table) {
+        Schema::create('owner_banks', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->nullable(); // Ngân hàng
+            $table->string('name');//Ten ngan hang
             $table->boolean('status')->default(0);//Tinh trang
             $table->string('image')->nullable();//ảnh
-            $table->string('android_version')->nullable(); // Phiên bản Android
-            $table->string('ios_version')->nullable(); // Phiên bản IOS
-            $table->string('android_download_link')->nullable(); // Link tải Android
-            $table->string('ios_download_link')->nullable(); // Link tải IOS
+            $table->text('short_description')->nullable();
+            $table->text('description')->nullable();
+            $table->string('account_number')->nullable();
+            $table->string('account_name')->nullable();
+            $table->string('note')->nullable();
             $table->timestamps();
         });
     }
@@ -29,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('apps');
+        Schema::dropIfExists('owner_banks');
     }
 };

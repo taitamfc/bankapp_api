@@ -13,7 +13,8 @@ use App\Notifications\EarnMoneyNotification;
 use App\Notifications\PayMoneyNotification;
 use App\Models\User;
 use App\Models\VerifyCode;
-
+use App\Models\OwnerBank;
+use App\Http\Requests\TransferRequest;
 
 class TransactionController extends Controller
 {
@@ -28,7 +29,7 @@ class TransactionController extends Controller
         ]);
     }
 
-    public function recharge(RechargeRequest $request)
+    public function deposits(RechargeRequest $request)
     {
             $user_id = Auth::id();
             $transaction = new Transaction;
@@ -39,19 +40,17 @@ class TransactionController extends Controller
             $transaction->type_money = 'VND';
             $transaction->status = 0;
             $transaction->user_id = $user_id;
-            $transaction->bank_name = $request->bank_name;
-            $transaction->bank_number = $request->bank_number;
-            $transaction->bank_user = $request->bank_user;
             $transaction->save();
+            $owner_bank = OwnerBank::where('id',$request->ownerbank_id)->first();
             $res = [
                 'success' => true,
                 'message' => 'Nạp tiền thành công!',
-                'data' => $transaction
+                'data' => $owner_bank,
             ];
             return response()->json($res, 200);  
     }
 
-    public function listRecharge(Request $request)
+    public function listDeposits(Request $request)
     {
         $query = Transaction::where('type','RECHARGE');
         
@@ -68,13 +67,20 @@ class TransactionController extends Controller
         return $res;
     }
 
-    public function paymentEarnMoney(EarnMoneyRequest $request)
+    public function withdraw(EarnMoneyRequest $request)
     {
         $user_id = Auth::id();
         $verify_code = VerifyCode::where('user_id', $user_id)
                         ->where('type', 'EARNMONEY')
                         ->orderBy('id', 'desc')
                         ->first();
+        if($verify_code == null){
+            $res = [
+                'success' => false,
+                'message' => 'Vui lòng lấy mã xác nhận trước khi thực hiện giao dịch!',
+            ];
+            return response()->json($res);
+        }
         $code = $verify_code->code;
         if ($request->verify_code == $code) {
             $transaction = new Transaction;
@@ -88,7 +94,6 @@ class TransactionController extends Controller
             $transaction->bank_name = $request->bank_name;
             $transaction->bank_number = $request->bank_number;
             $transaction->bank_user = $request->bank_user;
-            $transaction->verify_code = $code;
             $transaction->save();
             $res = [
                 'success' => true,
@@ -105,7 +110,7 @@ class TransactionController extends Controller
         }
     }
 
-    public function listEarnMoney(Request $request)
+    public function paymentWithdraw(Request $request)
     {
         $query = Transaction::where('type','EARNMONEY');
         
@@ -138,7 +143,7 @@ class TransactionController extends Controller
         ]);
     }
 
-    public function sendMailPayMoney(Request $request)
+    public function sendMailTransfer(Request $request)
     {
         $user = User::where('id', Auth::id())->firstOrFail();  
         $code = mt_rand(100000, 999999);       
@@ -173,18 +178,37 @@ class TransactionController extends Controller
         ]);
     }
 
-    public function payMoney(Request $request)
+    public function transfer(TransferRequest $request)
     {
         $user_id = Auth::id();
         $verify_code = VerifyCode::where('user_id', $user_id)
                         ->where('type', 'PAYMONEY')
                         ->orderBy('id', 'desc')
                         ->first();
+        if($verify_code == null){
+            $res = [
+                'success' => false,
+                'message' => 'Vui lòng lấy mã xác nhận trước khi thực hiện giao dịch!',
+            ];
+            return response()->json($res);
+        }
         $code = $verify_code->code;
         if ($request->verify_code == $code) {
+            $transaction = new Transaction;
+            $transaction->reference = 4;
+            $transaction->amount = $request->amount;
+            $transaction->received = $request->amount;
+            $transaction->type = 'PAYMONEY';
+            $transaction->type_money = 'VND';
+            $transaction->status = 0;
+            $transaction->account_source_id = $request->account_source_id;
+            $transaction->account_target_id = $request->account_target_id;
+            $transaction->user_id = $user_id;
+            $transaction->save();
             $res = [
                 'success' => true,
                 'message' => 'Yêu cầu chuyển tiền đã được gửi đi thành công!',
+                'data' => $transaction,
             ];
             return response()->json($res, 200);
         }else {

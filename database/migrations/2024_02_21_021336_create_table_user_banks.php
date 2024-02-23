@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('bank_id');
-            $table->boolean('status')->default(0);
+            $table->boolean('user_status')->default(0);
             $table->timestamps();
         });
     }
