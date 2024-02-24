@@ -27,7 +27,6 @@ class SecondPasswordRequest extends FormRequest
             'new_password' => [
                 'required',
                 'min:6',
-                'regex:/^[0-9]{6}$/',
             ],
             'repeat_password' => [
                 'required',
@@ -41,7 +40,6 @@ class SecondPasswordRequest extends FormRequest
             'required' => __('validation.required'),
             'min:6' => 'Phải nhập ít nhất 6 ký tự!',
             'same:new_password' => 'Mật Khẩu cũ và mật Khẩu mới không trùng khớp!',
-            'new_password.regex' => 'Mật khẩu phải chứa chính xác 6 ký tự số.',
         ];
     }
 

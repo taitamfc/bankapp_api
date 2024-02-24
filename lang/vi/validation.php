@@ -103,7 +103,7 @@ return [
         'array' => 'The :attribute field must have at least :min items.',
         'file' => 'The :attribute field must be at least :min kilobytes.',
         'numeric' => 'Số tiền không được bé hơn 5000 VND.',
-        'string' => 'The :attribute field must be at least :min characters.',
+        'string' => 'Phải nhập ít nhất 6 ký tự!',
     ],
     'min_digits' => 'The :attribute field must have at least :min digits.',
     'missing' => 'The :attribute field must be missing.',

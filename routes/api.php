@@ -38,6 +38,10 @@ Route::put('user_banks/{bank_id}',[UserBankController::class,'update']);
 // User
 Route::get('users/profile', [UserController::class,'show']);
 Route::put('users/profile', [UserController::class,'update']);
+Route::post('users/change-password',[UserController::class,'changePassword']);
+Route::post('users/send-otp/change-password',[UserController::class,'sendMailOtpchangePass']);
+Route::post('users/restore-password',[UserController::class,'restorePassword']);
+
 // Transaction
 Route::post('transactions/history',[TransactionController::class,'index']);
 
@@ -71,10 +75,4 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('/auth/register', 'register');
     Route::post('/auth/logout', 'logout');
     Route::post('/auth/refresh', 'refresh');
-    Route::post('/auth/change-password','changePassword');
-    Route::post('/auth/change-second-password','secondpassword');
-    Route::post('/auth/sendmail-password-otp','sendMailPassOtp');
-    Route::post('/auth/sendmail-second-password','sendMailSecondPass');
-    Route::post('/auth/reset-password-otp','resetPasswordOtp');
-    Route::post('/auth/reset-second-password-otp','resetSecondPasswordOtp');
 });

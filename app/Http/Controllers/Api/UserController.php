@@ -9,6 +9,13 @@ use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\UserUpdateRequest;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\PasswordRequest;
+use App\Http\Requests\SecondPasswordRequest;
+use App\Notifications\PasswordNotification;
+use App\Notifications\SecondPassNotification;
+use App\Models\VerifyCode;
+use App\Http\Requests\OtpPasswordRequest;
+use Illuminate\Support\Str;
 
 
 class UserController extends Controller
@@ -40,6 +47,162 @@ class UserController extends Controller
             'message' => 'Cập nhật hồ sơ thành công!',
             'data' => $user
         ]);
+    }
+
+    public function changepassword(SecondPasswordRequest $request)
+    {
+        $user = User::findOrFail(Auth::id());
+        if ($request->type == "PASSWORD") {
+            if (preg_match('/[A-Z]/', $request->new_password)) {
+                if (Hash::check($request->old_password, $user->password)) {
+                    $user->password = Hash::make($request->new_password);
+                    return response()->json([
+                        'success' => true,
+                        'message' => 'Cập Nhật Mật Khẩu Thành Công!',
+                        'data' => $user
+                    ]);
+                }else {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Thất bại, mật khẩu cũ không đúng!',
+                    ]);
+                }
+            } else {
+                // Không có ký tự in hoa
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Mật Khẩu phải có ít nhất 1 ký tự in hoa!',
+                ]);
+            }
+            
+        }
+        if ($request->type == "SECONDPASS") {
+            if (preg_match('/^[0-9]{6}$/', $request->new_password)) {
+                if (Hash::check($request->old_password, $user->password_confirmation)) {
+                    $user->password_confirmation = Hash::make($request->new_password);
+                    return response()->json([
+                        'success' => true,
+                        'message' => 'Cập Nhật Mật Khẩu Cấp 2 Thành Công!',
+                        'data' => $user
+                    ]);
+                }else {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Thất bại, mật khẩu cũ không đúng!',
+                    ]);
+                }
+            } else {
+                // Sai, trường không phải là 6 ký tự số
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Mật Khẩu phải là các chữ số!',
+                ]);
+            }
+        }
+    }
+
+    public function sendMailOtpchangePass(Request $request)
+    {
+        if ($request->type == "PASSWORD") {
+            $user = User::where('id', Auth::id())->firstOrFail();  
+            $code = mt_rand(100000, 999999);       
+            $verify_code = new VerifyCode;
+            $verify_code->type = 'PASSWORD';
+            $verify_code->code = $code;
+            $verify_code->user_id = Auth::id();
+            $verify_code->save();
+            $user->notify(new PasswordNotification($code));
+            return response()->json([
+                'success' => true,
+                'message' => 'Mã xác nhận khôi phục mật khẩu đã được gửi vào Email của bạn!',
+            ]);
+        }
+
+        if ($request->type == "SECONDPASS") {
+            $user = User::where('id', Auth::id())->firstOrFail();  
+            $code = mt_rand(100000, 999999);       
+            $verify_code = new VerifyCode;
+            $verify_code->type = 'SECONDPASS';
+            $verify_code->code = $code;
+            $verify_code->user_id = Auth::id();
+            $verify_code->save();
+            $user->notify(new SecondPassNotification($code));
+            return response()->json([
+                'success' => true,
+                'message' => 'Mã xác nhận khôi phục mật khẩu cấp 2 đã được gửi vào Email của bạn!',
+            ]);
+        }
+    }
+
+    public function restorePassword(OtpPasswordRequest $request)
+    {
+        $user_id = Auth::id();
+        if ($request->type == "PASSWORD") {
+            $verify_code = VerifyCode::where('user_id', $user_id)
+                            ->where('type', 'PASSWORD')
+                            ->orderBy('id', 'desc')
+                            ->first();
+            if($verify_code == null){
+                $res = [
+                    'success' => false,
+                    'message' => 'Vui lòng lấy mã xác nhận trước khi thực hiện khôi phục!',
+                ];
+                return response()->json($res);
+            }                
+            $code = $verify_code->code;
+            if ($request->verify_code == $code) {
+                $user = User::findOrFail($user_id);
+                $newPassword = Str::random(6);
+                $user->password = Hash::make($newPassword);
+                $user->save();
+                $res = [
+                    'success' => true,
+                    'message' => 'Mật khẩu mới của bạn là:'.$newPassword,
+                ];
+                return response()->json($res, 200);
+            }else {
+                $res = [
+                    'success' => false,
+                    'message' => 'Mã xác nhận sai, vui lòng kiểm tra lại!',
+                ];
+                return response()->json($res);
+            }
+        }
+
+        if ($request->type == "SECONDPASS") {
+            $verify_code = VerifyCode::where('user_id', $user_id)
+                        ->where('type', 'SECONDPASS')
+                        ->orderBy('id', 'desc')
+                        ->first();
+            if($verify_code == null){
+                $res = [
+                    'success' => false,
+                    'message' => 'Vui lòng lấy mã xác nhận trước khi thực hiện khôi phục!',
+                ];
+                return response()->json($res);
+            }
+            $code = $verify_code->code;
+            if ($request->verify_code == $code) {
+                $user = User::findOrFail($user_id);
+                $newPassword = '';
+                for ($i = 0; $i < 6; $i++) {
+                    $newPassword .= mt_rand(0, 9);
+                }
+                $user->password_confirmation = Hash::make($newPassword);
+                $user->save();
+                $res = [
+                    'success' => true,
+                    'message' => 'Mật khẩu cấp 2 mới của bạn là:'.$newPassword,
+                ];
+                return response()->json($res, 200);
+            }else {
+                $res = [
+                    'success' => false,
+                    'message' => 'Mã xác nhận sai, vui lòng kiểm tra lại!',
+                ];
+                return response()->json($res);
+            }
+        }
     }
 
 }
