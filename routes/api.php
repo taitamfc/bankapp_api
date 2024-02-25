@@ -43,22 +43,22 @@ Route::post('users/send-otp/change-password',[UserController::class,'sendMailOtp
 Route::post('users/restore-password',[UserController::class,'restorePassword']);
 
 // Transaction
-Route::post('transactions/history',[TransactionController::class,'index']);
+Route::get('transactions/history',[TransactionController::class,'index']);
 
 // Forgot password
 Route::post('forgot-password', [AuthController::class,'sendMailResetPassword']);
 
 // PaymentDeposit
 Route::post('deposits', [TransactionController::class,'deposits']);
-Route::post('payments/deposits', [TransactionController::class,'listDeposits']);
+Route::get('payments/deposits', [TransactionController::class,'listDeposits']);
 
 // PaymentEarnMoney
 Route::get('payment/earn-money', [TransactionController::class,'indexEarnMoney']);
 Route::post('payments/withdraw', [TransactionController::class,'withdraw']);
-Route::post('payments/withdraws', [TransactionController::class,'paymentWithdraw']);
-Route::post('sendmail-earnmoney', [TransactionController::class,'sendMailEarnMoney']);
-Route::post('sendmail-transfer', [TransactionController::class,'sendMailTransfer']);
+Route::get('payments/withdraws', [TransactionController::class,'paymentWithdraw']);
 Route::post('payments/transfer', [TransactionController::class,'transfer']);
+Route::post('earnmoney/sendmail', [TransactionController::class,'sendMail']);
+
 
 // Home 
 Route::get('home', [HomeController::class,'index']);

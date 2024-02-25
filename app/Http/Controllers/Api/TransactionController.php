@@ -127,38 +127,6 @@ class TransactionController extends Controller
         return $res;
     }
 
-    public function sendMailEarnMoney(Request $request)
-    {
-        $user = User::where('id', Auth::id())->firstOrFail();  
-        $code = mt_rand(100000, 999999);       
-        $verify_code = new VerifyCode;
-        $verify_code->type = 'EARNMONEY';
-        $verify_code->code = $code;
-        $verify_code->user_id = Auth::id();
-        $verify_code->save();
-        $user->notify(new EarnMoneyNotification($code));
-        return response()->json([
-            'success' => true,
-            'message' => 'Mã xác nhận đã được gửi vào Email của bạn!',
-        ]);
-    }
-
-    public function sendMailTransfer(Request $request)
-    {
-        $user = User::where('id', Auth::id())->firstOrFail();  
-        $code = mt_rand(100000, 999999);       
-        $verify_code = new VerifyCode;
-        $verify_code->type = 'PAYMONEY';
-        $verify_code->code = $code;
-        $verify_code->user_id = Auth::id();
-        $verify_code->save();
-        $user->notify(new PayMoneyNotification($code));
-        return response()->json([
-            'success' => true,
-            'message' => 'Mã xác nhận chuyển tiền đã được gửi vào Email của bạn!',
-        ]);
-    }
-
     public function indexEarnMoney()
     {
         $data = [
@@ -217,6 +185,37 @@ class TransactionController extends Controller
                 'message' => 'Mã xác nhận sai, vui lòng kiểm tra lại!',
             ];
             return response()->json($res);
+        }
+    }
+
+    public function sendMail(Request $request)
+    {
+        $user = User::where('id', Auth::id())->firstOrFail();
+        if ($request->type == "EARNMONEY") {
+            $code = mt_rand(100000, 999999);       
+            $verify_code = new VerifyCode;
+            $verify_code->type = 'EARNMONEY';
+            $verify_code->code = $code;
+            $verify_code->user_id = Auth::id();
+            $verify_code->save();
+            $user->notify(new EarnMoneyNotification($code));
+            return response()->json([
+                'success' => true,
+                'message' => 'Mã xác nhận đã được gửi vào Email của bạn!',
+            ]);
+        }
+        if ($request->type == "PAYMONEY") {
+            $code = mt_rand(100000, 999999);       
+            $verify_code = new VerifyCode;
+            $verify_code->type = 'PAYMONEY';
+            $verify_code->code = $code;
+            $verify_code->user_id = Auth::id();
+            $verify_code->save();
+            $user->notify(new PayMoneyNotification($code));
+            return response()->json([
+                'success' => true,
+                'message' => 'Mã xác nhận chuyển tiền đã được gửi vào Email của bạn!',
+            ]);
         }
     }
 }
