@@ -5,3 +5,5 @@
 <x-backpack::menu-item title="Banks" icon="la la-question" :link="backpack_url('bank')" />
 <x-backpack::menu-item title="Transactions" icon="la la-question" :link="backpack_url('transaction')" />
 <x-backpack::menu-item title="Blogs" icon="la la-question" :link="backpack_url('blog')" />
+<x-backpack::menu-item title="Verify codes" icon="la la-question" :link="backpack_url('verify-code')" />
+<x-backpack::menu-item title="Owner banks" icon="la la-question" :link="backpack_url('owner-bank')" />
