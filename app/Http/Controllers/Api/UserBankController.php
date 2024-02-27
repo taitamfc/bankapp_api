@@ -30,7 +30,7 @@ class UserBankController extends Controller
 
     public function update(Request $request,$bank_id)
     {
-        $user_bank = UserBank::where('user_id',Auth::id())->where('bank_id', $bank_id)->first();
+        $user_bank = UserBank::where('user_id',Auth::guard('api')->id->id())->where('bank_id', $bank_id)->first();
         $user_bank->user_status = $request->user_status;
         $user_bank->save();
         return response()->json([
