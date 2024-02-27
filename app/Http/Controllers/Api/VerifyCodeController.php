@@ -27,7 +27,7 @@ class VerifyCodeController extends Controller
             $user->notify(new PasswordNotification($code));
             return response()->json([
                 'success' => true,
-                'message' => 'Mã xác nhận khôi phục mật khẩu đã được gửi vào Email của bạn!',
+                'data' => 'Mã xác nhận khôi phục mật khẩu đã được gửi vào Email của bạn!',
             ]);
         }
 
@@ -41,7 +41,7 @@ class VerifyCodeController extends Controller
             $user->notify(new SecondPassNotification($code));
             return response()->json([
                 'success' => true,
-                'message' => 'Mã xác nhận khôi phục mật khẩu cấp 2 đã được gửi vào Email của bạn!',
+                'data' => 'Mã xác nhận khôi phục mật khẩu cấp 2 đã được gửi vào Email của bạn!',
             ]);
         }
         if ($request->type == "EARNMONEY") {
@@ -54,7 +54,7 @@ class VerifyCodeController extends Controller
             $user->notify(new EarnMoneyNotification($code));
             return response()->json([
                 'success' => true,
-                'message' => 'Mã xác nhận đã được gửi vào Email của bạn!',
+                'data' => 'Mã xác nhận đã được gửi vào Email của bạn!',
             ]);
         }
         if ($request->type == "PAYMONEY") {
@@ -67,7 +67,7 @@ class VerifyCodeController extends Controller
             $user->notify(new PayMoneyNotification($code));
             return response()->json([
                 'success' => true,
-                'message' => 'Mã xác nhận chuyển tiền đã được gửi vào Email của bạn!',
+                'data' => 'Mã xác nhận chuyển tiền đã được gửi vào Email của bạn!',
             ]);
         }
     }

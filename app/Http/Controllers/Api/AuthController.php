@@ -43,7 +43,7 @@ class AuthController extends Controller
     public function login(LoginAdminRequest $request)
     {
         $credentials = $request->only('phone', 'password');
-        $token = Auth::attempt($credentials);
+        $token = Auth::guard('api')->attempt($credentials);
         
         if (!$token) {
             return response()->json([
@@ -52,7 +52,7 @@ class AuthController extends Controller
             ], 401);
         }
 
-        $user = Auth::user();
+        $user = Auth::guard('api')->user();
         return response()->json([
             'data' => $user,
             'success' => true,
@@ -84,7 +84,7 @@ class AuthController extends Controller
 
     public function logout()
     {
-        Auth::logout();
+        Auth::guard('api')->logout();
         return response()->json([
             'success' => true,
             'message' => 'Successfully logged out',
@@ -94,9 +94,9 @@ class AuthController extends Controller
     public function refresh()
     {
         return response()->json([
-            'user' => Auth::user(),
+            'user' => Auth::guard('api')->user(),
             'authorisation' => [
-                'token' => Auth::refresh(),
+                'token' => Auth::guard('api')->refresh(),
                 'type' => 'bearer',
             ]
         ]);

@@ -52,9 +52,9 @@ class UserController extends Controller
     {
         $user = User::findOrFail(Auth::id());
         if ($request->type == "PASSWORD") {
-            if (preg_match('/[A-Z]/', $request->new_password)) {
                 if (Hash::check($request->old_password, $user->password)) {
                     $user->password = Hash::make($request->new_password);
+                    $user->save();
                     return response()->json([
                         'success' => true,
                         'message' => 'Cập Nhật Mật Khẩu Thành Công!',
@@ -66,19 +66,11 @@ class UserController extends Controller
                         'message' => 'Thất bại, mật khẩu cũ không đúng!',
                     ]);
                 }
-            } else {
-                // Không có ký tự in hoa
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Mật Khẩu phải có ít nhất 1 ký tự in hoa!',
-                ]);
-            }
-            
         }
         if ($request->type == "SECONDPASS") {
-            if (preg_match('/^[0-9]{6}$/', $request->new_password)) {
                 if (Hash::check($request->old_password, $user->password_confirmation)) {
                     $user->password_confirmation = Hash::make($request->new_password);
+                    $user->save();
                     return response()->json([
                         'success' => true,
                         'message' => 'Cập Nhật Mật Khẩu Cấp 2 Thành Công!',
@@ -87,16 +79,9 @@ class UserController extends Controller
                 }else {
                     return response()->json([
                         'success' => false,
-                        'message' => 'Thất bại, mật khẩu cũ không đúng!',
+                        'data' => 'Thất bại, mật khẩu cũ không đúng!',
                     ]);
                 }
-            } else {
-                // Sai, trường không phải là 6 ký tự số
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Mật Khẩu phải là các chữ số!',
-                ]);
-            }
         }
     }
 
