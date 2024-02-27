@@ -3,5 +3,5 @@
 
 <x-backpack::menu-item title="Users" icon="la la-question" :link="backpack_url('user')" />
 <x-backpack::menu-item title="Banks" icon="la la-question" :link="backpack_url('bank')" />
-<x-backpack::menu-item title="Apps" icon="la la-question" :link="backpack_url('app')" />
 <x-backpack::menu-item title="Transactions" icon="la la-question" :link="backpack_url('transaction')" />
+<x-backpack::menu-item title="Blogs" icon="la la-question" :link="backpack_url('blog')" />
