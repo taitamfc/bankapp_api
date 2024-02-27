@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\ChangePassWordController;
 use App\Http\Controllers\Api\HomeController;
 use App\Http\Controllers\Api\NewController;
 use App\Http\Controllers\Api\OwnerBankController;
+use App\Http\Controllers\Api\VerifyCodeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -58,6 +59,9 @@ Route::post('payments/withdraw', [TransactionController::class,'withdraw']);
 Route::get('payments/withdraws', [TransactionController::class,'paymentWithdraw']);
 Route::post('payments/transfer', [TransactionController::class,'transfer']);
 Route::post('earnmoney/sendmail', [TransactionController::class,'sendMail']);
+
+// Verify code
+Route::post('verify-code/send-otp',[VerifyCodeController::class,'sendOTP']);
 
 
 // Home 
