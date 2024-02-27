@@ -54,7 +54,7 @@ Route::post('deposits', [TransactionController::class,'deposits']);
 Route::get('payments/deposits', [TransactionController::class,'listDeposits']);
 
 // PaymentEarnMoney
-Route::get('payment/earn-money', [TransactionController::class,'indexEarnMoney']);
+Route::get('payments/earn-money', [TransactionController::class,'indexEarnMoney']);
 Route::post('payments/withdraw', [TransactionController::class,'withdraw']);
 Route::get('payments/withdraws', [TransactionController::class,'paymentWithdraw']);
 Route::post('payments/transfer', [TransactionController::class,'transfer']);
