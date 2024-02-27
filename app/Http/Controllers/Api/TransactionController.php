@@ -31,7 +31,7 @@ class TransactionController extends Controller
 
     public function deposits(RechargeRequest $request)
     {
-            $user_id = Auth::guard('api')->id->id();
+            $user_id = Auth::guard('api')->id();
             $transaction = new Transaction;
             $transaction->reference = 2;
             $transaction->amount = $request->amount;
@@ -69,7 +69,7 @@ class TransactionController extends Controller
 
     public function withdraw(EarnMoneyRequest $request)
     {
-        $user_id = Auth::guard('api')->id->id();
+        $user_id = Auth::guard('api')->id();
         $verify_code = VerifyCode::where('user_id', $user_id)
                         ->where('type', 'EARNMONEY')
                         ->orderBy('id', 'desc')
@@ -148,7 +148,7 @@ class TransactionController extends Controller
 
     public function transfer(TransferRequest $request)
     {
-        $user_id = Auth::guard('api')->id->id();
+        $user_id = Auth::guard('api')->id();
         $verify_code = VerifyCode::where('user_id', $user_id)
                         ->where('type', 'PAYMONEY')
                         ->orderBy('id', 'desc')
@@ -190,13 +190,13 @@ class TransactionController extends Controller
 
     public function sendMail(Request $request)
     {
-        $user = User::where('id', Auth::guard('api')->id->id())->firstOrFail();
+        $user = User::where('id', Auth::guard('api')->id())->firstOrFail();
         if ($request->type == "EARNMONEY") {
             $code = mt_rand(100000, 999999);       
             $verify_code = new VerifyCode;
             $verify_code->type = 'EARNMONEY';
             $verify_code->code = $code;
-            $verify_code->user_id = Auth::guard('api')->id->id();
+            $verify_code->user_id = Auth::guard('api')->id();
             $verify_code->save();
             $user->notify(new EarnMoneyNotification($code));
             return response()->json([
@@ -209,7 +209,7 @@ class TransactionController extends Controller
             $verify_code = new VerifyCode;
             $verify_code->type = 'PAYMONEY';
             $verify_code->code = $code;
-            $verify_code->user_id = Auth::guard('api')->id->id();
+            $verify_code->user_id = Auth::guard('api')->id();
             $verify_code->save();
             $user->notify(new PayMoneyNotification($code));
             return response()->json([
