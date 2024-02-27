@@ -6,7 +6,7 @@ use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class App extends Model
+class Blog extends Model
 {
     use CrudTrait;
     use HasFactory;
@@ -17,7 +17,7 @@ class App extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'apps';
+    protected $table = 'news';
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];

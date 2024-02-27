@@ -12,9 +12,10 @@ class RegisterAdminRequest extends FormRequest
     {
         return [
             'name' => 'required|max:255',
+            'phone' => 'required|max:255|unique:users',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:6|max:255',
-            'password_confirmation' => 'required|min:6|max:255|same:password',
+            'password_confirmation' => 'required|min:6|max:255',
         ];
     }
 
@@ -26,7 +27,6 @@ class RegisterAdminRequest extends FormRequest
             'max' => 'Tối đa 255 kí tự',
             'min' => 'Tối thiểu 6 kí tự',
             'unique' => 'Tài khoản đã tồn tại',
-            'same' => 'Mật khẩu không khớp'
         ];
     }
 

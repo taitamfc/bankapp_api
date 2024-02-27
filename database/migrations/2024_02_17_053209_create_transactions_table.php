@@ -15,6 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string('reference');//Mã tham chiếu
             $table->string('type');//Thể loại
+            $table->string('bank_name')->nullable();
+            $table->string('bank_number')->nullable();
+            $table->string('bank_user')->nullable();
+            $table->integer('account_source_id')->nullable();
+            $table->integer('account_target_id')->nullable();
             $table->string('type_money')->nullable();//Loại tiền
             $table->double('amount')->default(0);//Số tiền
             $table->double('received')->default(0);//Thực nhận

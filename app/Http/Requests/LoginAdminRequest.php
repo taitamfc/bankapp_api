@@ -14,7 +14,7 @@ class LoginAdminRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => 'required|email|max:255',
+            'phone' => 'required|max:255',
             'password' => 'required|max:255',
         ];
     }
@@ -22,7 +22,7 @@ class LoginAdminRequest extends FormRequest
     {
         return [
             'required' => 'Trường yêu cầu',
-            'email' => 'Yêu cầu định dạng là Email',
+            // 'email' => 'Yêu cầu định dạng là Email',
             'max' => 'Tối đa 255 kí tự'
         ];
     }
