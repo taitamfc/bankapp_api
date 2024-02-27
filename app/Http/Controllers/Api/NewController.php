@@ -11,7 +11,7 @@ class NewController extends Controller
 {
     public function index()
     {
-        $data = NewResource::collection(News::paginate(5));
+        $data = NewResource::collection(News::orderBy('id', 'desc')->paginate(5));
         $res = [
             'success' => true,
             'data' => $data,

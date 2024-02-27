@@ -14,6 +14,8 @@ class TransactionResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        $data = parent::toArray($request);
+        $data['create_at_fm'] = date('d/m/Y',strtotime($data['created_at']));
+        return $data;
     }
 }
