@@ -22,7 +22,7 @@ class UserController extends Controller
 {
     public function show()
     {
-        $user_id = Auth::id();
+        $user_id = Auth::guard('api')->id->id();
         $data = new UserResource(User::findOrFail($user_id));
         $res = [
             'success' => true,
@@ -33,7 +33,7 @@ class UserController extends Controller
 
     public function update(Request $request)
     {
-        $user_id = Auth::id();
+        $user_id = Auth::guard('api')->id->id();
         $user = User::findOrFail($user_id);
         $user->name = $request->name;
         $user->user_name = $request->user_name;
@@ -50,7 +50,7 @@ class UserController extends Controller
 
     public function changepassword(SecondPasswordRequest $request)
     {
-        $user = User::findOrFail(Auth::id());
+        $user = User::findOrFail(Auth::guard('api')->id->id());
         if ($request->type == "PASSWORD") {
                 if (Hash::check($request->old_password, $user->password)) {
                     $user->password = Hash::make($request->new_password);
@@ -87,7 +87,7 @@ class UserController extends Controller
 
     public function restorePassword(OtpPasswordRequest $request)
     {
-        $user_id = Auth::id();
+        $user_id = Auth::guard('api')->id->id();
         if ($request->type == "PASSWORD") {
             $verify_code = VerifyCode::where('user_id', $user_id)
                             ->where('type', 'PASSWORD')

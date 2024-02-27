@@ -16,13 +16,13 @@ class VerifyCodeController extends Controller
 {
     public function sendOTP(Request $request)
     {
-        $user = User::where('id', Auth::id())->firstOrFail();  
+        $user = User::where('id', Auth::guard('api')->id->id())->firstOrFail();  
         if ($request->type == "PASSWORD") {
             $code = mt_rand(100000, 999999);       
             $verify_code = new VerifyCode;
             $verify_code->type = 'PASSWORD';
             $verify_code->code = $code;
-            $verify_code->user_id = Auth::id();
+            $verify_code->user_id = Auth::guard('api')->id->id();
             $verify_code->save();
             $user->notify(new PasswordNotification($code));
             return response()->json([
@@ -36,7 +36,7 @@ class VerifyCodeController extends Controller
             $verify_code = new VerifyCode;
             $verify_code->type = 'SECONDPASS';
             $verify_code->code = $code;
-            $verify_code->user_id = Auth::id();
+            $verify_code->user_id = Auth::guard('api')->id->id();
             $verify_code->save();
             $user->notify(new SecondPassNotification($code));
             return response()->json([
@@ -49,7 +49,7 @@ class VerifyCodeController extends Controller
             $verify_code = new VerifyCode;
             $verify_code->type = 'EARNMONEY';
             $verify_code->code = $code;
-            $verify_code->user_id = Auth::id();
+            $verify_code->user_id = Auth::guard('api')->id->id();
             $verify_code->save();
             $user->notify(new EarnMoneyNotification($code));
             return response()->json([
@@ -62,7 +62,7 @@ class VerifyCodeController extends Controller
             $verify_code = new VerifyCode;
             $verify_code->type = 'PAYMONEY';
             $verify_code->code = $code;
-            $verify_code->user_id = Auth::id();
+            $verify_code->user_id = Auth::guard('api')->id->id();
             $verify_code->save();
             $user->notify(new PayMoneyNotification($code));
             return response()->json([
