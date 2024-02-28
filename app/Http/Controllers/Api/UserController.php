@@ -96,7 +96,7 @@ class UserController extends Controller
             if($verify_code == null){
                 $res = [
                     'success' => false,
-                    'message' => 'Vui lòng lấy mã xác nhận trước khi thực hiện khôi phục!',
+                    'data' => 'Vui lòng lấy mã xác nhận trước khi thực hiện khôi phục!',
                 ];
                 return response()->json($res);
             }                
@@ -108,13 +108,13 @@ class UserController extends Controller
                 $user->save();
                 $res = [
                     'success' => true,
-                    'message' => 'Mật khẩu mới của bạn là:'.$newPassword,
+                    'data' => 'Mật khẩu mới của bạn là:'.$newPassword,
                 ];
                 return response()->json($res, 200);
             }else {
                 $res = [
                     'success' => false,
-                    'message' => 'Mã xác nhận sai, vui lòng kiểm tra lại!',
+                    'data' => 'Mã xác nhận sai, vui lòng kiểm tra lại!',
                 ];
                 return response()->json($res);
             }
@@ -128,7 +128,7 @@ class UserController extends Controller
             if($verify_code == null){
                 $res = [
                     'success' => false,
-                    'message' => 'Vui lòng lấy mã xác nhận trước khi thực hiện khôi phục!',
+                    'data' => 'Vui lòng lấy mã xác nhận trước khi thực hiện khôi phục!',
                 ];
                 return response()->json($res);
             }
@@ -143,13 +143,13 @@ class UserController extends Controller
                 $user->save();
                 $res = [
                     'success' => true,
-                    'message' => 'Mật khẩu cấp 2 mới của bạn là:'.$newPassword,
+                    'data' => 'Mật khẩu cấp 2 mới của bạn là:'.$newPassword,
                 ];
                 return response()->json($res, 200);
             }else {
                 $res = [
                     'success' => false,
-                    'message' => 'Mã xác nhận sai, vui lòng kiểm tra lại!',
+                    'data' => 'Mã xác nhận sai, vui lòng kiểm tra lại!',
                 ];
                 return response()->json($res);
             }
