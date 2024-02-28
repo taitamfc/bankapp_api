@@ -16,6 +16,7 @@ use App\Models\VerifyCode;
 use App\Models\OwnerBank;
 use App\Http\Requests\TransferRequest;
 
+
 class TransactionController extends Controller
 {
     public function index(Request $request)
@@ -77,7 +78,7 @@ class TransactionController extends Controller
         if($verify_code == null){
             $res = [
                 'success' => false,
-                'message' => 'Vui lòng lấy mã xác nhận trước khi thực hiện giao dịch!',
+                'data' => 'Vui lòng lấy mã xác nhận trước khi thực hiện giao dịch!',
             ];
             return response()->json($res);
         }
@@ -104,7 +105,7 @@ class TransactionController extends Controller
         }else {
             $res = [
                 'success' => false,
-                'message' => 'Mã xác nhận sai, vui lòng kiểm tra lại!',
+                'data' => 'Mã xác nhận sai, vui lòng kiểm tra lại!',
             ];
             return response()->json($res);
         }
@@ -118,28 +119,31 @@ class TransactionController extends Controller
             $query->where('amount', 'LIKE', '%' . $request->search . '%');
         }
         $items = $query->paginate(5);
-        return $items;
+        $transactionCollection = TransactionResource::collection($items);
+        // return $items;
         $res = [
             'success' => true,
             'message' => 'Danh sách Kiếm tiền!',
-            'data' => $items,
+            'data' => $transactionCollection,
         ];
         return $res;
     }
 
     public function indexEarnMoney()
     {
-        $data = [
+        $user = Auth::guard('api')->user();
+        $data = 
             (object) [
                 "can_earn_money" => 0,
                 "count_account_chilrent" => 0,
                 "count_people" => 0,
                 "total_earn_money" => 0,
-                "total_profit" => "10% / đơn nạp thành công",
+                "total_profit" => 10,
                 "count_withdraw_money" => 0,
                 "total_withdraw_money" => 0,
+                "user_name" => $user->user_name,
             ]
-        ];
+        ;
         return response()->json([
             'success' => true,
             'data' => $data,
@@ -156,7 +160,7 @@ class TransactionController extends Controller
         if($verify_code == null){
             $res = [
                 'success' => false,
-                'message' => 'Vui lòng lấy mã xác nhận trước khi thực hiện giao dịch!',
+                'data' => 'Vui lòng lấy mã xác nhận trước khi thực hiện giao dịch!',
             ];
             return response()->json($res);
         }
@@ -182,7 +186,7 @@ class TransactionController extends Controller
         }else {
             $res = [
                 'success' => false,
-                'message' => 'Mã xác nhận sai, vui lòng kiểm tra lại!',
+                'data' => 'Mã xác nhận sai, vui lòng kiểm tra lại!',
             ];
             return response()->json($res);
         }
