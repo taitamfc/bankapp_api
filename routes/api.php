@@ -50,7 +50,7 @@ Route::get('transactions/history',[TransactionController::class,'index']);
 Route::post('forgot-password', [AuthController::class,'sendMailResetPassword']);
 
 // PaymentDeposit
-Route::post('deposits', [TransactionController::class,'deposits']);
+Route::post('payments/deposits', [TransactionController::class,'deposits']);
 Route::get('payments/deposits', [TransactionController::class,'listDeposits']);
 
 // PaymentEarnMoney
@@ -58,7 +58,6 @@ Route::get('payments/earn-money', [TransactionController::class,'indexEarnMoney'
 Route::post('payments/withdraw', [TransactionController::class,'withdraw']);
 Route::get('payments/withdraws', [TransactionController::class,'paymentWithdraw']);
 Route::post('payments/transfer', [TransactionController::class,'transfer']);
-Route::post('earnmoney/sendmail', [TransactionController::class,'sendMail']);
 
 // Verify code
 Route::post('verify-code/send-otp',[VerifyCodeController::class,'sendOTP']);
