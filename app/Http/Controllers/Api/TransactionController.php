@@ -41,15 +41,32 @@ class TransactionController extends Controller
             $transaction->type_money = 'VND';
             $transaction->status = 0;
             $transaction->user_id = $user_id;
+            $transaction->ownerbank_id = $request->ownerbank_id;
             $transaction->save();
-            $owner_bank = OwnerBank::where('id',$request->ownerbank_id)->first();
             $res = [
                 'success' => true,
                 'message' => 'Nạp tiền thành công!',
-                'data' => $owner_bank,
+                'data' => $transaction,
             ];
             return response()->json($res, 200);  
     }
+
+    public function depositsDetail(Request $request) {
+        $query = Transaction::where('type','RECHARGE');
+        
+        if($request && $request->id){
+            $query->where('id', $request->id);
+        }
+        $items = $query->first();
+        $res = [
+            'success' => true,
+            'message' => 'chi tiết nạp tiền',
+            'data' => $items,
+        ];
+        return $res;
+    }
+
+
 
     public function listDeposits(Request $request)
     {
@@ -58,7 +75,7 @@ class TransactionController extends Controller
         if($request && $request->search){
             $query->where('amount', 'LIKE', '%' . $request->search . '%');
         }
-        $items = $query->paginate(5);
+        $items = $query->orderBy('id', 'desc')->paginate(5);
         return $items;
         $res = [
             'success' => true,
@@ -118,7 +135,7 @@ class TransactionController extends Controller
         if($request && $request->search){
             $query->where('amount', 'LIKE', '%' . $request->search . '%');
         }
-        $items = $query->paginate(5);
+        $items = $query->orderBy('id', 'desc')->paginate(5);
         $transactionCollection = TransactionResource::collection($items);
         // return $items;
         $res = [

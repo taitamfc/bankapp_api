@@ -52,6 +52,7 @@ Route::post('forgot-password', [AuthController::class,'sendMailResetPassword']);
 // PaymentDeposit
 Route::post('payments/deposits', [TransactionController::class,'deposits']);
 Route::get('payments/deposits', [TransactionController::class,'listDeposits']);
+Route::get('payments/deposits/{id}', [TransactionController::class,'depositsDetail']);
 
 // PaymentEarnMoney
 Route::get('payments/earn-money', [TransactionController::class,'indexEarnMoney']);

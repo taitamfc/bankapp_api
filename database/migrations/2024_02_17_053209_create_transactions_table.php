@@ -25,6 +25,7 @@ return new class extends Migration
             $table->double('received')->default(0);//Thực nhận
             $table->text('note')->nullable();//Ghi chú
             $table->foreignId('user_id')->constrained('users');//User ID
+            $table->foreignId('ownerbank_id')->nullable();
             $table->boolean('status')->default(0);//Tinh trang
             $table->timestamps();
         });
