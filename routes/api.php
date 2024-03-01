@@ -85,6 +85,7 @@ Route::get('user-bank-account', [BankAccountController::class,'getbankVietqr']);
 
 //Transaction App
 Route::get('tranctions-app', [TransactionAppController::class,'index']);
+Route::post('transfer', [TransactionAppController::class,'transfer']);
 
 //Auth
 Route::controller(AuthController::class)->group(function () {

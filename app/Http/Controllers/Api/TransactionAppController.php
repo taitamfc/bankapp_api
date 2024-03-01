@@ -4,14 +4,12 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\TransactionApp;
+use App\Models\UserBankAccount;
 use Illuminate\Http\Request;
 use App\Http\Resources\TransactionAppResource;
 
 class TransactionAppController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $data = TransactionAppResource::collection(TransactionApp::all());
@@ -21,52 +19,17 @@ class TransactionAppController extends Controller
         ];
         return $res;
     }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(TransactionApp $transactionApp)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(TransactionApp $transactionApp)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, TransactionApp $transactionApp)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(TransactionApp $transactionApp)
-    {
-        //
+    public function transfer(Request $request){
+        $user_current = UserBankAccount::where('id',$request->user_bank_account_id)->first();
+        $data = $request->except('_method','_token');
+        $data['surplus'] = $user_current->surplus - $data['amount'];
+        $item = TransactionApp::create($data);
+        $user_current->surplus = $data['surplus'];
+        $user_current->save();
+        $res = [
+            'success' => true,
+            'data' => $item,
+        ];
+        return $res;
     }
 }
