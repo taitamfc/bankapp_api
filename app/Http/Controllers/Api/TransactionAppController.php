@@ -27,20 +27,28 @@ class TransactionAppController extends Controller
     {
         DB::beginTransaction();
         try {
-            $user_bank_account = UserBankAccount::findOrFail($request->user_bank_account_id);
+            $user_bank_account = UserBankAccount::where('id',$request->user_bank_account_id)->first();
             $surplus = $request->amount + $user_bank_account->surplus;
             $user_bank_account->surplus = $surplus;
             $user_bank_account->save();
 
             $transaction_app_deposit = new TransactionApp;
-            $transaction_app_deposit->
-
+            $transaction_app_deposit->user_bank_account_id = $user_bank_account->id;
+            $transaction_app_deposit->type = "DEPOSIT";
+            $transaction_app_deposit->reference = "123cfd456";
+            $transaction_app_deposit->from_name = "BankWeb";
+            $transaction_app_deposit->to_name = $user_bank_account->bank_username;
+            $transaction_app_deposit->to_number = $user_bank_account->bank_number;
+            $transaction_app_deposit->amount = $request->amount;
+            $transaction_app_deposit->note = "Nạp tiền từ tài khoản Web";
+            $transaction_app_deposit->save();
+            DB::commit();
             $res = [
                 'success' => true,
                 'data' => $user_bank_account,
+                'transactionApp' => $transaction_app_deposit,
             ];
             return $res;
-            DB::commit();
         } catch (Exception $e) {
             DB::rollBack();
             throw new Exception($e->getMessage());
