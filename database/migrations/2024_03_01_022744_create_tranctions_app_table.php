@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('app_tranctions', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_bank_account_id');
             $table->string('reference');//Mã tham chiếu
+            $table->unsignedBigInteger('user_bank_account_id');
             $table->string('from_name')->nullable();//Người gửi
             $table->string('to_name')->nullable();//Người nhận
             $table->string('from_number')->nullable();//Tk gửi
