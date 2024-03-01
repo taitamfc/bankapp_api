@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\TransactionApp;
+use App\Models\Transaction;
 use App\Models\UserBankAccount;
 use Illuminate\Http\Request;
 use App\Http\Resources\TransactionAppResource;
@@ -14,7 +15,7 @@ class TransactionAppController extends Controller
 {
     public function index()
     {
-        $data = TransactionAppResource::collection(TransactionApp::all());
+        $data = TransactionAppResource::collection(TransactionApp::orderBy('id', 'desc')->paginate(5));
         $res = [
             'success' => true,
             'data' => $data,
@@ -22,28 +23,31 @@ class TransactionAppController extends Controller
         return $res;
     }
     public function transfer(Request $request){
-        $data = $request->except('_method','_token');
-        $user_current = UserBankAccount::whereUser_id(Auth::guard('api')->id())->whereType($data['from_bank'])->first();
-        $user_recieve = UserBankAccount::whereBank_number($data['to_number'])->whereType($data['to_bank'])->first();
-        if ($user_current->surplus >= $data['amount']) {
+        DB::beginTransaction();
+        try {
+            $data = $request->except('_method','_token');
+            $user_current = UserBankAccount::where('user_id',Auth::guard('api')->id())->where('type', $request->type)->first();
             $user_current->surplus -= $data['amount'];
-            $user_recieve->surplus += $data['amount'];
             $user_current->save();
-            $user_recieve->save();
+
+            $data['user_bank_account_id'] = $user_current->id;
+            $data['from_name'] = $user_current->bank_username;
+            $data['from_number'] = $user_current->bank_number;
+            $data['surplus'] = $user_current->surplus;
+            $data['type'] = "TRANSFER";
+            $item = TransactionApp::create($data);
+            DB::commit();
+            $res = [
+                'success' => true,
+                'data' => $user_current,
+                'TransactionApp' => $item,
+            ];
+            return $res;
+        } catch (Exception $e) {
+            DB::rollBack();
+            throw new Exception($e->getMessage());
         }
-        $data['user_bank_account_id'] = $user_current->id;
-        $data['to_name'] = $user_recieve->bank_username;
-        $data['from_name'] = $user_current->bank_username;
-        $data['from_number'] = $user_current->bank_number;
-        $data['surplus'] = $user_current->surplus;
-        $data['type'] = "TRANSFER";
-        $item = TransactionApp::create($data);
-        $user_current->save();
-        $res = [
-            'success' => true,
-            'data' => $item,
-        ];
-        return $res;
+        
     }
     public function depositApp(Request $request)
     {
@@ -53,7 +57,7 @@ class TransactionAppController extends Controller
             $surplus = $request->amount + $user_bank_account->surplus;
             $user_bank_account->surplus = $surplus;
             $user_bank_account->save();
-
+            // lưu vào lịch sử app
             $transaction_app_deposit = new TransactionApp;
             $transaction_app_deposit->user_bank_account_id = $user_bank_account->id;
             $transaction_app_deposit->type = "DEPOSIT";
@@ -62,13 +66,28 @@ class TransactionAppController extends Controller
             $transaction_app_deposit->to_name = $user_bank_account->bank_username;
             $transaction_app_deposit->to_number = $user_bank_account->bank_number;
             $transaction_app_deposit->amount = $request->amount;
+            $transaction_app_deposit->surplus = $user_bank_account->surplus;
             $transaction_app_deposit->note = "Nạp tiền từ tài khoản Web";
             $transaction_app_deposit->save();
+
+            // lưu vào lịch sử web
+            $user_id = Auth::guard('api')->id();
+            $transaction = new Transaction;
+            $transaction->reference = 6;
+            $transaction->amount = $request->amount;
+            $transaction->received = $request->amount;
+            $transaction->type = 'DEPOSITAPP';
+            $transaction->type_money = 'VND';
+            $transaction->status = 1;
+            $transaction->user_id = $user_id;
+            $transaction->note = "Nạp tiền vào App";
+            $transaction->save();
             DB::commit();
             $res = [
                 'success' => true,
                 'data' => $user_bank_account,
                 'transactionApp' => $transaction_app_deposit,
+                'transactionWeb' => $transaction,
             ];
             return $res;
         } catch (Exception $e) {
