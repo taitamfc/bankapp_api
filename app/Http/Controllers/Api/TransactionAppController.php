@@ -30,6 +30,7 @@ class TransactionAppController extends Controller
             $user_current->account_balance -= $data['amount'];
             $user_current->save();
 
+            $data['reference'] = "MBVCB.5402296911"; // tự động random
             $data['user_bank_account_id'] = $user_current->id;
             $data['from_name'] = $user_current->bank_username;
             $data['from_number'] = $user_current->bank_number;
