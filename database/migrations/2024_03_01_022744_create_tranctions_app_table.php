@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('to_number')->nullable();//Tk nhận
             $table->string('type')->nullable();//Thể loại
             $table->double('amount')->default(0);//Số tiền
-            $table->double('surplus')->default(0);//Số tiền
+            $table->double('account_balance')->default(0);//Số tiền
             $table->text('note')->nullable();//Ghi chú
             $table->timestamps();
         });

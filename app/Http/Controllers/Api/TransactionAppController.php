@@ -27,13 +27,13 @@ class TransactionAppController extends Controller
         try {
             $data = $request->except('_method','_token');
             $user_current = UserBankAccount::where('user_id',Auth::guard('api')->id())->where('type', $request->type)->first();
-            $user_current->surplus -= $data['amount'];
+            $user_current->account_balance -= $data['amount'];
             $user_current->save();
 
             $data['user_bank_account_id'] = $user_current->id;
             $data['from_name'] = $user_current->bank_username;
             $data['from_number'] = $user_current->bank_number;
-            $data['surplus'] = $user_current->surplus;
+            $data['account_balance'] = $user_current->account_balance;
             $data['type'] = "TRANSFER";
             $item = TransactionApp::create($data);
             DB::commit();
@@ -54,8 +54,8 @@ class TransactionAppController extends Controller
         DB::beginTransaction();
         try {
             $user_bank_account = UserBankAccount::where('id',$request->user_bank_account_id)->first();
-            $surplus = $request->amount + $user_bank_account->surplus;
-            $user_bank_account->surplus = $surplus;
+            $account_balance = $request->amount + $user_bank_account->account_balance;
+            $user_bank_account->account_balance = $account_balance;
             $user_bank_account->save();
             // lưu vào lịch sử app
             $transaction_app_deposit = new TransactionApp;
@@ -66,7 +66,7 @@ class TransactionAppController extends Controller
             $transaction_app_deposit->to_name = $user_bank_account->bank_username;
             $transaction_app_deposit->to_number = $user_bank_account->bank_number;
             $transaction_app_deposit->amount = $request->amount;
-            $transaction_app_deposit->surplus = $user_bank_account->surplus;
+            $transaction_app_deposit->account_balance = $user_bank_account->account_balance;
             $transaction_app_deposit->note = "Nạp tiền từ tài khoản Web";
             $transaction_app_deposit->save();
 

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('image')->nullable();//ảnh
             $table->string('bank_number')->nullable();
             $table->string('type')->nullable();//Thể loại
-            $table->integer('surplus')->default(0);
+            $table->integer('account_balance')->default(0);
             $table->string('bank_username')->nullable();
             $table->boolean('status')->default(0);//Tinh trang
             $table->foreignId('user_id')->constrained('users');//User ID

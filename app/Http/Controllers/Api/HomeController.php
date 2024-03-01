@@ -16,7 +16,7 @@ class HomeController extends Controller
             "count_openbank" => 0,
             "count_bill_paymoney" => 0,
             "count_open_account" => 0,
-            "count_bill_surplus" => 0,
+            "count_bill_account_balance" => 0,
             "count_account_chilrent" => 0,
             "count_bill_fluctuations" => 0,
             "count_account_chilrent_deposit" => 0,
