@@ -14,13 +14,34 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        User::create([
-            'name' => 'admin',
-            'email' => 'admin@gmail.com',
-            'user_name' => 'adminfc',
-            'phone' => '012345678',
-            'password' => Hash::make('123456'),
-            'password_confirmation' => Hash::make('123456'),
-        ]);
+        $userData = [
+            [
+                'name' => 'admin',
+                'email' => 'admin@gmail.com',
+                'user_name' => 'adminfc',
+                'phone' => '0123456788',
+                'password' => Hash::make('123456'),
+                'password_confirmation' => Hash::make('123456'),
+            ],
+            [
+                'name' => 'hoàng long',
+                'email' => 'hoangvanlong.vn1999@gmail.com',
+                'user_name' => 'longfc',
+                'phone' => '0123456767',
+                'password' => Hash::make('123456'),
+                'password_confirmation' => Hash::make('123456'),
+            ],
+        ];
+
+        foreach ($userData as $data) {
+            User::create([
+                'name' => $data['name'],
+                'email' => $data['email'],
+                'user_name' => $data['user_name'],
+                'phone' => $data['phone'],
+                'password' => $data['password'],
+                'password_confirmation' => $data['password_confirmation'],
+            ]);
+        }
     }
 }
