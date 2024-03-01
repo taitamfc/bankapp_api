@@ -14,6 +14,7 @@ use App\Http\Controllers\Api\OwnerBankController;
 use App\Http\Controllers\Api\VerifyCodeController;
 use App\Http\Controllers\Api\BankListController;
 use App\Http\Controllers\Api\BankAccountController;
+use App\Http\Controllers\Api\TransactionAppController;
 
 /*
 |--------------------------------------------------------------------------
@@ -81,6 +82,9 @@ Route::get('bank-list/{id}', [BankListController::class,'show']);
 
 // User bank account
 Route::get('user-bank-account', [BankAccountController::class,'getbankVietqr']);
+
+//Transaction App
+Route::get('tranctions-app', [TransactionAppController::class,'index']);
 
 //Auth
 Route::controller(AuthController::class)->group(function () {

@@ -1,0 +1,72 @@
+<?php
+
+namespace App\Http\Controllers\Api;
+
+use App\Http\Controllers\Controller;
+use App\Models\TransactionApp;
+use Illuminate\Http\Request;
+use App\Http\Resources\TransactionAppResource;
+
+class TransactionAppController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        $data = TransactionAppResource::collection(TransactionApp::all());
+        $res = [
+            'success' => true,
+            'data' => $data,
+        ];
+        return $res;
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        //
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(TransactionApp $transactionApp)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(TransactionApp $transactionApp)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, TransactionApp $transactionApp)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(TransactionApp $transactionApp)
+    {
+        //
+    }
+}
