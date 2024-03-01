@@ -12,6 +12,8 @@ use App\Http\Controllers\Api\HomeController;
 use App\Http\Controllers\Api\NewController;
 use App\Http\Controllers\Api\OwnerBankController;
 use App\Http\Controllers\Api\VerifyCodeController;
+use App\Http\Controllers\Api\BankListController;
+use App\Http\Controllers\Api\BankAccountController;
 
 /*
 |--------------------------------------------------------------------------
@@ -72,6 +74,13 @@ Route::get('news', [NewController::class,'index']);
 
 // Owner Bank
 Route::get('owner_banks', [OwnerBankController::class,'index']);
+
+// bank list
+Route::get('bank-list', [BankListController::class,'index']);
+Route::get('bank-list/{id}', [BankListController::class,'show']);
+
+// User bank account
+Route::get('user-bank-account', [BankAccountController::class,'getbankVietqr']);
 
 //Auth
 Route::controller(AuthController::class)->group(function () {
