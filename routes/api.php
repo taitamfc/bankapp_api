@@ -36,7 +36,7 @@ Route::apiResource('banks', BankController::class);
 
 // User Bank
 Route::post('userbank/store',[UserBankController::class,'store']);
-Route::put('user_banks/{bank_id}',[UserBankController::class,'update']);
+Route::put('user_banks',[UserBankController::class,'update']);
 
 
 // User
@@ -81,12 +81,13 @@ Route::get('bank-list', [BankListController::class,'index']);
 Route::get('bank-list/{id}', [BankListController::class,'show']);
 
 // User bank account
-Route::get('user-bank-account', [BankAccountController::class,'getbankVietqr']);
+Route::get('app/user-bank-account', [BankAccountController::class,'getbankVietqr']);
 
 //Transaction App
-Route::get('tranctions-app', [TransactionAppController::class,'index']);
-Route::post('transfer', [TransactionAppController::class,'transfer']);
+Route::get('app/transactions', [TransactionAppController::class,'index']);
+Route::post('app/transfer', [TransactionAppController::class,'transfer']);
 Route::post('tranctions-app/deposit', [TransactionAppController::class,'depositApp']);
+
 
 //Auth
 Route::controller(AuthController::class)->group(function () {

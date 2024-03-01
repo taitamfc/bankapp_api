@@ -14,7 +14,8 @@ class BankSeeder extends Seeder
      */
     public function run()
     {
-        Bank::create([
+        $bankData = [
+            [
                 'name' => 'VietComBank',
                 'status' => 1,
                 'opening_fee' => 0,
@@ -48,6 +49,27 @@ class BankSeeder extends Seeder
                 'android_download_link' => 'Đường Link',
                 'ios_download_link' => 'Đường link',
             ],
-        );
+        ];
+
+        foreach ($bankData as $data) {
+            Bank::create([
+                'name' => $data['name'],
+                'status' => $data['status'],
+                'opening_fee' => $data['opening_fee'],
+                'account_opening_fee' => $data['account_opening_fee'],
+                'max_accounts' => $data['max_accounts'],
+                'app_deposit_fee' => $data['app_deposit_fee'],
+                'app_transfer_fee_percentage' => $data['app_transfer_fee_percentage'],
+                'app_deposit_fee_percentage' => $data['app_deposit_fee_percentage'],
+                'auto_check_account_fee' => $data['auto_check_account_fee'],
+                'important_note' => $data['important_note'],
+                'android_version' => $data['android_version'],
+                'ios_version' => $data['ios_version'],
+                'android_download_link' => $data['android_download_link'],
+                'android_download_link' => $data['android_download_link'],
+                'ios_download_link' => $data['ios_download_link'],
+            ]);
+        }
+       
     }
 }

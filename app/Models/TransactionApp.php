@@ -11,6 +11,7 @@ class TransactionApp extends Model
     protected $table = "app_tranctions";
     protected $fillable = [
         'user_bank_account_id',
+        'account_balance',
         'reference',
         'from_name',
         'to_name',

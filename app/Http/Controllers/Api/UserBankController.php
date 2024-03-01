@@ -28,11 +28,19 @@ class UserBankController extends Controller
         return response()->json($res, 200);
     }
 
-    public function update(Request $request,$bank_id)
+    public function update(Request $request)
     {
-        $user_bank = UserBank::where('user_id',Auth::guard('api')->id())->where('bank_id', $bank_id)->first();
-        $user_bank->user_status = $request->user_status;
-        $user_bank->save();
+        $user_bank = UserBank::where('user_id',Auth::guard('api')->id())->where('bank_id', $request->bank_id)->first();
+        if (isset($user_bank)) {
+            $user_bank->user_status = $request->user_status;
+            $user_bank->save();
+        }else{
+            $user_bank = new UserBank;
+            $user_bank->user_id = Auth::guard('api')->id();
+            $user_bank->bank_id = $request->bank_id;
+            $user_bank->user_status = $request->user_status;
+            $user_bank->save();
+        }
         return response()->json([
             'success' => true,
             'message' => 'Cập nhật thành công!',
