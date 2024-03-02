@@ -14,12 +14,18 @@ class TransactionApp extends Model
         'account_balance',
         'reference',
         'from_name',
+        'recipient_name',
         'to_name',
         'from_number',
+        'recipient_account_number',
         'to_number',
         'type',
+        'bank_code_id',
         'amount',
         'surplus',
-        'note'
+        'note',
+        'received_amount',
+        'fee_amount',
+        'transaction_code',
     ];
 }
