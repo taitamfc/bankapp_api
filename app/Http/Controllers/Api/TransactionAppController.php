@@ -73,7 +73,7 @@ class TransactionAppController extends Controller
             // lưu vào lịch sử app
             $transaction_app_deposit = new TransactionApp;
             $transaction_app_deposit->user_bank_account_id = $user_bank_account->id;
-            $transaction_app_deposit->type = "DEPOSIT";
+            $transaction_app_deposit->type = "RECEIVE";
             $transaction_app_deposit->reference = "123cfd456";
             $transaction_app_deposit->from_name = "BankWeb";
             $transaction_app_deposit->recipient_name = $user_bank_account->bank_username;
