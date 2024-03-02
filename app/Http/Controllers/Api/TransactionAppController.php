@@ -37,7 +37,11 @@ class TransactionAppController extends Controller
                 return $res;
             }
             $user_current->save();
-
+            if ($user_current->type == "VIETCOMBANK") {
+                $data['bank_name'] = "Ngân hàng Ngoại thương Việt Nam (Vietcombank)";
+            }else{
+                $data['bank_name'] = "Ngân Hàng B";
+            }
             $data['transaction_code'] = "TF".$data['bank_code_id'].".".time(); // tự động random
             $data['user_bank_account_id'] = $user_current->id;
             $data['from_name'] = $user_current->bank_username;
@@ -81,6 +85,19 @@ class TransactionAppController extends Controller
             $transaction_app_deposit->amount = $request->amount;
             $transaction_app_deposit->account_balance = $user_bank_account->account_balance;
             $transaction_app_deposit->note = "Nạp tiền từ tài khoản Web";
+            $transaction_app_deposit->transaction_code = "RE."."CEI.".time(); // tự động random
+            if ($user_bank_account->type == "VIETCOMBANK") {
+                $transaction_app_deposit->bank_code_id = "VCB";
+            }else{
+                $transaction_app_deposit->bank_code_id = "BANK";
+            }
+            $transaction_app_deposit->received_amount = $user_bank_account->account_balance;
+            $transaction_app_deposit->fee_amount = 0;
+            if ($user_bank_account->type == "VIETCOMBANK") {
+                $transaction_app_deposit->bank_name = "Ngân hàng Ngoại thương Việt Nam (Vietcombank)";
+            }else{
+                $transaction_app_deposit->bank_name = "Ngân Hàng B";
+            }
             $transaction_app_deposit->save();
 
             // lưu vào lịch sử web

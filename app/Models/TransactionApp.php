@@ -27,5 +27,6 @@ class TransactionApp extends Model
         'received_amount',
         'fee_amount',
         'transaction_code',
+        'bank_name',
     ];
 }
