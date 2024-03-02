@@ -27,21 +27,33 @@ class TransactionAppController extends Controller
         try {
             $data = $request->except('_method','_token');
             $user_current = UserBankAccount::where('user_id',Auth::guard('api')->id())->where('type', $request->type)->first();
-            $user_current->account_balance -= $data['amount'];
+            if ($user_current->account_balance >= $data['amount']) {
+                $user_current->account_balance -= $data['amount'];
+            }else{
+                $res = [
+                    'success' => false,
+                    'error' => "số dư không đủ!",
+                ];
+                return $res;
+            }
             $user_current->save();
 
-            $data['reference'] = "MBVCB.5402296911"; // tự động random
+            $data['transaction_code'] = "TF".$data['bank_code_id'].".".time(); // tự động random
             $data['user_bank_account_id'] = $user_current->id;
             $data['from_name'] = $user_current->bank_username;
             $data['from_number'] = $user_current->bank_number;
             $data['account_balance'] = $user_current->account_balance;
             $data['type'] = "TRANSFER";
+            $data['received_amount'] = $data['amount'];
+            $data['fee_amount'] = 0;
             $item = TransactionApp::create($data);
             DB::commit();
             $res = [
                 'success' => true,
-                'data' => $user_current,
-                'TransactionApp' => $item,
+                'data' => [
+                    'account_info' => $user_current,
+                    'transaction_info' => $item,
+                ]
             ];
             return $res;
         } catch (Exception $e) {
@@ -64,8 +76,8 @@ class TransactionAppController extends Controller
             $transaction_app_deposit->type = "DEPOSIT";
             $transaction_app_deposit->reference = "123cfd456";
             $transaction_app_deposit->from_name = "BankWeb";
-            $transaction_app_deposit->to_name = $user_bank_account->bank_username;
-            $transaction_app_deposit->to_number = $user_bank_account->bank_number;
+            $transaction_app_deposit->recipient_name = $user_bank_account->bank_username;
+            $transaction_app_deposit->recipient_account_number = $user_bank_account->bank_number;
             $transaction_app_deposit->amount = $request->amount;
             $transaction_app_deposit->account_balance = $user_bank_account->account_balance;
             $transaction_app_deposit->note = "Nạp tiền từ tài khoản Web";
