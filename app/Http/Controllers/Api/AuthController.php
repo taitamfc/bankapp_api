@@ -44,7 +44,6 @@ class AuthController extends Controller
     {
         $credentials = $request->only('phone', 'password');
         $token = Auth::guard('api')->attempt($credentials);
-        
         if (!$token) {
             return response()->json([
                 'success' => false,
