@@ -21,12 +21,23 @@ class TransactionController extends Controller
 {
     public function index(Request $request)
     {
+        $page = $request->input('page', 1); // Trang mặc định là 1 nếu không được truyền vào
+        $perPage = $request->input('perPage', 5); // Số lượng mục dữ liệu mỗi trang mặc định là 
         $query = new Transaction;
-        $items = $query->paginate(5);
+        if ($request->search) {
+            $query = $query->where('type', 'LIKE', '%' . $request->search . '%');
+        }
+        $items = $query->paginate($perPage, ['*'], 'page', $page);
         $transactionCollection = TransactionResource::collection($items);
         return response()->json([
             'success' => true,
             'data' => $transactionCollection,
+            'meta' => [
+                'current_page' => $items->currentPage(),
+                'last_page' => $items->lastPage(),
+                'per_page' => $items->perPage(),
+                'total' => $items->total(),
+            ],
         ]);
     }
 
