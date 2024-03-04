@@ -50,7 +50,7 @@ Route::post('users/restore-password',[UserController::class,'restorePassword']);
 Route::get('transactions/history',[TransactionController::class,'index']);
 
 // Forgot password
-Route::post('forgot-password', [AuthController::class,'sendMailResetPassword']);
+Route::post('auth/forgot-password', [AuthController::class,'sendMailResetPassword']);
 
 // PaymentDeposit
 Route::post('payments/deposits', [TransactionController::class,'deposits']);
