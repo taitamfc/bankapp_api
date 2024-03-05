@@ -35,8 +35,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::apiResource('banks', BankController::class);
 
 // User Bank
-Route::post('userbank/store',[UserBankController::class,'store']);
-Route::put('user_banks',[UserBankController::class,'update']);
+Route::post('userbanks/store',[UserBankController::class,'store']);
+Route::put('userbanks/update',[UserBankController::class,'update']);
 
 
 // User

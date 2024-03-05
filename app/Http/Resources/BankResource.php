@@ -17,7 +17,7 @@ class BankResource extends JsonResource
     public function toArray(Request $request): array
     {
         $bank = parent::toArray($request);
-        $user_bank = UserBank::where('user_id',Auth::id())->where('bank_id', $bank['id'])->first();
+        $user_bank = UserBank::where('user_id',Auth::guard('api')->id())->where('bank_id', $bank['id'])->first();
         if ($user_bank != null) {
             $bank['user_status'] = $user_bank->user_status;
             return $bank;
