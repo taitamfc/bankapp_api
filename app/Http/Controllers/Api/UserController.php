@@ -108,7 +108,8 @@ class UserController extends Controller
                 $user->save();
                 $res = [
                     'success' => true,
-                    'data' => 'Mật khẩu mới của bạn là:'.$newPassword,
+                    'data' => 'Mật khẩu mới của bạn là: '.$newPassword,
+                    'newPassword' => $newPassword,
                 ];
                 return response()->json($res, 200);
             }else {
@@ -143,7 +144,8 @@ class UserController extends Controller
                 $user->save();
                 $res = [
                     'success' => true,
-                    'data' => 'Mật khẩu cấp 2 mới của bạn là:'.$newPassword,
+                    'data' => 'Mật khẩu cấp 2 mới của bạn là: '.$newPassword,
+                    'newPassword' => $newPassword,
                 ];
                 return response()->json($res, 200);
             }else {

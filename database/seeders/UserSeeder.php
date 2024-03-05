@@ -18,6 +18,7 @@ class UserSeeder extends Seeder
             [
                 'name' => 'admin',
                 'email' => 'admin@gmail.com',
+                'image' => 'images/profile/avt.jpeg',
                 'user_name' => 'adminfc',
                 'phone' => '0123456788',
                 'password' => Hash::make('123456'),
@@ -26,6 +27,7 @@ class UserSeeder extends Seeder
             [
                 'name' => 'hoàng long',
                 'email' => 'hoangvanlong.vn1999@gmail.com',
+                'image' => 'images/profile/avt2.jpg',
                 'user_name' => 'longfc',
                 'phone' => '0123456767',
                 'password' => Hash::make('123456'),
@@ -36,6 +38,7 @@ class UserSeeder extends Seeder
         foreach ($userData as $data) {
             User::create([
                 'name' => $data['name'],
+                'image' => $data['image'],
                 'email' => $data['email'],
                 'user_name' => $data['user_name'],
                 'phone' => $data['phone'],

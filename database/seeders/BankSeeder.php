@@ -18,6 +18,7 @@ class BankSeeder extends Seeder
             [
                 'name' => 'VietComBank',
                 'status' => 1,
+                'image' => 'images/bank/VCB.png',
                 'opening_fee' => 0,
                 'account_opening_fee' => 100000,
                 'max_accounts' => 10,
@@ -35,6 +36,7 @@ class BankSeeder extends Seeder
             [
                 'name' => 'MB bank',
                 'status' => 1,
+                'image' => 'images/bank/mb.jpg',
                 'opening_fee' => 0,
                 'account_opening_fee' => 100000,
                 'max_accounts' => 10,
@@ -55,6 +57,7 @@ class BankSeeder extends Seeder
             Bank::create([
                 'name' => $data['name'],
                 'status' => $data['status'],
+                'image' => $data['image'],
                 'opening_fee' => $data['opening_fee'],
                 'account_opening_fee' => $data['account_opening_fee'],
                 'max_accounts' => $data['max_accounts'],
