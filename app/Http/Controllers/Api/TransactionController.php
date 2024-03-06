@@ -15,6 +15,8 @@ use App\Models\User;
 use App\Models\VerifyCode;
 use App\Models\OwnerBank;
 use App\Http\Requests\TransferRequest;
+use DB;
+
 
 
 class TransactionController extends Controller
@@ -43,6 +45,8 @@ class TransactionController extends Controller
 
     public function deposits(RechargeRequest $request)
     {
+        DB::beginTransaction();
+        try {
             $user_id = Auth::guard('api')->id();
             $transaction = new Transaction;
             $transaction->reference = 2;
@@ -54,12 +58,23 @@ class TransactionController extends Controller
             $transaction->user_id = $user_id;
             $transaction->ownerbank_id = $request->ownerbank_id;
             $transaction->save();
+
+            $user = User::findOrFail(Auth::guard('api')->id());
+            $user->account_balance += $transaction->amount;
+            $user->save();
+
+            DB::commit();
             $res = [
                 'success' => true,
                 'message' => 'Nạp tiền thành công!',
                 'data' => $transaction,
             ];
-            return response()->json($res, 200);  
+            return response()->json($res, 200);
+            
+        } catch (Exception $e) {
+            DB::rollBack();
+            throw new Exception($e->getMessage());
+        } 
     }
 
     public function depositsDetail(Request $request) {
@@ -81,17 +96,24 @@ class TransactionController extends Controller
 
     public function listDeposits(Request $request)
     {
+        $page = $request->input('page', 1); // Trang mặc định là 1 nếu không được truyền vào
+        $perPage = $request->input('perPage', 5);
         $query = Transaction::where('type','RECHARGE');
-        
         if($request && $request->search){
             $query->where('amount', 'LIKE', '%' . $request->search . '%');
         }
-        $items = $query->orderBy('id', 'desc')->paginate(5);
-        return $items;
+        $items = $query->orderBy('id', 'desc')->paginate($perPage, ['*'], 'page', $page);
+        $transactionCollection = TransactionResource::collection($items);
         $res = [
             'success' => true,
             'message' => 'Danh sách nạp tiền!',
-            'data' => $items,
+            'data' => $transactionCollection,
+            'meta' => [
+                'current_page' => $items->currentPage(),
+                'last_page' => $items->lastPage(),
+                'per_page' => $items->perPage(),
+                'total' => $items->total(),
+            ],
         ];
         return $res;
     }
@@ -112,24 +134,46 @@ class TransactionController extends Controller
         }
         $code = $verify_code->code;
         if ($request->verify_code == $code) {
-            $transaction = new Transaction;
-            $transaction->reference = 3;
-            $transaction->amount = $request->amount;
-            $transaction->received = $request->amount;
-            $transaction->type = 'EARNMONEY';
-            $transaction->type_money = 'VND';
-            $transaction->status = 0;
-            $transaction->user_id = $user_id;
-            $transaction->bank_name = $request->bank_name;
-            $transaction->bank_number = $request->bank_number;
-            $transaction->bank_user = $request->bank_user;
-            $transaction->save();
-            $res = [
-                'success' => true,
-                'message' => 'Yêu cầu rút tiền đã được gửi đi thành công!',
-                'data' => $transaction
-            ];
-            return response()->json($res, 200);
+            DB::beginTransaction();
+            try {
+                $user = User::findOrFail($user_id);
+
+                if ($request->amount <= $user->account_balance) {
+                    $transaction = new Transaction;
+                    $transaction->reference = 3;
+                    $transaction->amount = $request->amount;
+                    $transaction->received = $request->amount;
+                    $transaction->type = 'EARNMONEY';
+                    $transaction->type_money = 'VND';
+                    $transaction->status = 0;
+                    $transaction->user_id = $user_id;
+                    $transaction->bank_name = $request->bank_name;
+                    $transaction->bank_number = $request->bank_number;
+                    $transaction->bank_user = $request->bank_user;
+                    $transaction->save();
+    
+                    $user->account_balance -= $transaction->amount;
+                    $user->save();
+                }else {
+                    $res = [
+                        'success' => false,
+                        'data' => 'Số dư không đủ!',
+                    ];
+                    return response()->json($res, 200);
+                }
+                
+                DB::commit();
+                $res = [
+                    'success' => true,
+                    'message' => 'Yêu cầu rút tiền đã được gửi đi thành công!',
+                    'data' => $transaction
+                ];
+                return response()->json($res, 200);
+                
+            } catch (Exception $e) {
+                DB::rollBack();
+                throw new Exception($e->getMessage());
+            }
         }else {
             $res = [
                 'success' => false,
@@ -141,18 +185,28 @@ class TransactionController extends Controller
 
     public function paymentWithdraw(Request $request)
     {
-        $query = Transaction::where('type','EARNMONEY');
-        
-        if($request && $request->search){
-            $query->where('amount', 'LIKE', '%' . $request->search . '%');
+        $page = $request->input('page', 1); // Trang mặc định là 1 nếu không được truyền vào
+        $perPage = $request->input('perPage', 5); // Số lượng mục dữ liệu mỗi trang mặc định là 
+        $query = Transaction::where(function ($query) {
+            $query->where('type', 'EARNMONEY')
+                ->orWhere('type', 'PAYMONEY');
+        });
+        if ($request && $request->search) {
+            $query = $query->where('type', 'LIKE', '%' . $request->search . '%');
         }
-        $items = $query->orderBy('id', 'desc')->paginate(5);
+        $items = $query->orderBy('id', 'desc')->paginate($perPage, ['*'], 'page', $page);
         $transactionCollection = TransactionResource::collection($items);
         // return $items;
         $res = [
             'success' => true,
             'message' => 'Danh sách Kiếm tiền!',
             'data' => $transactionCollection,
+            'meta' => [
+                'current_page' => $items->currentPage(),
+                'last_page' => $items->lastPage(),
+                'per_page' => $items->perPage(),
+                'total' => $items->total(),
+            ],
         ];
         return $res;
     }

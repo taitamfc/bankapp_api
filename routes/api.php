@@ -69,6 +69,7 @@ Route::post('verify-code/send-otp',[VerifyCodeController::class,'sendOTP']);
 
 // Home 
 Route::get('home', [HomeController::class,'index']);
+Route::get('home/headers', [HomeController::class,'dataHeader']);
 
 // News
 Route::get('news', [NewController::class,'index']);
