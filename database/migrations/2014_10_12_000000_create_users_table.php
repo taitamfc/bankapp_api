@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('user_name')->unique()->nullable();
             $table->string('image')->nullable();//ảnh
             $table->boolean('status')->default(0);//Tinh trang
+            $table->integer('account_balance')->default(0);
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

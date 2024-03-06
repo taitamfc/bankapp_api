@@ -4,6 +4,10 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+
+
 class HomeController extends Controller
 {
     public function index()
@@ -25,6 +29,14 @@ class HomeController extends Controller
         return response()->json([
             'success' => true,
             'data' => $data,
+        ]);
+    }
+
+    public function dataHeader(){
+        $user = User::findOrFail(Auth::guard('api')->id());
+        return response()->json([
+            'success' => true,
+            'data' => $user,
         ]);
     }
 }

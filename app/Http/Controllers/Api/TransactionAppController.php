@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\TransactionApp;
 use App\Models\Transaction;
 use App\Models\UserBankAccount;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Resources\TransactionAppResource;
 use DB;
@@ -112,6 +113,10 @@ class TransactionAppController extends Controller
             $transaction->user_id = $user_id;
             $transaction->note = "Nạp tiền vào App";
             $transaction->save();
+
+            $user = User::findOrFail(Auth::guard('api')->id());
+            $user->account_balance -= $request->amount;
+            $user->save();
             DB::commit();
             $res = [
                 'success' => true,
