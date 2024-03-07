@@ -4,16 +4,21 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
+use App\Models\Transaction;
 
 
 class HomeController extends Controller
 {
     public function index()
     {
+        $deposits = Transaction::whereType('DEPOSITAPP')->whereUser_id(Auth::id)->get();
+        foreach ($deposits as $deposit) {
+            $count_deposit += $deposit->received;
+        }
         $data = [
-            "count_deposit" => 0,
+            "count_deposit" => $count_deposit,
             "count_paymoney" => 0,
             "total_money_pay" => 0,
             "total_money_check" => 0,
