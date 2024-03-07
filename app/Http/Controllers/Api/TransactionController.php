@@ -15,6 +15,7 @@ use App\Models\User;
 use App\Models\VerifyCode;
 use App\Models\OwnerBank;
 use App\Http\Requests\TransferRequest;
+use Illuminate\Support\Facades\Http;
 use DB;
 
 
@@ -29,7 +30,7 @@ class TransactionController extends Controller
         if ($request->search) {
             $query = $query->where('type', 'LIKE', '%' . $request->search . '%');
         }
-        $items = $query->paginate($perPage, ['*'], 'page', $page);
+        $items = $query->orderBy('id', 'desc')->paginate($perPage, ['*'], 'page', $page);
         $transactionCollection = TransactionResource::collection($items);
         return response()->json([
             'success' => true,
@@ -63,11 +64,31 @@ class TransactionController extends Controller
             $user->account_balance += $transaction->amount;
             $user->save();
 
+            $ownerBank = OwnerBank::find($request->ownerbank_id);
+            $param = [
+                "accountNo" => $ownerBank->account_number,
+                "accountName"=> $ownerBank->account_name,
+                "acqId"=> $ownerBank->bin,
+                "amount"=> $request->amount,
+                "addInfo"=> $ownerBank->note,
+                "format"=> 'text',
+                "template"=> 'compact',
+            ];
+            $apiCheckUrl = "https://api.vietqr.io/v2/generate";
+            $bankApiKey = env('BANK_API_KEY');
+            $bankApiClientId = env('BANK_API_CLIENT_ID');
+            $response = Http::withHeaders([
+            'x-api-key' => $bankApiKey,
+            'x-client-id' => $bankApiClientId,
+            ])->withBody(json_encode($param), 'application/json')->post($apiCheckUrl);
+            $result = $response->json();
+
             DB::commit();
             $res = [
                 'success' => true,
                 'message' => 'Nạp tiền thành công!',
                 'data' => $transaction,
+                'QR_URI_data' => $result,
             ];
             return response()->json($res, 200);
             

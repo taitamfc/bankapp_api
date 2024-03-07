@@ -21,7 +21,17 @@ class OwnerBank extends Model
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
-    // protected $fillable = [];
+    protected $fillable = [
+        'name',
+        'status',
+        'image',
+        'short_description',
+        'description',
+        'account_number',
+        'bin',
+        'account_name',
+        'note',
+    ];
     // protected $hidden = [];
 
     /*

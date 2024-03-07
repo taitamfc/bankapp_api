@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name');//Ten ngan hang
             $table->boolean('status')->default(0);//Tinh trang
             $table->string('image')->nullable();//ảnh
+            $table->string('bin')->nullable();//ảnh
             $table->text('short_description')->nullable();
             $table->text('description')->nullable();
             $table->string('account_number')->nullable();
