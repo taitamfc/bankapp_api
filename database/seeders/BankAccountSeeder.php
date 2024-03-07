@@ -22,10 +22,10 @@ class BankAccountSeeder extends Seeder
                 'user_id' => 1,
             ],
             [
-                'name' => 'Ngân hàng Công thương Việt Nam (VietinBank)',
+                'name' => 'Ngân hàng Quân đội (MBBank)',
                 'bank_number' => '987654321',
                 'bank_username' => 'Trần Thị B',
-                'type' => 'VIETTINBANK',
+                'type' => 'MBBANK',
                 'user_id' => 1,
             ],
         ];

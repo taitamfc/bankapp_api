@@ -76,6 +76,7 @@ Route::get('news', [NewController::class,'index']);
 
 // Owner Bank
 Route::get('owner_banks', [OwnerBankController::class,'index']);
+Route::get('deposit/qr', [OwnerBankController::class,'getQRdeposit']);
 
 // bank list
 Route::get('bank-list', [BankListController::class,'index']);
@@ -83,6 +84,7 @@ Route::get('bank-list/{id}', [BankListController::class,'show']);
 
 // User bank account
 Route::get('app/user-bank-account', [BankAccountController::class,'getbankVietqr']);
+Route::post('app/user-bank-account', [BankAccountController::class,'checkAcountBank']);
 
 //Transaction App
 Route::get('app/transactions', [TransactionAppController::class,'index']);

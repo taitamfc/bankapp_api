@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('name');//Ten ngan hang
             $table->boolean('status')->default(0);//Tinh trang
             $table->string('image')->nullable();//ảnh
+            $table->string('bin')->nullable();//bin
+            $table->string('type')->nullable();
             $table->double('opening_fee')->default(0); // Giá mở ngân hàng
             $table->double('account_opening_fee')->default(100000); // Giá mở tài khoản
             $table->double('max_accounts')->default(10); // Mở tối đa
