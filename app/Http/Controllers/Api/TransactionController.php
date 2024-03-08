@@ -60,10 +60,6 @@ class TransactionController extends Controller
             $transaction->ownerbank_id = $request->ownerbank_id;
             $transaction->save();
 
-            $user = User::findOrFail(Auth::guard('api')->id());
-            $user->account_balance += $transaction->amount;
-            $user->save();
-
             $ownerBank = OwnerBank::find($request->ownerbank_id);
             $param = [
                 "accountNo" => $ownerBank->account_number,

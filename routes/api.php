@@ -40,11 +40,16 @@ Route::put('userbanks/update',[UserBankController::class,'update']);
 
 
 // User
+Route::get('users', [UserController::class,'index']);
 Route::get('users/profile', [UserController::class,'show']);
+Route::get('users/{id}', [UserController::class,'showUserOfAdmin']);
 Route::put('users/profile', [UserController::class,'update']);
 Route::post('users/change-password',[UserController::class,'changePassword']);
 Route::post('users/send-otp/change-password',[UserController::class,'sendMailOtpchangePass']);
 Route::post('users/restore-password',[UserController::class,'restorePassword']);
+Route::post('users/update-balance',[UserController::class,'updateBlanceUser']);
+Route::post('users/update-role',[UserController::class,'updateRole']);
+Route::delete('users/{id}',[UserController::class,'delete']);
 
 // Transaction
 Route::get('transactions/history',[TransactionController::class,'index']);
