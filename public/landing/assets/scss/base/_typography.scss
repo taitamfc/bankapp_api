@@ -1,0 +1,113 @@
+/* ==== 
+ --------- (2.2) typography styles start ---------
+ ==== */
+
+// paragraph styles
+p,
+th,
+td,
+li,
+input,
+textarea,
+select,
+label,
+blockquote,
+span {
+  @include font(18px, 28px, 400, $theme-color);
+
+  @include responsive(sm) {
+    font-size: 16px;
+    line-height: 28px;
+  }
+
+  &.primary {
+    font-size: 24px;
+    line-height: 34px;
+    color: $white;
+    margin-top: -6px;
+    @include responsive(lg) {
+      font-size: 20px;
+      line-height: 30px;
+    }
+    @include responsive(sm) {
+      font-size: 18px;
+      line-height: 28px;
+    }
+  }
+}
+
+//  heading styles
+h1,
+h1 > a,
+h1 > span {
+  @include font(76px, 86px, 700, $white);
+
+  @include responsive(lg) {
+    font-size: 54px;
+    line-height: 64px;
+  }
+
+  @include responsive(sm) {
+    font-size: 40px;
+    line-height: 50px;
+  }
+}
+
+h2,
+h2 > a,
+h2 > span {
+  @include font(54px, 64px, 700, $white);
+  @include responsive(lg) {
+    font-size: 32px;
+    line-height: 42px;
+  }
+}
+
+h3,
+h3 > a,
+h3 > span {
+  @include font(32px, 42px, 700, $white);
+  @include responsive(lg) {
+    font-size: 24px;
+    line-height: 28px;
+  }
+}
+
+h6,
+h6 > a,
+h6 > span {
+  @include font(24px, 28px, 700, $white);
+  @include responsive(sm) {
+    font-size: 20px;
+    line-height: 24px;
+  }
+}
+
+// link styles
+a,
+button {
+  font-size: 18px;
+  line-height: 30px;
+  font-family: $josefin;
+  text-decoration: none;
+  color: $white;
+  font-weight: 600;
+  display: inline-block;
+  border: 0px;
+  outline: 0px;
+  transition: $primary-transition;
+  @include responsive(sm) {
+    font-size: 16px;
+    line-height: 28px;
+  }
+  &:hover {
+    text-decoration: none;
+    color: $white;
+    border: 0px;
+    outline: 0px;
+  }
+}
+
+/* ==== 
+ --------- (2.2) typography styles end ---------
+ ==== */

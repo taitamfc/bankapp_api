@@ -1,0 +1,181 @@
+/* ==== 
+ --------- (4.1) header styles start ---------
+ ==== */
+header {
+  background-color: transparent;
+  padding: 28px 0px;
+  position: fixed;
+  top: 0px;
+  right: 0px;
+  left: 0px;
+  z-index: 9999;
+  @include responsive(sm) {
+    padding: 23px 0px;
+  }
+}
+
+.header-active {
+  background-color: #4022a7;
+  box-shadow: $primary-shadow;
+}
+
+.header-fixed {
+  background-color: #4022a7;
+  box-shadow: $primary-shadow;
+}
+
+.navbar {
+  padding: 0px;
+  li {
+    margin: 0px;
+  }
+}
+
+.navbar-collapse {
+  @include responsive(md) {
+    margin-top: 25px;
+    max-height: 300px;
+    overflow: auto;
+    &::-webkit-scrollbar {
+      width: 5px;
+    }
+    &::-webkit-scrollbar-track {
+      background-color: $white;
+      border-radius: 10px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: $theme-bg;
+      border-radius: 10px;
+    }
+  }
+}
+
+.navbar-brand {
+  margin: 0px;
+  padding: 0px;
+}
+
+.logo {
+  max-width: 100%;
+  height: 40px;
+  @include responsive(sm) {
+    max-width: 120px;
+    height: 34px;
+  }
+}
+
+.nav-link {
+  padding: 6px 16px 6px !important;
+  color: $white;
+  @include responsive(lg) {
+    font-size: 16px;
+    padding: 6px 15px !important;
+  }
+  @include responsive(md) {
+    background-color: $white;
+    transition: $primary-transition;
+    margin-bottom: 3px;
+    color: $theme-bg;
+    &:hover {
+      padding-left: 19px !important;
+    }
+  }
+}
+
+.language-select {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  height: auto !important;
+  line-height: 0px !important;
+  padding: 4px 20px 4px 18px;
+  margin-left: 25px;
+  margin-right: 8px;
+  @include responsive(sm) {
+    margin-left: 0px;
+  }
+  @include responsive(lg) {
+    margin-left: 0px;
+  }
+  .current {
+    font-size: 18px;
+    line-height: 24px;
+    font-weight: 400;
+    color: $white;
+    @include responsive(lg) {
+      font-size: 16px;
+    }
+  }
+  .option {
+    color: $theme-bg;
+    @include responsive(lg) {
+      font-size: 16px;
+    }
+  }
+  &::after {
+    height: 8px;
+    width: 8px;
+    margin-top: -6px;
+    right: 8px;
+    border-color: $white;
+  }
+}
+
+.navbar-toggler {
+  border: none;
+  padding: 0px;
+  margin: 0px 0px 0px 20px;
+  line-height: 0px;
+  @include responsive(sm) {
+    margin-left: 5px;
+  }
+  &:focus {
+    box-shadow: 0px 0px 0px;
+    outline: none;
+  }
+  .icon-bar {
+    width: 35px;
+    height: 2px;
+    background-color: $white;
+    margin: 0px;
+    display: block;
+    transition: $primary-transition;
+    @include responsive(sm) {
+      width: 30px;
+    }
+  }
+  .middle-bar {
+    margin: 6px 0px;
+    opacity: 1;
+  }
+}
+
+.toggle-active {
+  .top-bar {
+    transform: rotate(-45deg) translate(-7px, 4px);
+    background: $white;
+  }
+  .middle-bar {
+    opacity: 0;
+  }
+  .bottom-bar {
+    transform: rotate(45deg) translate(-7px, -4px);
+    background: $white;
+  }
+}
+
+.download {
+  box-shadow: 0px 0px 0px;
+  background-color: $primary-color;
+  color: $white;
+  padding: 6px 15px 6px !important;
+  &:hover {
+    background-color: $primary-color;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+    color: $tertiary-color;
+  }
+}
+
+/* ==== 
+ --------- (4.1) header styles end ---------
+ ==== */

@@ -1,0 +1,69 @@
+/* ==== 
+ --------- (3.2) buttons styles start ---------
+ ==== */
+
+.button {
+    background-color: $primary-color;
+    color: $white;
+    margin-left: 7px;
+    padding: 8px 30px 6px !important;
+    border-radius: 25px;
+    transition: $primary-transition;
+    &:hover {
+        background-color: $white;
+        color: $theme-bg;
+        box-shadow: $hover-shadow;
+    }
+}
+
+
+// Scroll Top
+.scrollToTop {
+    position: fixed;
+    bottom: 0;
+    right: 24px;
+    width: 45px;
+    height: 45px;
+    background-color: $secondary-color;
+    border-radius: 5px;
+    color: $white;
+    line-height: 45px;
+    font-size: 20px;
+    text-align: center;
+    z-index: 999;
+    cursor: pointer;
+    box-shadow: $primary-shadow;
+    transition: $primary-transition;
+    transform: translateY(100%);
+    @include responsive(lg) {
+      right: 12px;
+      width: 30px;
+      height: 30px;
+      line-height: 30px;
+      font-size: 16px;
+    }
+    @include responsive(sm) {
+      font-size: 14px;
+    }
+    i {
+      color: $white;
+      transition: $primary-transition;
+    }
+    &:hover {
+      background-color: $secondary-color;
+      box-shadow: $hover-shadow;
+      i {
+        color: $white;
+      }
+    }
+    &.active {
+      bottom: 30px;
+      transform: translateY(0%);
+      @include responsive(sm) {
+        bottom: 15px;
+      }
+    }
+  }
+/* ==== 
+ --------- (3.2) buttons styles end ---------
+ ==== */

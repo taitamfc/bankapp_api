@@ -1,0 +1,88 @@
+/* ==== 
+ --------- (4.2) hero section styles start ---------
+ ==== */
+.hero {
+  padding-top: 330px;
+  padding-bottom: 380px;
+  position: relative;
+  overflow: hidden;
+  @include responsive(lg) {
+    padding-top: 200px;
+    padding-bottom: 280px;
+  }
+  @include responsive(sm) {
+    padding-top: 140px;
+    padding-bottom: 240px;
+  }
+  .hero-area__content {
+    h1 {
+      margin-bottom: 25px;
+      @include responsive(lg) {
+        margin-bottom: 20px;
+      }
+    }
+  }
+
+  .hero-area__content-btn-group {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 24px;
+    margin-top: 36px;
+    @include responsive(lg) {
+      margin-top: 26px;
+    }
+    img {
+      max-width: 190px;
+      height: 56px;
+      @include responsive(lg) {
+        max-width: 150px;
+        height: 50px;
+      }
+    }
+  }
+
+  .hero-animation__illustration {
+    position: absolute;
+    top: 248px;
+    right: 0px;
+    max-width: 45vw;
+    @include responsive(xl) {
+      top: 50%;
+      transform: translateY(-50%);
+      max-width: 40vw;
+    }
+  }
+
+  .hero-animation__big-ring {
+    position: absolute;
+    top: 0px;
+    left: 80px;
+    max-width: 34vw;
+    height: auto;
+    animation: opacity 5s linear infinite;
+  }
+
+  .hero-animation__small-ring {
+    position: absolute;
+    top: 45%;
+    left: 0px;
+    max-width: 14vw;
+    height: auto;
+    animation: shake 5s linear infinite;
+  }
+
+  .hero-animation__space-ship {
+    position: absolute;
+    top: 90px;
+    right: 80px;
+    max-width: 22vw;
+    height: auto;
+    opacity: 0.3;
+    animation: spaceship 30s linear infinite;
+  }
+}
+/* ==== 
+ --------- (4.2) hero section styles end ---------
+ ==== */
