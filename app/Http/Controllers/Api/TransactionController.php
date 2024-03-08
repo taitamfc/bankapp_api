@@ -44,6 +44,37 @@ class TransactionController extends Controller
         ]);
     }
 
+    public function show($id){
+        try {
+            $item = Transaction::findOrfail($id);
+            return response()->json([
+                'success' => true,
+                'data' => $item
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'data' => $e->getMessage()
+            ]);
+        }
+    }
+
+    public function updateStatus($id,Request $request){
+        try {
+            $item = Transaction::findOrfail($id);
+            $item->update(['status' => $request->status]);
+            return response()->json([
+                'success' => true,
+                'data' =>  $item
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'data' => $e->getMessage()
+            ]);
+        }
+    }
+
     public function deposits(RechargeRequest $request)
     {
         DB::beginTransaction();

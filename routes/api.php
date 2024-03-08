@@ -48,6 +48,8 @@ Route::post('users/restore-password',[UserController::class,'restorePassword']);
 
 // Transaction
 Route::get('transactions/history',[TransactionController::class,'index']);
+Route::get('transactions/{id}',[TransactionController::class,'show']);
+Route::post('transactions/updateStatus/{id}',[TransactionController::class,'updateStatus']);
 
 // Forgot password
 Route::post('auth/forgot-password', [AuthController::class,'sendMailResetPassword']);
