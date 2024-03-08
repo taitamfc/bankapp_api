@@ -15,9 +15,9 @@ class OwnerBankSeeder extends Seeder
     {
         $ownerBanks = [
             [
-                'name' => 'VietCombank',
+                'name' => 'Ngân hàng Ngoại thương Việt Nam (Vietcombank)',
                 'status' => 0,
-                'image' => 'bank_a.jpg',
+                'image' => 'images/bank/VCB.png',
                 'short_description' => 'Short description for Bank A',
                 'description' => 'Description for Bank A',
                 'account_number' => 1033016936,
@@ -26,9 +26,9 @@ class OwnerBankSeeder extends Seeder
                 'note' => 'Nạp tiền vào web',
             ],
             [
-                'name' => 'Techcombank',
+                'name' => 'Ngân hàng Công thương (Techcombank)',
                 'status' => 0,
-                'image' => 'bank_b.jpg',
+                'image' => 'images/bank/Techcombank-logo.jpg',
                 'short_description' => 'Short description for Bank B',
                 'description' => 'Description for Bank B',
                 'account_number' => '9876543210',

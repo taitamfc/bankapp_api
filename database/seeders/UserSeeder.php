@@ -18,6 +18,7 @@ class UserSeeder extends Seeder
             [
                 'name' => 'admin',
                 'email' => 'admin@gmail.com',
+                'role' => 0,
                 'image' => 'images/profile/avt.jpeg',
                 'user_name' => 'adminfc',
                 'phone' => '0123456788',
@@ -27,6 +28,7 @@ class UserSeeder extends Seeder
             [
                 'name' => 'hoàng long',
                 'email' => 'hoangvanlong.vn1999@gmail.com',
+                'role' => 0,
                 'image' => 'images/profile/avt2.jpg',
                 'user_name' => 'longfc',
                 'phone' => '0123456767',
@@ -39,6 +41,7 @@ class UserSeeder extends Seeder
             User::create([
                 'name' => $data['name'],
                 'image' => $data['image'],
+                'role' => $data['role'],
                 'email' => $data['email'],
                 'user_name' => $data['user_name'],
                 'phone' => $data['phone'],

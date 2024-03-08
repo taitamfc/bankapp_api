@@ -20,6 +20,60 @@ use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
+    public function index(Request $request){
+        $page = $request->input('page', 1); // Trang mặc định là 1 nếu không được truyền vào
+        $perPage = $request->input('perPage', 5); // Số lượng mục dữ liệu mỗi trang mặc định là 
+        $data = new UserResource(User::paginate($perPage, ['*'], 'page', $page));
+        $res = [
+            'success' => true,
+            'data' => $data,
+            'meta' => [
+                'current_page' => $data->currentPage(),
+                'last_page' => $data->lastPage(),
+                'per_page' => $data->perPage(),
+                'total' => $data->total(),
+            ],
+        ];
+        return $res;
+    }
+
+    public function updateRole(Request $request){
+        $user = User::find($request->user_id);
+        $user->role = $request->role;
+        $user->save();
+        $res = [
+            'success' => true,
+            'data' => $user,
+        ];
+        return $res;
+    }
+
+    public function delete($id){
+        $user = User::find($id);
+
+        if ($user) {
+            $user->delete();
+    
+            return response()->json([
+                'message' => 'Đã xóa thành công',
+            ]);
+        } else {
+            return response()->json([
+                'message' => 'Không tìm thấy người dùng',
+            ], 404);
+        }
+    }
+
+    public function showUserOfAdmin(Request $request)
+    {
+        $data = new UserResource(User::findOrFail($request->id));
+        $res = [
+            'success' => true,
+            'data' => $data,
+        ];
+        return $res;
+    }
+
     public function show()
     {
         $user_id = Auth::guard('api')->id();
@@ -156,6 +210,12 @@ class UserController extends Controller
                 return response()->json($res);
             }
         }
+    }
+
+    public function updateBlanceUser (Request $request) {
+        $user = Auth::guard('api')->user();
+        $user->account_balance += $request->amount;
+        $user->save();
     }
 
 }

@@ -16,7 +16,7 @@ class BankSeeder extends Seeder
     {
         $bankData = [
             [
-                'name' => 'VietComBank',
+                'name' => 'Ngân hàng Ngoại thương Việt Nam (Vietcombank)',
                 'status' => 1,
                 'image' => 'images/bank/VCB.png',
                 'bin' => 970436,
@@ -36,11 +36,11 @@ class BankSeeder extends Seeder
                 'ios_download_link' => 'Đường link',
             ],
             [
-                'name' => 'MB bank',
+                'name' => 'Ngân hàng Công thương (Techcombank)',
                 'status' => 1,
-                'image' => 'images/bank/mb.jpg',
-                'bin' => 970422,
-                'type' => "MBBANK",
+                'image' => 'images/bank/Techcombank-logo.jpg',
+                'bin' => 970407,
+                'type' => "TECHCOMBANK",
                 'opening_fee' => 0,
                 'account_opening_fee' => 100000,
                 'max_accounts' => 10,
