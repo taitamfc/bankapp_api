@@ -82,7 +82,7 @@ class TransactionController extends Controller
         try {
             $user_id = Auth::guard('api')->id();
             $transaction = new Transaction;
-            $transaction->reference = 2;
+            $transaction->reference = intval(substr(strval(microtime(true) * 10000), -6));
             $transaction->amount = $request->amount;
             $transaction->received = $request->amount;
             $transaction->type = 'RECHARGE';
@@ -92,17 +92,18 @@ class TransactionController extends Controller
             $transaction->ownerbank_id = $request->ownerbank_id;
             $transaction->save();
 
-            $ownerBank = OwnerBank::find($request->ownerbank_id);
-            $param = [
-                "accountNo" => $ownerBank->account_number,
-                "accountName"=> $ownerBank->account_name,
-                "acqId"=> $ownerBank->bin,
-                "amount"=> $request->amount,
-                "addInfo"=> $ownerBank->note,
-                "format"=> 'text',
-                "template"=> 'compact',
-            ];
-
+            // $ownerBank = OwnerBank::find($request->ownerbank_id);
+            // $param = [
+            //     "accountNo" => $ownerBank->account_number,
+            //     "accountName"=> $ownerBank->account_name,
+            //     "acqId"=> $ownerBank->bin,
+            //     "amount"=> $request->amount,
+            //     "addInfo"=> $ownerBank->note,
+            //     "format"=> 'text',
+            //     "template"=> 'compact',
+            // ];
+            DB::commit();
+            
             $payOS = new PayOS(
                 env('PAYOS_CLIENT_ID'), 
                 env('PAYOS_API_KEY'),
@@ -110,7 +111,7 @@ class TransactionController extends Controller
             );
 
             $data = [
-                "orderCode" => intval(substr(strval(microtime(true) * 10000), -6)),
+                "orderCode" => $transaction->reference,
                 "amount" => (int)$request->amount,
                 "description" => "Nạp tiền vào tài khoản",
                 "items" => [
@@ -120,8 +121,8 @@ class TransactionController extends Controller
                         "price" => (int)$request->amount
                     ]
                 ],
-                "returnUrl" => env("PAYOS_RETURN_URL"),
-                "cancelUrl" => env("PAYOS_CANCEL_URL")
+                "returnUrl" => route('transactions.handle_return'),
+                "cancelUrl" => route('transactions.handle_cancel'),
             ];
             
             try {
@@ -129,8 +130,7 @@ class TransactionController extends Controller
                 $res = [
                     'success' => true,
                     'redirect' => $response['checkoutUrl'],
-                    'returnUrl' => env("PAYOS_RETURN_URL"),
-                    'cancelUrl' => env("PAYOS_CANCEL_URL"),
+                    'id' => $transaction->id,
                 ];
                 return response()->json($res, 200);
             } catch (Exception $e) {
@@ -150,7 +150,6 @@ class TransactionController extends Controller
             // ])->withBody(json_encode($param), 'application/json')->post($apiCheckUrl);
             // $result = $response->json();
 
-            // DB::commit();
             // $res = [
             //     'success' => true,
             //     'message' => 'Nạp tiền thành công!',
@@ -166,12 +165,12 @@ class TransactionController extends Controller
     }
 
     public function depositsDetail(Request $request) {
-        $query = Transaction::where('type','RECHARGE');
+        $items = Transaction::find($request->id);
         
-        if($request && $request->id){
-            $query->where('id', $request->id);
-        }
-        $items = $query->first();
+        // if($request && $request->id){
+        //     $query->where('id', $request->id);
+        // }
+        // $items = $query->first();
         $res = [
             'success' => true,
             'message' => 'chi tiết nạp tiền',
@@ -391,5 +390,19 @@ class TransactionController extends Controller
                 'message' => 'Mã xác nhận chuyển tiền đã được gửi vào Email của bạn!',
             ]);
         }
+    }
+
+    // Xử lý khi payos trả về
+    public function handle_return(Request $request){
+        Transaction::where('reference',$request->orderCode)->update([
+            'status' => 1
+        ]);
+        return view('transactions.handle_return');
+    }
+    public function handle_cancel(Request $request){
+        Transaction::where('reference',$request->orderCode)->update([
+            'status' => -1
+        ]);
+        return view('transactions.handle_cancel');
     }
 }
