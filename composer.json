@@ -15,6 +15,7 @@
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
         "nesbot/carbon": "^2.72",
+        "payos/payos": "^1.0",
         "php-open-source-saver/jwt-auth": "^2.1"
     },
     "require-dev": {

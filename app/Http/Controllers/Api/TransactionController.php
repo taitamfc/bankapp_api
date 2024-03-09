@@ -111,13 +111,13 @@ class TransactionController extends Controller
 
             $data = [
                 "orderCode" => intval(substr(strval(microtime(true) * 10000), -6)),
-                "amount" => $request->amount,
+                "amount" => (int)$request->amount,
                 "description" => "Nạp tiền vào tài khoản",
                 "items" => [
                     [
                         "name" => "Nạp tiền vào tài khoản",
                         "quantity" => 1,
-                        "price" => $request->amount
+                        "price" => (int)$request->amount
                     ]
                 ],
                 "returnUrl" => env("PAYOS_RETURN_URL"),
@@ -129,6 +129,8 @@ class TransactionController extends Controller
                 $res = [
                     'success' => true,
                     'redirect' => $response['checkoutUrl'],
+                    'returnUrl' => env("PAYOS_RETURN_URL"),
+                    'cancelUrl' => env("PAYOS_CANCEL_URL"),
                 ];
                 return response()->json($res, 200);
             } catch (Exception $e) {
