@@ -17,7 +17,8 @@ use App\Models\OwnerBank;
 use App\Http\Requests\TransferRequest;
 use Illuminate\Support\Facades\Http;
 use DB;
-
+use PayOS\PayOS;
+use Exception;
 
 
 class TransactionController extends Controller
@@ -51,7 +52,7 @@ class TransactionController extends Controller
                 'success' => true,
                 'data' => $item
             ]);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json([
                 'success' => false,
                 'data' => $e->getMessage()
@@ -101,23 +102,60 @@ class TransactionController extends Controller
                 "format"=> 'text',
                 "template"=> 'compact',
             ];
-            $apiCheckUrl = "https://api.vietqr.io/v2/generate";
-            $bankApiKey = env('BANK_API_KEY');
-            $bankApiClientId = env('BANK_API_CLIENT_ID');
-            $response = Http::withHeaders([
-            'x-api-key' => $bankApiKey,
-            'x-client-id' => $bankApiClientId,
-            ])->withBody(json_encode($param), 'application/json')->post($apiCheckUrl);
-            $result = $response->json();
 
-            DB::commit();
-            $res = [
-                'success' => true,
-                'message' => 'Nạp tiền thành công!',
-                'data' => $transaction,
-                'QR_URI_data' => $result,
+            $payOS = new PayOS(
+                env('PAYOS_CLIENT_ID'), 
+                env('PAYOS_API_KEY'),
+                env('PAYOS_CHECKSUM_KEY')
+            );
+
+            $data = [
+                "orderCode" => intval(substr(strval(microtime(true) * 10000), -6)),
+                "amount" => $request->amount,
+                "description" => "Nạp tiền vào tài khoản",
+                "items" => [
+                    [
+                        "name" => "Nạp tiền vào tài khoản",
+                        "quantity" => 1,
+                        "price" => $request->amount
+                    ]
+                ],
+                "returnUrl" => env("PAYOS_RETURN_URL"),
+                "cancelUrl" => env("PAYOS_CANCEL_URL")
             ];
-            return response()->json($res, 200);
+            
+            try {
+                $response = $payOS->createPaymentLink($data);
+                $res = [
+                    'success' => true,
+                    'redirect' => $response['checkoutUrl'],
+                ];
+                return response()->json($res, 200);
+            } catch (Exception $e) {
+                $res = [
+                    'success' => false,
+                    'msg' => $e->getMessage()
+                ];
+                return response()->json($res, 200);
+            }
+
+            // $apiCheckUrl = "https://api.vietqr.io/v2/generate";
+            // $bankApiKey = env('BANK_API_KEY');
+            // $bankApiClientId = env('BANK_API_CLIENT_ID');
+            // $response = Http::withHeaders([
+            // 'x-api-key' => $bankApiKey,
+            // 'x-client-id' => $bankApiClientId,
+            // ])->withBody(json_encode($param), 'application/json')->post($apiCheckUrl);
+            // $result = $response->json();
+
+            // DB::commit();
+            // $res = [
+            //     'success' => true,
+            //     'message' => 'Nạp tiền thành công!',
+            //     'data' => $transaction,
+            //     'QR_URI_data' => $result,
+            // ];
+            // return response()->json($res, 200);
             
         } catch (Exception $e) {
             DB::rollBack();
