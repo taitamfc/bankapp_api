@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d4a2d8428e9e826ac4b285e508881b30",
+    "content-hash": "bbe10ce649cf409226cdf42c6939e172",
     "packages": [
         {
             "name": "backpack/basset",
@@ -3379,6 +3379,50 @@
                 }
             ],
             "time": "2023-02-08T01:06:31+00:00"
+        },
+        {
+            "name": "payos/payos",
+            "version": "1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/payOSHQ/payos-lib-php.git",
+                "reference": "b930f75a43f55a9805930c531d796c38d0b4a3af"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/payOSHQ/payos-lib-php/zipball/b930f75a43f55a9805930c531d796c38d0b4a3af",
+                "reference": "b930f75a43f55a9805930c531d796c38d0b4a3af",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "PayOS\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "locbt"
+                }
+            ],
+            "description": "A payOS package for PHP",
+            "keywords": [
+                "payment",
+                "payos",
+                "payos package"
+            ],
+            "support": {
+                "issues": "https://github.com/payOSHQ/payos-lib-php/issues",
+                "source": "https://github.com/payOSHQ/payos-lib-php/tree/v1.0.3"
+            },
+            "time": "2024-01-31T04:05:24+00:00"
         },
         {
             "name": "php-open-source-saver/jwt-auth",

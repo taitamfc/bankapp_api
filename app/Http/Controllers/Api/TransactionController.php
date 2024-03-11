@@ -17,7 +17,8 @@ use App\Models\OwnerBank;
 use App\Http\Requests\TransferRequest;
 use Illuminate\Support\Facades\Http;
 use DB;
-
+use PayOS\PayOS;
+use Exception;
 
 
 class TransactionController extends Controller
@@ -51,7 +52,7 @@ class TransactionController extends Controller
                 'success' => true,
                 'data' => $item
             ]);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json([
                 'success' => false,
                 'data' => $e->getMessage()
@@ -81,7 +82,7 @@ class TransactionController extends Controller
         try {
             $user_id = Auth::guard('api')->id();
             $transaction = new Transaction;
-            $transaction->reference = 2;
+            $transaction->reference = intval(substr(strval(microtime(true) * 10000), -6));
             $transaction->amount = $request->amount;
             $transaction->received = $request->amount;
             $transaction->type = 'RECHARGE';
@@ -91,33 +92,71 @@ class TransactionController extends Controller
             $transaction->ownerbank_id = $request->ownerbank_id;
             $transaction->save();
 
-            $ownerBank = OwnerBank::find($request->ownerbank_id);
-            $param = [
-                "accountNo" => $ownerBank->account_number,
-                "accountName"=> $ownerBank->account_name,
-                "acqId"=> $ownerBank->bin,
-                "amount"=> $request->amount,
-                "addInfo"=> $ownerBank->note,
-                "format"=> 'text',
-                "template"=> 'compact',
-            ];
-            $apiCheckUrl = "https://api.vietqr.io/v2/generate";
-            $bankApiKey = env('BANK_API_KEY');
-            $bankApiClientId = env('BANK_API_CLIENT_ID');
-            $response = Http::withHeaders([
-            'x-api-key' => $bankApiKey,
-            'x-client-id' => $bankApiClientId,
-            ])->withBody(json_encode($param), 'application/json')->post($apiCheckUrl);
-            $result = $response->json();
-
+            // $ownerBank = OwnerBank::find($request->ownerbank_id);
+            // $param = [
+            //     "accountNo" => $ownerBank->account_number,
+            //     "accountName"=> $ownerBank->account_name,
+            //     "acqId"=> $ownerBank->bin,
+            //     "amount"=> $request->amount,
+            //     "addInfo"=> $ownerBank->note,
+            //     "format"=> 'text',
+            //     "template"=> 'compact',
+            // ];
             DB::commit();
-            $res = [
-                'success' => true,
-                'message' => 'Nạp tiền thành công!',
-                'data' => $transaction,
-                'QR_URI_data' => $result,
+            
+            $payOS = new PayOS(
+                env('PAYOS_CLIENT_ID'), 
+                env('PAYOS_API_KEY'),
+                env('PAYOS_CHECKSUM_KEY')
+            );
+
+            $data = [
+                "orderCode" => $transaction->reference,
+                "amount" => (int)$request->amount,
+                "description" => "Nạp tiền vào tài khoản",
+                "items" => [
+                    [
+                        "name" => "Nạp tiền vào tài khoản",
+                        "quantity" => 1,
+                        "price" => (int)$request->amount
+                    ]
+                ],
+                "returnUrl" => route('transactions.handle_return'),
+                "cancelUrl" => route('transactions.handle_cancel'),
             ];
-            return response()->json($res, 200);
+            
+            try {
+                $response = $payOS->createPaymentLink($data);
+                $res = [
+                    'success' => true,
+                    'redirect' => $response['checkoutUrl'],
+                    'id' => $transaction->id,
+                ];
+                return response()->json($res, 200);
+            } catch (Exception $e) {
+                $res = [
+                    'success' => false,
+                    'msg' => $e->getMessage()
+                ];
+                return response()->json($res, 200);
+            }
+
+            // $apiCheckUrl = "https://api.vietqr.io/v2/generate";
+            // $bankApiKey = env('BANK_API_KEY');
+            // $bankApiClientId = env('BANK_API_CLIENT_ID');
+            // $response = Http::withHeaders([
+            // 'x-api-key' => $bankApiKey,
+            // 'x-client-id' => $bankApiClientId,
+            // ])->withBody(json_encode($param), 'application/json')->post($apiCheckUrl);
+            // $result = $response->json();
+
+            // $res = [
+            //     'success' => true,
+            //     'message' => 'Nạp tiền thành công!',
+            //     'data' => $transaction,
+            //     'QR_URI_data' => $result,
+            // ];
+            // return response()->json($res, 200);
             
         } catch (Exception $e) {
             DB::rollBack();
@@ -126,12 +165,12 @@ class TransactionController extends Controller
     }
 
     public function depositsDetail(Request $request) {
-        $query = Transaction::where('type','RECHARGE');
+        $items = Transaction::find($request->id);
         
-        if($request && $request->id){
-            $query->where('id', $request->id);
-        }
-        $items = $query->first();
+        // if($request && $request->id){
+        //     $query->where('id', $request->id);
+        // }
+        // $items = $query->first();
         $res = [
             'success' => true,
             'message' => 'chi tiết nạp tiền',
@@ -351,5 +390,19 @@ class TransactionController extends Controller
                 'message' => 'Mã xác nhận chuyển tiền đã được gửi vào Email của bạn!',
             ]);
         }
+    }
+
+    // Xử lý khi payos trả về
+    public function handle_return(Request $request){
+        Transaction::where('reference',$request->orderCode)->update([
+            'status' => 1
+        ]);
+        return view('transactions.handle_return');
+    }
+    public function handle_cancel(Request $request){
+        Transaction::where('reference',$request->orderCode)->update([
+            'status' => -1
+        ]);
+        return view('transactions.handle_cancel');
     }
 }
