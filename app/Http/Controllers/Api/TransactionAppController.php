@@ -69,6 +69,14 @@ class TransactionAppController extends Controller
     }
     public function depositApp(Request $request)
     {
+        $user = User::find(Auth::guard('api')->id());
+        if ($user->account_balance < (20000 + ($request->amount/100)*0.1 )) {
+            $res = [
+                'success' => false,
+                'data' => "Số dư không đủ để nạp vào App",
+            ];
+            return $res;
+        }
         DB::beginTransaction();
         try {
             $user_bank_account = UserBankAccount::where('id',$request->user_bank_account_id)->first();

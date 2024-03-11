@@ -14,7 +14,6 @@ class LoginAdminRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'phone' => 'required|max:255',
             'password' => 'required|max:255',
         ];
     }

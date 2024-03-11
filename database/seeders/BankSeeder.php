@@ -18,9 +18,9 @@ class BankSeeder extends Seeder
             [
                 'name' => 'Ngân hàng Ngoại thương Việt Nam (Vietcombank)',
                 'status' => 1,
-                'image' => 'images/bank/VCB.png',
+                'image' => 'http://127.0.0.1:8000/images/bank/VCB.png',
                 'bin' => 970436,
-                'type' => "VIETCOMBANK",
+                'type' => "VCB",
                 'opening_fee' => 0,
                 'account_opening_fee' => 100000,
                 'max_accounts' => 10,
@@ -38,9 +38,9 @@ class BankSeeder extends Seeder
             [
                 'name' => 'Ngân hàng Công thương (Techcombank)',
                 'status' => 1,
-                'image' => 'images/bank/Techcombank-logo.jpg',
+                'image' => 'http://127.0.0.1:8000/images/bank/Techcombank-logo.jpg',
                 'bin' => 970407,
-                'type' => "TECHCOMBANK",
+                'type' => "TCB",
                 'opening_fee' => 0,
                 'account_opening_fee' => 100000,
                 'max_accounts' => 10,

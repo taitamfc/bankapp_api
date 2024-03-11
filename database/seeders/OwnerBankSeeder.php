@@ -17,7 +17,7 @@ class OwnerBankSeeder extends Seeder
             [
                 'name' => 'Ngân hàng Ngoại thương Việt Nam (Vietcombank)',
                 'status' => 0,
-                'image' => 'images/bank/VCB.png',
+                'image' => 'http://127.0.0.1:8000/images/bank/VCB.png',
                 'short_description' => 'Short description for Bank A',
                 'description' => 'Description for Bank A',
                 'account_number' => 1033016936,
@@ -28,7 +28,7 @@ class OwnerBankSeeder extends Seeder
             [
                 'name' => 'Ngân hàng Công thương (Techcombank)',
                 'status' => 0,
-                'image' => 'images/bank/Techcombank-logo.jpg',
+                'image' => 'http://127.0.0.1:8000/images/bank/Techcombank-logo.jpg',
                 'short_description' => 'Short description for Bank B',
                 'description' => 'Description for Bank B',
                 'account_number' => '9876543210',
