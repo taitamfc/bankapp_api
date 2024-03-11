@@ -64,14 +64,14 @@ Route::post('auth/forgot-password', [AuthController::class,'sendMailResetPasswor
 Route::get('home-admin', [HomeAdminController::class,'index']);
 
 // PaymentDeposit
-Route::post('payments/deposits', [TransactionController::class,'deposits']);
-Route::get('payments/deposits', [TransactionController::class,'listDeposits']);
+Route::post('payments/deposits', [TransactionController::class,'deposit']);
+Route::get('payments/deposits', [TransactionController::class,'depositHistory']);
 Route::get('payments/deposits/{id}', [TransactionController::class,'depositsDetail']);
 
 // PaymentEarnMoney
 Route::get('payments/earn-money', [TransactionController::class,'indexEarnMoney']);
 Route::post('payments/withdraw', [TransactionController::class,'withdraw']);
-Route::get('payments/withdraws', [TransactionController::class,'paymentWithdraw']);
+Route::get('payments/withdraws', [TransactionController::class,'withdrawHistory']);
 Route::post('payments/transfer', [TransactionController::class,'transfer']);
 
 // Verify code
