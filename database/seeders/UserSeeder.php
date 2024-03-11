@@ -19,21 +19,19 @@ class UserSeeder extends Seeder
                 'name' => 'admin',
                 'email' => 'admin@gmail.com',
                 'role' => 0,
-                'image' => 'images/profile/avt.jpeg',
+                'image' => 'http://127.0.0.1:8000/images/profile/avt.jpeg',
                 'user_name' => 'adminfc',
                 'phone' => '0123456788',
                 'password' => Hash::make('123456'),
-                'password_confirmation' => Hash::make('123456'),
             ],
             [
                 'name' => 'hoàng long',
                 'email' => 'hoangvanlong.vn1999@gmail.com',
                 'role' => 0,
-                'image' => 'images/profile/avt2.jpg',
+                'image' => 'http://127.0.0.1:8000/images/profile/avt2.jpg',
                 'user_name' => 'longfc',
                 'phone' => '0123456767',
                 'password' => Hash::make('123456'),
-                'password_confirmation' => Hash::make('123456'),
             ],
         ];
 
@@ -46,7 +44,6 @@ class UserSeeder extends Seeder
                 'user_name' => $data['user_name'],
                 'phone' => $data['phone'],
                 'password' => $data['password'],
-                'password_confirmation' => $data['password_confirmation'],
             ]);
         }
     }

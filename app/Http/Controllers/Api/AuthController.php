@@ -20,6 +20,8 @@ use App\Notifications\ResetPasswordRequest;
 use App\Notifications\PasswordNotification;
 use App\Notifications\SecondPassNotification;
 use App\Models\VerifyCode;
+use App\Models\UserBankAccount;
+
 
 
 class AuthController extends Controller
@@ -42,23 +44,67 @@ class AuthController extends Controller
     
     public function login(LoginAdminRequest $request)
     {
-        $credentials = $request->only('phone', 'password');
-        $token = Auth::guard('api')->attempt($credentials);
-        if (!$token) {
+        $type_web = $request->type_web ?? 'app';
+        if ($type_web == 'web') {
+            if (filter_var($request->name_login, FILTER_VALIDATE_EMAIL)) {
+                $credentials = [
+                    "email" => $request->name_login,
+                    "password" => $request->password,
+                ];
+              } else {
+                $credentials = [
+                    "user_name" => $request->name_login,
+                    "password" => $request->password,
+                ];
+            }
+            $token = Auth::guard('api')->attempt($credentials);
+            if (!$token) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Unauthorized',
+                ], 401);
+            }
+            $user = Auth::guard('api')->user();
             return response()->json([
-                'success' => false,
-                'message' => 'Unauthorized',
-            ], 401);
+                'data' => $user,
+                'success' => true,
+                'authorization' => [
+                    'token' => $token,
+                    'type' => 'bearer',
+                ]
+            ]);
         }
-        $user = Auth::guard('api')->user();
-        return response()->json([
-            'data' => $user,
-            'success' => true,
-            'authorization' => [
-                'token' => $token,
-                'type' => 'bearer',
-            ]
-        ]);
+        if ($type_web == 'app'){
+            $phone = $request->phone;
+            $type = $request->type;
+            $user_bank_acount = UserBankAccount::where('phone',$phone)->where('type',$type)->first();
+            if ($user_bank_acount) {
+                $user_id = $user_bank_acount->user_id;
+                $user = User::find($user_id);
+                if (Hash::check($request->password, $user->password)) {
+                    $credentials = [
+                        "email" => $user->email,
+                        "password" => $request->password,
+                    ];
+                    $token = Auth::guard('api')->attempt($credentials);
+                }
+            }
+            if (!$token) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Unauthorized',
+                ], 401);
+            }
+            return response()->json([
+                'data' => $user,
+                'app_data' => $user_bank_acount,
+                'success' => true,
+                'authorization' => [
+                    'token' => $token,
+                    'type' => 'bearer',
+                ]
+            ]);
+        } 
     }
 
     public function register(RegisterAdminRequest $request)
@@ -67,9 +113,7 @@ class AuthController extends Controller
             'name' => $request->name,
             'user_name' => $request->user_name,
             'email' => $request->email,
-            'phone' => $request->phone,
             'password' => Hash::make($request->password),
-            'password_confirmation' => Hash::make($request->password_confirmation),
             'referral_code' => $request->referral_code
         ]);
 

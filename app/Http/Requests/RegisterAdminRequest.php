@@ -12,10 +12,9 @@ class RegisterAdminRequest extends FormRequest
     {
         return [
             'name' => 'required|max:255',
-            'phone' => 'required|max:255|unique:users',
+            'user_name' => 'required|max:255|unique:users',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:6|max:255',
-            'password_confirmation' => 'required|min:6|max:255',
         ];
     }
 

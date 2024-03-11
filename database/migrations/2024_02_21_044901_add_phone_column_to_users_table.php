@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('phone')->unique()->after('email');// Số điện thoại
-            $table->string('password_confirmation')->after('password');// Mật khẩu cấp 2
+            $table->string('phone')->nullable();// Số điện thoại
+            $table->string('password_confirmation')->nullable();// Mật khẩu cấp 2
             $table->string('referral_code')->after('password_confirmation')->nullable();// Mã giới thiệu
         });
     }

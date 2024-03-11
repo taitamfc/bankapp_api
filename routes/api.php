@@ -15,6 +15,7 @@ use App\Http\Controllers\Api\VerifyCodeController;
 use App\Http\Controllers\Api\BankListController;
 use App\Http\Controllers\Api\BankAccountController;
 use App\Http\Controllers\Api\TransactionAppController;
+use App\Http\Controllers\Api\HomeAdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -58,6 +59,9 @@ Route::post('transactions/updateStatus/{id}',[TransactionController::class,'upda
 
 // Forgot password
 Route::post('auth/forgot-password', [AuthController::class,'sendMailResetPassword']);
+
+// Home Admin
+Route::get('home-admin', [HomeAdminController::class,'index']);
 
 // PaymentDeposit
 Route::post('payments/deposits', [TransactionController::class,'deposits']);
