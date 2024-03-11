@@ -16,6 +16,8 @@ class TransactionResource extends JsonResource
     {
         $data = parent::toArray($request);
         $data['create_at_fm'] = date('d/m/Y',strtotime($data['created_at']));
+        $data['received_fm'] = number_format($data['received']);
+        $data['amount_fm'] = number_format($data['amount']);
         return $data;
     }
 }
