@@ -27,9 +27,17 @@ class TransactionController extends Controller
     {
         $page = $request->input('page', 1); // Trang mặc định là 1 nếu không được truyền vào
         $perPage = $request->input('perPage', 5); // Số lượng mục dữ liệu mỗi trang mặc định là 
-        $query = new Transaction;
+        $query = Transaction::query(true);
         if ($request->search) {
-            $query = $query->where('type', 'LIKE', '%' . $request->search . '%');
+            $search_date = $request->search;
+            $start_date = $search_date['start_date'];
+            $end_date = $search_date['end_date'];
+            if( $start_date ){
+                $query->whereDate('created_at', '>=', $start_date);
+            }
+            if( $end_date ){
+                $query->whereDate('created_at', '<=', $end_date);
+            }
         }
         $items = $query->orderBy('id', 'desc')->paginate($perPage, ['*'], 'page', $page);
         $transactionCollection = TransactionResource::collection($items);
