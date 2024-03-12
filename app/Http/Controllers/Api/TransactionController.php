@@ -23,6 +23,7 @@ use Exception;
 
 class TransactionController extends Controller
 {
+    // Lịch sử giao dịch
     public function index(Request $request)
     {
         $page = $request->input('page', 1); // Trang mặc định là 1 nếu không được truyền vào
@@ -188,14 +189,25 @@ class TransactionController extends Controller
     }
 
 
-
+    // Lịch sử nạp tiền
     public function depositHistory(Request $request)
     {
         $page = $request->input('page', 1); // Trang mặc định là 1 nếu không được truyền vào
         $perPage = $request->input('perPage', 5);
         $query = Transaction::where('type','RECHARGE');
-        if($request && $request->search){
-            $query->where('amount', 'LIKE', '%' . $request->search . '%');
+        // if($request && $request->search){
+        //     $query->where('amount', 'LIKE', '%' . $request->search . '%');
+        // }
+        if ($request->search) {
+            $search_date = $request->search;
+            $start_date = $search_date['start_date'];
+            $end_date = $search_date['end_date'];
+            if( $start_date ){
+                $query->whereDate('created_at', '>=', $start_date);
+            }
+            if( $end_date ){
+                $query->whereDate('created_at', '<=', $end_date);
+            }
         }
         $items = $query->orderBy('id', 'desc')->paginate($perPage, ['*'], 'page', $page);
         $transactionCollection = TransactionResource::collection($items);
@@ -277,7 +289,7 @@ class TransactionController extends Controller
             return response()->json($res);
         }
     }
-
+    // Lịch Sử Rút Tiền Và Chuyển Tiền
     public function withdrawHistory(Request $request)
     {
         $page = $request->input('page', 1); // Trang mặc định là 1 nếu không được truyền vào
@@ -286,8 +298,16 @@ class TransactionController extends Controller
             $query->where('type', 'EARNMONEY')
                 ->orWhere('type', 'PAYMONEY');
         });
-        if ($request && $request->search) {
-            $query = $query->where('type', 'LIKE', '%' . $request->search . '%');
+        if ($request->search) {
+            $search_date = $request->search;
+            $start_date = $search_date['start_date'];
+            $end_date = $search_date['end_date'];
+            if( $start_date ){
+                $query->whereDate('created_at', '>=', $start_date);
+            }
+            if( $end_date ){
+                $query->whereDate('created_at', '<=', $end_date);
+            }
         }
         $items = $query->orderBy('id', 'desc')->paginate($perPage, ['*'], 'page', $page);
         $transactionCollection = TransactionResource::collection($items);
