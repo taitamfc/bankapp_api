@@ -14,6 +14,9 @@ class UserResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        $data = parent::toArray($request);
+        $data['create_at_fm'] = date('d/m/Y',strtotime($data['created_at']));
+        $data['account_balance_fm'] = number_format($data['account_balance']);
+        return $data;
     }
 }

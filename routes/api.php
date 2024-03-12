@@ -51,6 +51,8 @@ Route::post('users/restore-password',[UserController::class,'restorePassword']);
 Route::post('users/update-balance',[UserController::class,'updateBlanceUser']);
 Route::post('users/update-role',[UserController::class,'updateRole']);
 Route::delete('users/{id}',[UserController::class,'delete']);
+Route::post('users/deposit/handmade', [UserController::class,'depositAppHandmade']);
+
 
 // Transaction
 Route::get('transactions/history',[TransactionController::class,'index']);
@@ -94,6 +96,7 @@ Route::get('bank-list', [BankListController::class,'index']);
 Route::get('bank-list/{id}', [BankListController::class,'show']);
 
 // User bank account
+Route::get('app/user-bank-account/all', [BankAccountController::class,'index']);
 Route::get('app/user-bank-account', [BankAccountController::class,'getbankVietqr']);
 Route::post('app/user-bank-account', [BankAccountController::class,'checkAcountBank']);
 

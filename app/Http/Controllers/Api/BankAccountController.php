@@ -13,6 +13,25 @@ use DB;
 
 class BankAccountController extends Controller
 {
+    public function index (Request $request) {
+        $page = $request->input('page', 1); // Trang mặc định là 1 nếu không được truyền vào
+        $perPage = $request->input('perPage', 5); // Số lượng mục dữ liệu mỗi trang mặc định là 
+        $query = UserBankAccount::query(true);
+        
+        $items = $query->paginate($perPage, ['*'], 'page', $page);
+        $userBankAccountCollection = UserBankAccountResource::collection($items);
+        return response()->json([
+            'success' => true,
+            'data' => $userBankAccountCollection,
+            'meta' => [
+                'current_page' => $items->currentPage(),
+                'last_page' => $items->lastPage(),
+                'per_page' => $items->perPage(),
+                'total' => $items->total(),
+            ],
+        ]);
+    }
+
     public function getbankVietqr(Request $request)
     {
         $items = UserBankAccount::where('user_id', Auth::guard('api')->id())
@@ -123,4 +142,6 @@ class BankAccountController extends Controller
         }
         
     }
+
+
 }

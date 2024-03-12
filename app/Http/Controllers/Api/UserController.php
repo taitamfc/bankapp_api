@@ -22,16 +22,19 @@ class UserController extends Controller
 {
     public function index(Request $request){
         $page = $request->input('page', 1); // Trang mặc định là 1 nếu không được truyền vào
-        $perPage = $request->input('perPage', 5); // Số lượng mục dữ liệu mỗi trang mặc định là 
-        $data = new UserResource(User::paginate($perPage, ['*'], 'page', $page));
+        $perPage = $request->input('perPage', 5); // Số lượng mục dữ liệu mỗi trang mặc định là
+        $query = User::query(true);
+        
+        $items = $query->paginate($perPage, ['*'], 'page', $page);
+        $users = UserResource::collection($items);
         $res = [
             'success' => true,
-            'data' => $data,
+            'data' => $users,
             'meta' => [
-                'current_page' => $data->currentPage(),
-                'last_page' => $data->lastPage(),
-                'per_page' => $data->perPage(),
-                'total' => $data->total(),
+                'current_page' => $items->currentPage(),
+                'last_page' => $items->lastPage(),
+                'per_page' => $items->perPage(),
+                'total' => $items->total(),
             ],
         ];
         return $res;
@@ -215,6 +218,17 @@ class UserController extends Controller
         $user = Auth::guard('api')->user();
         $user->account_balance += $request->amount;
         $user->save();
+    }
+
+    public function depositAppHandmade (Request $request) {
+        $user = User::find($request->user_id);
+        $user->account_balance += $request->amount;
+        $user->save();
+        $res = [
+            'success' => true,
+            'data' => $user,
+        ];
+        return response()->json($res);
     }
 
 }
