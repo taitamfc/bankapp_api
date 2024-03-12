@@ -76,7 +76,7 @@ class TransactionController extends Controller
         }
     }
 
-    public function deposits(RechargeRequest $request)
+    public function deposit(RechargeRequest $request)
     {
         DB::beginTransaction();
         try {
@@ -181,7 +181,7 @@ class TransactionController extends Controller
 
 
 
-    public function listDeposits(Request $request)
+    public function depositHistory(Request $request)
     {
         $page = $request->input('page', 1); // Trang mặc định là 1 nếu không được truyền vào
         $perPage = $request->input('perPage', 5);
@@ -270,7 +270,7 @@ class TransactionController extends Controller
         }
     }
 
-    public function paymentWithdraw(Request $request)
+    public function withdrawHistory(Request $request)
     {
         $page = $request->input('page', 1); // Trang mặc định là 1 nếu không được truyền vào
         $perPage = $request->input('perPage', 5); // Số lượng mục dữ liệu mỗi trang mặc định là 
