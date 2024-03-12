@@ -233,7 +233,7 @@ class TransactionController extends Controller
             try {
                 $user = User::findOrFail($user_id);
 
-                if ($request->amount <= $user->account_balance) {
+                if ($request->amount <= $user->referral_account_balance) {
                     $transaction = new Transaction;
                     $transaction->reference = 3;
                     $transaction->amount = $request->amount;
@@ -247,12 +247,12 @@ class TransactionController extends Controller
                     $transaction->bank_user = $request->bank_user;
                     $transaction->save();
     
-                    $user->account_balance -= $transaction->amount;
+                    $user->referral_account_balance -= $transaction->amount;
                     $user->save();
                 }else {
                     $res = [
                         'success' => false,
-                        'data' => 'Số dư không đủ!',
+                        'data' => 'Số dư giới thiệu không đủ!',
                     ];
                     return response()->json($res, 200);
                 }
@@ -342,30 +342,53 @@ class TransactionController extends Controller
             return response()->json($res);
         }
         $code = $verify_code->code;
-        if ($request->verify_code == $code) {
-            $transaction = new Transaction;
-            $transaction->reference = 4;
-            $transaction->amount = $request->amount;
-            $transaction->received = $request->amount;
-            $transaction->type = 'PAYMONEY';
-            $transaction->type_money = 'VND';
-            $transaction->status = 0;
-            $transaction->account_source_id = $request->account_source_id;
-            $transaction->account_target_id = $request->account_target_id;
-            $transaction->user_id = $user_id;
-            $transaction->save();
-            $res = [
-                'success' => true,
-                'message' => 'Yêu cầu chuyển tiền đã được gửi đi thành công!',
-                'data' => $transaction,
-            ];
-            return response()->json($res, 200);
-        }else {
-            $res = [
-                'success' => false,
-                'data' => 'Mã xác nhận sai, vui lòng kiểm tra lại!',
-            ];
-            return response()->json($res);
+        DB::beginTransaction();
+        try {
+            if ($request->verify_code == $code) {
+                $user = User::find(Auth::guard('api')->id());
+                if ($request->amount <= $user->referral_account_balance) {
+
+                    $transaction = new Transaction;
+                    $transaction->reference = 4;
+                    $transaction->amount = $request->amount;
+                    $transaction->received = $request->amount;
+                    $transaction->type = 'PAYMONEY';
+                    $transaction->type_money = 'VND';
+                    $transaction->status = 0;
+                    $transaction->account_source_id = $request->account_source_id;
+                    $transaction->account_target_id = $request->account_target_id;
+                    $transaction->user_id = $user_id;
+                    $transaction->save();
+                    
+                    $user->referral_account_balance -= $request->amount;
+                    $user->account_balance += $request->amount;
+                    $user->save();
+
+                    DB::commit();             
+                    $res = [
+                        'success' => true,
+                        'message' => 'Yêu cầu chuyển tiền đã được gửi đi thành công!',
+                        'data' => $transaction,
+                    ];
+                    return response()->json($res);
+                }else{
+                    $res = [
+                        'success' => false,
+                        'data' => 'Số dư giới thiệu không đủ!',
+                    ];
+                    return response()->json($res,200);
+                }
+            }else {
+                $res = [
+                    'success' => false,
+                    'data' => 'Mã xác nhận sai, vui lòng kiểm tra lại!',
+                ];
+                return response()->json($res);
+            }
+        } 
+        catch (Exception $e) {
+            DB::rollBack();
+            throw new Exception($e->getMessage());
         }
     }
 
