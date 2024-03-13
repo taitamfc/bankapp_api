@@ -14,7 +14,7 @@ class User extends Authenticatable implements JWTSubject
 {
     use CrudTrait;
     use HasApiTokens, HasFactory, Notifiable;
-
+    use \HighIdeas\UsersOnline\Traits\UsersOnlineTrait;
     /**
      * The attributes that are mass assignable.
      *
@@ -29,6 +29,9 @@ class User extends Authenticatable implements JWTSubject
         'password',
         'password_confirmation',
         'referral_code',
+        'status',
+        'account_balance',
+        'last_login',
     ];
 
     /**

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');//Ten ngan hang
             $table->string('image')->nullable();//ảnh
-            $table->string('phone')->unique()->nullable();// Số điện thoại
+            $table->string('phone')->nullable();// Số điện thoại
             $table->string('bank_number')->nullable();
             $table->string('password_level_two');
             $table->string('type')->nullable();//Thể loại

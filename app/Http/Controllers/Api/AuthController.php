@@ -61,10 +61,19 @@ class AuthController extends Controller
             if (!$token) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Unauthorized',
+                    'message' => 'Đăng nhập thất bại',
                 ], 401);
             }
             $user = Auth::guard('api')->user();
+            if($user->status == 0){
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Tài khoản bị vô hiệu hóa',
+                ], 401);
+            }else{
+                $user->last_login = date('Y-m-d H:i:s');
+                $user->save();
+            }
             return response()->json([
                 'data' => $user,
                 'success' => true,
@@ -78,6 +87,8 @@ class AuthController extends Controller
             $phone = $request->phone;
             $type = $request->type;
             $user_bank_acount = UserBankAccount::where('phone',$phone)->where('type',$type)->first();
+            $user = null;
+            $token = null;
             if ($user_bank_acount) {
                 $user_id = $user_bank_acount->user_id;
                 $user = User::find($user_id);
@@ -92,8 +103,17 @@ class AuthController extends Controller
             if (!$token) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Unauthorized',
+                    'message' => 'Đăng nhập thất bại',
                 ], 401);
+            }
+            if($user->status == 0){
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Tài khoản bị vô hiệu hóa',
+                ], 401);
+            }else{
+                $user->last_login = date('Y-m-d H:i:s');
+                $user->save();
             }
             return response()->json([
                 'data' => $user,
@@ -114,9 +134,18 @@ class AuthController extends Controller
             'user_name' => $request->user_name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'referral_code' => $request->referral_code
+            'referral_code' => $request->referral_code,
+            'status' => 1,
+            'role' => 1,
         ]);
 
+        // Cộng 100k tiền cho tài khoản giới thiệu
+        $parent_user = User::where('user_name',$request->referral_code)->first();
+        if( $parent_user ){
+            $pr_referral_account_balance = $parent_user->referral_account_balance;
+            $parent_user->referral_account_balance = (float)$pr_referral_account_balance + 100000;
+            $parent_user->save();
+        }
         return response()->json([
             'success' => true,
             'message' => 'User created successfully',
