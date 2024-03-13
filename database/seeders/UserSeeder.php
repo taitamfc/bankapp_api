@@ -27,7 +27,7 @@ class UserSeeder extends Seeder
             [
                 'name' => 'hoàng long',
                 'email' => 'hoangvanlong.vn1999@gmail.com',
-                'role' => 0,
+                'role' => 1,
                 'image' => 'http://127.0.0.1:8000/images/profile/avt2.jpg',
                 'user_name' => 'longfc',
                 'phone' => '0123456767',

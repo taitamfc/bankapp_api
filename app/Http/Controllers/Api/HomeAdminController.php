@@ -9,39 +9,23 @@ use App\Models\User;
 use App\Models\UserBankAccount;
 use App\Models\Transaction;
 use App\Models\TransactionApp;
+use Carbon\Carbon;
 
 class HomeAdminController extends Controller
 {
     public function index(){
         try {
-            $deposits = Transaction::whereType('RECHARGE')->get();
-            $count_deposit = 0;
-            foreach ($deposits as $deposit) {
-                $count_deposit += $deposit->received;
-            }
-            $count_paymoneys = Transaction::whereType('DEPOSITAPP')->get();
-            $paymoneys = 0;
-            foreach ($count_paymoneys as $paymoney) {
-                $paymoneys += $paymoney->received;
-            }
-            $total_money_pays = TransactionApp::whereType('RECEIVE')->get();
-            $money_pays = 0;
-            foreach ($total_money_pays as $paymoney) {
-                $money_pays += $paymoney->amount;
-            }
+            $total_user = User::count();
+            $total_user_active = User::where('status', 1)->count();
+            $total_user_NoActive = User::where('status', 0)->count();
+            // những người đăng ký hôm nay
+            $currentDate = Carbon::now()->toDateString();
+            $usersToday = User::whereDate('created_at', $currentDate)->count();
             $data = [
-                "count_deposit" => $count_deposit,
-                "count_paymoney" => $paymoneys,
-                "total_money_pay" => $money_pays,
-                "total_money_check" => 0,
-                "count_openbank" => UserBankAccount::all()->count(),
-                "count_bill_paymoney" => $count_paymoneys->count(),
-                "count_open_account" => UserBankAccount::all()->count(),
-                "count_bill_account_balance" => Transaction::count(),
-                "count_account_chilrent" => UserBankAccount::all()->count(),
-                "count_bill_fluctuations" => Transaction::count(),
-                "count_account_chilrent_deposit" => UserBankAccount::all()->count(),
-                "total_money_create_bill_chilrent" => Transaction::count(),
+                'total_user' => $total_user,
+                'total_user_active' => $total_user_active,
+                'total_user_NoActive' => $total_user_NoActive,
+                'usersToday' => $usersToday,
             ];
             return response()->json([
                 'success' => true,

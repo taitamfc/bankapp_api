@@ -52,6 +52,7 @@ Route::post('users/update-balance',[UserController::class,'updateBlanceUser']);
 Route::post('users/update-role',[UserController::class,'updateRole']);
 Route::delete('users/{id}',[UserController::class,'delete']);
 Route::post('users/deposit/handmade', [UserController::class,'depositAppHandmade']);
+Route::post('users/update-status', [UserController::class,'updateStatus']);
 
 
 // Transaction
@@ -63,7 +64,7 @@ Route::post('transactions/updateStatus/{id}',[TransactionController::class,'upda
 Route::post('auth/forgot-password', [AuthController::class,'sendMailResetPassword']);
 
 // Home Admin
-Route::get('home-admin', [HomeAdminController::class,'index']);
+Route::get('home/admin', [HomeAdminController::class,'index']);
 
 // PaymentDeposit
 Route::post('payments/deposits', [TransactionController::class,'deposit']);
@@ -86,6 +87,11 @@ Route::get('home/headers', [HomeController::class,'dataHeader']);
 
 // News
 Route::get('news', [NewController::class,'index']);
+Route::get('news/getall', [NewController::class,'getAllNews']);
+Route::post('news/create', [NewController::class,'store']);
+Route::post('news', [NewController::class,'update']);
+Route::get('news/show', [NewController::class,'show']);
+Route::delete('news/{id}', [NewController::class,'delete']);
 
 // Owner Bank
 Route::get('owner_banks', [OwnerBankController::class,'index']);

@@ -24,7 +24,16 @@ class UserController extends Controller
         $page = $request->input('page', 1); // Trang mặc định là 1 nếu không được truyền vào
         $perPage = $request->input('perPage', 5); // Số lượng mục dữ liệu mỗi trang mặc định là
         $query = User::query(true);
-        
+        if ($request->search) {
+            $search_user = $request->search;
+            $user_name = $search_user['user_name'];
+            if( $user_name ){
+                $query->where('name',  'LIKE',"%" .$user_name. "%");
+                $query->orWhere('user_name',  'LIKE',"%" .$user_name. "%");
+                $query->orWhere('email',  'LIKE',"%" .$user_name. "%");
+            }
+
+        }
         $items = $query->paginate($perPage, ['*'], 'page', $page);
         $users = UserResource::collection($items);
         $res = [
@@ -223,6 +232,17 @@ class UserController extends Controller
     public function depositAppHandmade (Request $request) {
         $user = User::find($request->user_id);
         $user->account_balance += $request->amount;
+        $user->save();
+        $res = [
+            'success' => true,
+            'data' => $user,
+        ];
+        return response()->json($res);
+    }
+
+    public function updateStatus (Request $request) {
+        $user = User::find($request->user_id);
+        $user->status = $request->status;
         $user->save();
         $res = [
             'success' => true,
