@@ -62,14 +62,28 @@ class BankAccountController extends Controller
         try {
             if ($result['data'] != null) {
                 $count_all_account = UserBankAccount::count();
-                $count_check_acount_current = UserBankAccount::where('bank_number',$request->accountNumber)->count();
-                if ($count_check_acount_current > 0) {
+                $isAccoutNumberExist = UserBankAccount::where('bank_number',$request->accountNumber)
+                ->where('type',$request->type)
+                ->count();
+                if ($isAccoutNumberExist > 0) {
                     $res = [
                         'success' => false,
                         'data' => "Tài khoản đã tồn tại trong hệ thống!",
                     ];
                     return $res;
                 }
+
+                $isAccoutPhoneExist = UserBankAccount::where('phone',$request->phone)
+                ->where('type',$request->type)
+                ->count();
+                if ($isAccoutPhoneExist > 0) {
+                    $res = [
+                        'success' => false,
+                        'data' => "Số điện thoại đã tồn tại trong hệ thống!",
+                    ];
+                    return $res;
+                }
+
                 if ($count_all_account > 0) {
                     $user = User::find(Auth::guard('api')->id());
                     if ($user->account_balance >= 100000) {
