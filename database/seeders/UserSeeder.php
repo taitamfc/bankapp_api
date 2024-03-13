@@ -44,6 +44,9 @@ class UserSeeder extends Seeder
                 'user_name' => $data['user_name'],
                 'phone' => $data['phone'],
                 'password' => $data['password'],
+                'last_login' => date('Y-m-d',strtotime('last month')),
+                'account_balance' => 100000000,
+                'status' => 1
             ]);
         }
     }

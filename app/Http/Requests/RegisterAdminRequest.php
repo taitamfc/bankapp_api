@@ -12,9 +12,15 @@ class RegisterAdminRequest extends FormRequest
     {
         return [
             'name' => 'required|max:255',
-            'user_name' => 'required|max:255|unique:users',
+            'user_name' => [
+                'required',
+                'max:255',
+                'unique:users',
+                'regex:/^[A-Za-z0-9]+$/u',
+            ],
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:6|max:255',
+            'referral_code' => 'nullable|exists:users,user_name',
         ];
     }
 
@@ -25,7 +31,10 @@ class RegisterAdminRequest extends FormRequest
             'email' => 'Định dạng phải là Email',
             'max' => 'Tối đa 255 kí tự',
             'min' => 'Tối thiểu 6 kí tự',
-            'unique' => 'Tài khoản đã tồn tại',
+            'email.unique' => 'Tài khoản đã tồn tại',
+            'referral_code.*' => 'Mã giới thiệu không hợp lệ',
+            'user_name.regex' => 'Tài khoản đăng nhập không hợp lệ',
+            'user_name.unique' => 'Tài khoản đăng nhập đã tồn tại'
         ];
     }
 
