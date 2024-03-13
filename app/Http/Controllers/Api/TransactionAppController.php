@@ -70,7 +70,7 @@ class TransactionAppController extends Controller
     public function depositApp(Request $request)
     {
         $user = User::find(Auth::guard('api')->id());
-        if ($user->account_balance < (20000 + ($request->amount/100)*0.1 )) {
+        if ($user->account_balance < ($request->amount +(20000 + ($request->amount/100)*0.1 )) ) {
             $res = [
                 'success' => false,
                 'data' => "Số dư không đủ để nạp vào App",
@@ -123,7 +123,7 @@ class TransactionAppController extends Controller
             $transaction->save();
 
             $user = User::findOrFail(Auth::guard('api')->id());
-            $user->account_balance -= $request->amount;
+            $user->account_balance -= ($request->amount +(20000 + ($request->amount/100)*0.1 ));
             $user->save();
             DB::commit();
             $res = [
