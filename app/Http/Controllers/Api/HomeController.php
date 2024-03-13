@@ -30,8 +30,8 @@ class HomeController extends Controller
                 $money_pays += $paymoney->amount;
             }
             $data = [
-                "count_deposit" => $count_deposit,
-                "count_paymoney" => $paymoneys,
+                "count_deposit" => number_format($count_deposit),
+                "count_paymoney" => number_format($paymoneys),
                 "total_money_pay" => $money_pays,
                 "total_money_check" => 0,
                 "count_openbank" => UserBankAccount::whereUser_id(Auth::guard('api')->id())->count(),

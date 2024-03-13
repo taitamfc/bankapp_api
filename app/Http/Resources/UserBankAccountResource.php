@@ -14,6 +14,8 @@ class UserBankAccountResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        $data = parent::toArray($request);
+        $data['account_balance_fm'] = number_format($data['account_balance']);
+        return $data;
     }
 }

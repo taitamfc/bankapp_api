@@ -70,14 +70,22 @@ class TransactionController extends Controller
     }
 
     public function updateStatus($id,Request $request){
+        DB::beginTransaction();
         try {
             $item = Transaction::findOrfail($id);
+            if (($item->type =='EARNMONEY') && ($request->status == 1)) {
+                $user = User::find($item->user_id);
+                $user->referral_account_balance -= $item->amount;
+                $user->save();
+            }
             $item->update(['status' => $request->status]);
+            DB::commit();
             return response()->json([
                 'success' => true,
                 'data' =>  $item
             ]);
         } catch (\Exception $e) {
+            DB::rollBack();
             return response()->json([
                 'success' => false,
                 'data' => $e->getMessage()
@@ -259,8 +267,6 @@ class TransactionController extends Controller
                     $transaction->bank_user = $request->bank_user;
                     $transaction->save();
     
-                    $user->referral_account_balance -= $transaction->amount;
-                    $user->save();
                 }else {
                     $res = [
                         'success' => false,
