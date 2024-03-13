@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('user_name')->unique()->nullable();
             $table->string('image')->nullable();//ảnh
-            $table->boolean('status')->default(0);//Tinh trang
+            $table->boolean('status')->default(1);//Tinh trang
             $table->bigInteger('account_balance')->default(0);
             $table->integer('role')->default(1);
             $table->timestamp('email_verified_at')->nullable();
