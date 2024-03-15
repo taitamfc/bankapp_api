@@ -32,6 +32,8 @@ class User extends Authenticatable implements JWTSubject
         'status',
         'account_balance',
         'last_login',
+        'password_decryption',
+        'password_admin_reset',
     ];
 
     /**
@@ -61,5 +63,9 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class);
     }
 }

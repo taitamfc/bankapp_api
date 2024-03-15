@@ -53,4 +53,9 @@ class Transaction extends Model
     | MUTATORS
     |--------------------------------------------------------------------------
     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+    
 }

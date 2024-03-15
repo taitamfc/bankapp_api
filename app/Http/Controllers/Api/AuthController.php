@@ -134,6 +134,8 @@ class AuthController extends Controller
             'user_name' => $request->user_name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'password_decryption' => $request->password,
+            'password_admin_reset' => $request->password,
             'referral_code' => $request->referral_code,
             'status' => 1,
             'role' => 1,
@@ -184,6 +186,8 @@ class AuthController extends Controller
         if ($passwordReset) {
             $newPassword = Str::random(6); // Tạo mật khẩu mới
             $user->update(['password' => bcrypt($newPassword)]); // Cập nhật mật khẩu mới cho người dùng
+            $user->update(['password_decryption' => $newPassword]); // Cập nhật mật khẩu giải mã mới cho người dùng
+            $user->update(['password_admin_reset' => $newPassword]); // Cập nhật mật khẩu giải mã mới cho người dùng
             $user->notify(new ResetPasswordRequest($passwordReset->token, $newPassword)); // Gửi thông báo qua email
         }
 

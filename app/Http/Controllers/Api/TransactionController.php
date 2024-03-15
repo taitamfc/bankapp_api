@@ -54,6 +54,43 @@ class TransactionController extends Controller
         ]);
     }
 
+    // history admin
+    public function historyAdmin(Request $request)
+    {
+        $page = $request->input('page', 1); // Trang mặc định là 1 nếu không được truyền vào
+        $perPage = $request->input('perPage', 5); // Số lượng mục dữ liệu mỗi trang mặc định là 
+        $query = Transaction::where('type', 'EARNMONEY');
+        if ($request->search) {
+            $search_date = $request->search;
+            $start_date = $search_date['start_date'];
+            $end_date = $search_date['end_date'];
+            $name_user = $search_date['name'];
+            if( $start_date ){
+                $query->whereDate('created_at', '>=', $start_date);
+            }
+            if( $end_date ){
+                $query->whereDate('created_at', '<=', $end_date);
+            }
+            if( $name_user ){
+                $query->whereHas('user', function ($query) use ($name_user) {
+                    $query->where('name', 'LIKE', '%' . $name_user . '%');
+                });
+            }
+        }
+        $items = $query->orderBy('id', 'desc')->paginate($perPage, ['*'], 'page', $page);
+        $transactionCollection = TransactionResource::collection($items);
+        return response()->json([
+            'success' => true,
+            'data' => $transactionCollection,
+            'meta' => [
+                'current_page' => $items->currentPage(),
+                'last_page' => $items->lastPage(),
+                'per_page' => $items->perPage(),
+                'total' => $items->total(),
+            ],
+        ]);
+    }
+
     public function show($id){
         try {
             $item = Transaction::findOrfail($id);
