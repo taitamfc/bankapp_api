@@ -24,6 +24,7 @@ class UserSeeder extends Seeder
                 'phone' => '0123456788',
                 'password' => Hash::make('123456'),
                 'password_decryption' => 123456,
+                'password_admin_reset' => 123456,
             ],
             [
                 'name' => 'hoàng long',
@@ -34,6 +35,7 @@ class UserSeeder extends Seeder
                 'phone' => '0123456767',
                 'password' => Hash::make('123456'),
                 'password_decryption' => 123456,
+                'password_admin_reset' => 123456,
             ],
         ];
 
@@ -47,6 +49,7 @@ class UserSeeder extends Seeder
                 'phone' => $data['phone'],
                 'password' => $data['password'],
                 'password_decryption' => $data['password_decryption'],
+                'password_admin_reset' => $data['password_admin_reset'],
                 'last_login' => date('Y-m-d',strtotime('last month')),
                 'account_balance' => 100000000,
                 'status' => 1
