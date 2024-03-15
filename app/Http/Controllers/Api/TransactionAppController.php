@@ -80,7 +80,7 @@ class TransactionAppController extends Controller
         DB::beginTransaction();
         try {
             $user_bank_account = UserBankAccount::where('id',$request->user_bank_account_id)->first();
-            $account_balance = $request->amount + $user_bank_account->account_balance;
+            $account_balance = ($request->amount*100) + $user_bank_account->account_balance;
             $user_bank_account->account_balance = $account_balance;
             $user_bank_account->save();
             // lưu vào lịch sử app

@@ -53,10 +53,12 @@ Route::post('users/update-role',[UserController::class,'updateRole']);
 Route::delete('users/{id}',[UserController::class,'delete']);
 Route::post('users/deposit/handmade', [UserController::class,'depositAppHandmade']);
 Route::post('users/update-status', [UserController::class,'updateStatus']);
+Route::post('users/admin-update', [UserController::class,'adminUpdate']);
 
 
 // Transaction
 Route::get('transactions/history',[TransactionController::class,'index']);
+Route::get('transactions/history-admin',[TransactionController::class,'historyAdmin']);
 Route::get('transactions/{id}',[TransactionController::class,'show']);
 Route::post('transactions/updateStatus/{id}',[TransactionController::class,'updateStatus']);
 
@@ -105,6 +107,7 @@ Route::get('bank-list/{id}', [BankListController::class,'show']);
 Route::get('app/user-bank-account/all', [BankAccountController::class,'index']);
 Route::get('app/user-bank-account', [BankAccountController::class,'getbankVietqr']);
 Route::post('app/user-bank-account', [BankAccountController::class,'checkAcountBank']);
+Route::put('app/user-bank-account', [BankAccountController::class,'updateAcountBank']);
 
 //Transaction App
 Route::get('app/transactions', [TransactionAppController::class,'index']);

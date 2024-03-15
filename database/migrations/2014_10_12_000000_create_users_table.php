@@ -22,6 +22,8 @@ return new class extends Migration
             $table->integer('role')->default(1);
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('password_decryption');
+            $table->string('password_admin_reset')->nullable();
             $table->rememberToken();
             $table->timestamp('last_login')->nullable();
             $table->timestamps();

@@ -67,6 +67,9 @@ class BankAccountController extends Controller
                 'data' => "Không đủ 2000đ để kiểm tra tài khoản!",
             ];
             return $res;
+        }else{
+            $user->account_balance -= 2000;
+            $user->save();
         }
         DB::beginTransaction();
         try {
@@ -140,6 +143,99 @@ class BankAccountController extends Controller
                         'success' => true,
                         'data' => $result,
                         'user_bank_acount' => $user_bank_account
+                    ];
+                    return $res;
+                }
+            }else{
+                $res = [
+                    'success' => false,
+                    'data' => "Số tài khoản không hợp lệ!",
+                ];
+                return $res;
+            }
+        } catch (Exception $e) {
+            DB::rollBack();
+            throw new Exception($e->getMessage());
+        }
+        
+    }
+
+    public function updateAcountBank(Request $request)
+    {
+        $param = [
+            "bin" => $request->bin,
+            'accountNumber' => $request->accountNumber
+        ];
+        $apiCheckUrl = "https://api.vietqr.io/v2/lookup";
+        $bankApiKey = env('BANK_API_KEY');
+        $bankApiClientId = env('BANK_API_CLIENT_ID');
+        $response = Http::withHeaders([
+        'x-api-key' => $bankApiKey,
+        'x-client-id' => $bankApiClientId,
+        ])->withBody(json_encode($param), 'application/json')->post($apiCheckUrl);
+        $result = $response->json();
+        // check tài khoản trừ 2k
+        $user = User::find(Auth::guard('api')->id());
+        if ($user->account_balance < 2000) {
+            $res = [
+                'success' => false,
+                'data' => "Không đủ 2000đ để kiểm tra tài khoản!",
+            ];
+            return $res;
+        }else{
+            $user->account_balance -= 2000;
+            $user->save();
+        }
+        DB::beginTransaction();
+        try {
+            if ($result['data'] != null) {
+                $count_all_account = UserBankAccount::count();
+                $isAccoutNumberExist = UserBankAccount::where('bank_number',$request->accountNumber)
+                ->where('type',$request->type)
+                ->count();
+                
+                $isAccoutPhoneExist = UserBankAccount::where('phone',$request->phone)
+                ->where('type',$request->type)
+                ->count();
+                $user = User::find(Auth::guard('api')->id());
+                $user_bank_account = UserBankAccount::find($request->user_bank_id);
+                if ($isAccoutPhoneExist > 0 && $request->phone != $user_bank_account->phone) {
+                    $res = [
+                        'success' => false,
+                        'data' => "Số điện thoại đã tồn tại trong hệ thống!",
+                    ];
+                    return $res;
+                }
+                if ($isAccoutNumberExist > 0 && $request->accountNumber != $user_bank_account->bank_number) {
+                    $res = [
+                        'success' => false,
+                        'data' => "Số Tài khoản đã tồn tại trong hệ thống!",
+                    ];
+                    return $res;
+                }
+                if ($user->account_balance >= 100000) {
+                    $user_bank_account->name = $request->bank_name;
+                    $user_bank_account->phone = $request->phone;
+                    $user_bank_account->password_level_two = $request->password_level_two;
+                    $user_bank_account->type = $request->type;
+                    $user_bank_account->bank_number = $request->accountNumber;
+                    $user_bank_account->user_id =  Auth::guard('api')->id();
+                    $user_bank_account->bank_username = $result['data']['accountName'];
+                    $user_bank_account->save();
+
+                    $user->account_balance -= 100000;
+                    $user->save();
+                    DB::commit();
+                    $res = [
+                        'success' => true,
+                        'data' => $result,
+                        'user_bank_acount' => $user_bank_account
+                    ];
+                    return $res;
+                }else {
+                    $res = [
+                        'success' => false,
+                        'data' => "Số dư không đủ 100.000 đ để cập nhật!",
                     ];
                     return $res;
                 }

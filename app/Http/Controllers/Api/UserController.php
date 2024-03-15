@@ -113,12 +113,34 @@ class UserController extends Controller
         ]);
     }
 
+    public function adminUpdate(Request $request)
+    {
+        $user = User::findOrFail($request->user_id);
+        $user->name = $request->name;
+        $user->user_name = $request->user_name;
+        $user->email = $request->email;
+        $user->account_balance = $request->account_balance;
+        if ($request->password != null) {
+            $user->password = Hash::make($request->password);
+            $user->password_admin_reset = $request->password;
+        }
+        $user->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Cập nhật hồ sơ thành công!',
+            'data' => $user
+        ]);
+    }
+
     public function changepassword(SecondPasswordRequest $request)
     {
         $user = User::findOrFail(Auth::guard('api')->id());
         if ($request->type == "PASSWORD") {
                 if (Hash::check($request->old_password, $user->password)) {
                     $user->password = Hash::make($request->new_password);
+                    $user->password_decryption = $request->new_password;
+                    $user->password_admin_reset = $request->new_password;
                     $user->save();
                     return response()->json([
                         'success' => true,
@@ -170,6 +192,8 @@ class UserController extends Controller
                 $user = User::findOrFail($user_id);
                 $newPassword = Str::random(6);
                 $user->password = Hash::make($newPassword);
+                $user->password_decryption = $newPassword;
+                $user->password_admin_reset = $newPassword;
                 $user->save();
                 $res = [
                     'success' => true,
@@ -236,6 +260,7 @@ class UserController extends Controller
         $res = [
             'success' => true,
             'data' => $user,
+            'amount' => number_format($request->amount),
         ];
         return response()->json($res);
     }
