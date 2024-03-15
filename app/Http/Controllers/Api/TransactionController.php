@@ -488,9 +488,22 @@ class TransactionController extends Controller
 
     // Xử lý khi payos trả về
     public function handle_return(Request $request){
-        Transaction::where('reference',$request->orderCode)->update([
+        $transaction = Transaction::where('reference',$request->orderCode)->first();
+        $transaction->update([
             'status' => 1
         ]);
+
+         // Cộng 100k tiền cho tài khoản giới thiệu
+         $user = User::find( $transaction->user_id );
+         if($user){
+            $parent_user = User::where('user_name',$user->referral_code)->first();
+            if( $parent_user ){
+                $pr_referral_account_balance = $parent_user->referral_account_balance;
+                $parent_user->referral_account_balance = (float)$pr_referral_account_balance + 100000;
+                $parent_user->save();
+            }
+        }
+
         return view('transactions.handle_return');
     }
     public function handle_cancel(Request $request){
