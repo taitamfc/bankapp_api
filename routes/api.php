@@ -54,6 +54,7 @@ Route::delete('users/{id}',[UserController::class,'delete']);
 Route::post('users/deposit/handmade', [UserController::class,'depositAppHandmade']);
 Route::post('users/update-status', [UserController::class,'updateStatus']);
 Route::post('users/admin-update', [UserController::class,'adminUpdate']);
+Route::post('users/update-email', [UserController::class,'updateEmail']);
 
 
 // Transaction
