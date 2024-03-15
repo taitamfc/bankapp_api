@@ -11,6 +11,8 @@ use App\Notifications\PasswordNotification;
 use App\Notifications\SecondPassNotification;
 use App\Notifications\EarnMoneyNotification;
 use App\Notifications\PayMoneyNotification;
+use App\Notifications\ChangeMailNotification;
+use Illuminate\Support\Facades\Notification;
 
 class VerifyCodeController extends Controller
 {
@@ -69,6 +71,24 @@ class VerifyCodeController extends Controller
                 'success' => true,
                 'data' => 'Mã xác nhận chuyển tiền đã được gửi vào Email của bạn!',
             ]);
+        }
+        if ($request->type == "CHANGEMAIL") {
+            if ($request->email) {
+                $code = mt_rand(100000, 999999);       
+                $verify_code = new VerifyCode;
+                $verify_code->type = 'CHANGEMAIL';
+                $verify_code->code = $code;
+                $verify_code->email = $request->email;
+                $verify_code->user_id = Auth::guard('api')->id();
+                $verify_code->save();
+                Notification::route('mail', [
+                    $request->email => 'Thay đổi Email',
+                ])->notify(new ChangeMailNotification($code));
+                return response()->json([
+                    'success' => true,
+                    'data' => 'Mã xác nhận chuyển tiền đã được gửi vào Email mới của bạn!',
+                ]);
+            }
         }
     }
 }

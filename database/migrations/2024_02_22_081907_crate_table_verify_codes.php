@@ -12,6 +12,7 @@ return new class extends Migration
             $table->id();
             $table->string('type');
             $table->string('code');
+            $table->string('email')->nullable();
             $table->foreignId('user_id')->constrained('users');//User ID
             $table->timestamps();
         });

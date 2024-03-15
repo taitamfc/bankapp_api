@@ -103,7 +103,6 @@ class UserController extends Controller
         $user = User::findOrFail($user_id);
         $user->name = $request->name;
         $user->user_name = $request->user_name;
-        $user->email = $request->email;
         $user->save();
 
         return response()->json([
@@ -274,6 +273,47 @@ class UserController extends Controller
             'data' => $user,
         ];
         return response()->json($res);
+    }
+
+    public function updateEmail (Request $request) {
+        $user = Auth::guard('api')->user();
+        $verify_code = VerifyCode::where('user_id', $user->id)
+                        ->where('type', 'CHANGEMAIL')
+                        ->where('email', $request->email)
+                        ->orderBy('id', 'desc')
+                        ->first();
+        if($verify_code == null){
+            $res = [
+                'success' => false,
+                'data' => 'Vui lòng lấy mã xác nhận trước khi thực hiện cập nhật!',
+            ];
+            return response()->json($res);
+        }
+        $code = $verify_code->code;
+        if ($verify_code->email != $request->email) {
+            $res = [
+                'success' => false,
+                'data' => 'Email không khớp với mã OTP này!',
+            ];
+            return response()->json($res);
+        }
+        if ($request->verify_code == $code) {
+            $user = User::findOrFail($user->id);
+            $user->email = $request->email;
+            $user->save();
+            $res = [
+                'success' => true,
+                'data' => $user,
+                'message' => 'Cập nhật email thành công!',
+            ];
+            return response()->json($res, 200);
+        }else {
+            $res = [
+                'success' => false,
+                'data' => 'Mã xác nhận sai, vui lòng kiểm tra lại!',
+            ];
+            return response()->json($res);
+        }
     }
 
 }
