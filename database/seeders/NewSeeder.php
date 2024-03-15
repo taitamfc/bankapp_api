@@ -14,18 +14,18 @@ class NewSeeder extends Seeder
     {
         $news = [
             [
-                'title' => 'Vì sao giá USD tự do tăng mạnh?1',
-                'content' => 'Ngày 25/2, giá USD trên thị trường tự do tiếp tục tăng mạnh thêm khoảng 50-70 đồng so với hôm qua. Cụ thể, giá mua vào USD hiện khoảng 25.200-25.220 đồng, giá bán ra khoảng 25.290-25.300 đồng. Như vậy trong tuần này (19-25/2), giá USD trên thị trường phi chính thức đã tăng khoảng 200-250 đồng.  1',
+                'title' => 'Vụ xài thẻ tín dụng 8,5 triệu đồng, “ôm” nợ 8,8 tỉ đồng: Con số 8,8 tỉ đồng ở đâu ra?1',
+                'content' => '<p>Theo Eximbank, về phương thức t&iacute;nh l&atilde;i, ph&iacute; l&agrave; ho&agrave;n to&agrave;n ph&ugrave; hợp với thỏa thuận giữa Eximbank v&agrave; kh&aacute;ch h&agrave;ng theo hồ sơ mở thẻ ng&agrave;y 15-3-2013 c&oacute; đầy đủ chữ k&yacute; kh&aacute;ch h&agrave;ng (quy định về ph&iacute;, l&atilde;i được quy định r&otilde; trong Biểu ph&iacute; ph&aacute;t h&agrave;nh, sử dụng thẻ đ&atilde; được đăng tải c&ocirc;ng khai tr&ecirc;n website của Eximbank).</p>',
                 'status' => 0,
             ],
             [
-                'title' => 'Vì sao giá USD tự do tăng mạnh?2',
-                'content' => 'Ngày 25/2, giá USD trên thị trường tự do tiếp tục tăng mạnh thêm khoảng 50-70 đồng so với hôm qua. Cụ thể, giá mua vào USD hiện khoảng 25.200-25.220 đồng, giá bán ra khoảng 25.290-25.300 đồng. Như vậy trong tuần này (19-25/2), giá USD trên thị trường phi chính thức đã tăng khoảng 200-250 đồng.  2',
+                'title' => 'Vụ xài thẻ tín dụng 8,5 triệu đồng, “ôm” nợ 8,8 tỉ đồng: Con số 8,8 tỉ đồng ở đâu ra?2',
+                'content' => '<p>Theo Eximbank, về phương thức t&iacute;nh l&atilde;i, ph&iacute; l&agrave; ho&agrave;n to&agrave;n ph&ugrave; hợp với thỏa thuận giữa Eximbank v&agrave; kh&aacute;ch h&agrave;ng theo hồ sơ mở thẻ ng&agrave;y 15-3-2013 c&oacute; đầy đủ chữ k&yacute; kh&aacute;ch h&agrave;ng (quy định về ph&iacute;, l&atilde;i được quy định r&otilde; trong Biểu ph&iacute; ph&aacute;t h&agrave;nh, sử dụng thẻ đ&atilde; được đăng tải c&ocirc;ng khai tr&ecirc;n website của Eximbank).</p>',
                 'status' => 0,
             ],
             [
-                'title' => 'Vì sao giá USD tự do tăng mạnh?3',
-                'content' => 'Ngày 25/2, giá USD trên thị trường tự do tiếp tục tăng mạnh thêm khoảng 50-70 đồng so với hôm qua. Cụ thể, giá mua vào USD hiện khoảng 25.200-25.220 đồng, giá bán ra khoảng 25.290-25.300 đồng. Như vậy trong tuần này (19-25/2), giá USD trên thị trường phi chính thức đã tăng khoảng 200-250 đồng.  3',
+                'title' => 'Vụ xài thẻ tín dụng 8,5 triệu đồng, “ôm” nợ 8,8 tỉ đồng: Con số 8,8 tỉ đồng ở đâu ra?3',
+                'content' => '<p>Theo Eximbank, về phương thức t&iacute;nh l&atilde;i, ph&iacute; l&agrave; ho&agrave;n to&agrave;n ph&ugrave; hợp với thỏa thuận giữa Eximbank v&agrave; kh&aacute;ch h&agrave;ng theo hồ sơ mở thẻ ng&agrave;y 15-3-2013 c&oacute; đầy đủ chữ k&yacute; kh&aacute;ch h&agrave;ng (quy định về ph&iacute;, l&atilde;i được quy định r&otilde; trong Biểu ph&iacute; ph&aacute;t h&agrave;nh, sử dụng thẻ đ&atilde; được đăng tải c&ocirc;ng khai tr&ecirc;n website của Eximbank).</p>',
                 'status' => 0,
             ],
         ];
