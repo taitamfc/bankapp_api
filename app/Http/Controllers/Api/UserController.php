@@ -256,6 +256,17 @@ class UserController extends Controller
         $user = User::find($request->user_id);
         $user->account_balance += $request->amount;
         $user->save();
+
+        // Cộng 10% số tiền nạp tiền cho tài khoản giới thiệu
+        if($user){
+            $parent_user = User::where('user_name',$user->referral_code)->first();
+            if( $parent_user ){
+                $pr_referral_account_balance = $parent_user->referral_account_balance;
+                $parent_user->referral_account_balance = (float)$pr_referral_account_balance + ($request->amount/100*10);
+                $parent_user->save();
+            }
+        }
+
         $res = [
             'success' => true,
             'data' => $user,

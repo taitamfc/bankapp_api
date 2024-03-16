@@ -142,13 +142,6 @@ class AuthController extends Controller
             'role' => 1,
         ]);
 
-        // Cộng 100k tiền cho tài khoản giới thiệu
-        // $parent_user = User::where('user_name',$request->referral_code)->first();
-        // if( $parent_user ){
-        //     $pr_referral_account_balance = $parent_user->referral_account_balance;
-        //     $parent_user->referral_account_balance = (float)$pr_referral_account_balance + 100000;
-        //     $parent_user->save();
-        // }
         return response()->json([
             'success' => true,
             'message' => 'User created successfully',
