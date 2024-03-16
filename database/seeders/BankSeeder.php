@@ -18,7 +18,7 @@ class BankSeeder extends Seeder
             [
                 'name' => 'Ngân hàng Ngoại thương Việt Nam (Vietcombank)',
                 'status' => 1,
-                'image' => 'http://127.0.0.1:8000/images/bank/VCB.png',
+                'image' => 'https://api.vietqr.io/img/VCB.png',
                 'bin' => 970436,
                 'type' => "VCB",
                 'opening_fee' => 0,
@@ -36,9 +36,9 @@ class BankSeeder extends Seeder
                 'ios_download_link' => 'Đường link',
             ],
             [
-                'name' => 'Ngân hàng Công thương (Techcombank)',
+                'name' => 'Ngân hàng TMCP Kỹ thương Việt Nam (Techcombank)',
                 'status' => 1,
-                'image' => 'http://127.0.0.1:8000/images/bank/Techcombank-logo.jpg',
+                'image' => 'https://api.vietqr.io/img/TCB.png',
                 'bin' => 970407,
                 'type' => "TCB",
                 'opening_fee' => 0,

@@ -11,6 +11,8 @@ use Illuminate\Http\Request;
 use App\Http\Resources\TransactionAppResource;
 use DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+use App\Http\Requests\TranferAppRequest;
 
 class TransactionAppController extends Controller
 {
@@ -23,7 +25,7 @@ class TransactionAppController extends Controller
         ];
         return $res;
     }
-    public function transfer(Request $request){
+    public function transfer(TranferAppRequest $request){
         DB::beginTransaction();
         try {
             $data = $request->except('_method','_token');
@@ -38,12 +40,18 @@ class TransactionAppController extends Controller
                 return $res;
             }
             $user_current->save();
-            if ($user_current->type == "VIETCOMBANK") {
+            if ($user_current->type == "VCB") {
                 $data['bank_name'] = "Ngân hàng Ngoại thương Việt Nam (Vietcombank)";
             }else{
-                $data['bank_name'] = "Ngân Hàng B";
+                $data['bank_name'] = "Ngân hàng TMCP Kỹ thương Việt Nam (Techcombank)";
             }
-            $data['transaction_code'] = "TF".$data['bank_code_id'].".".time(); // tự động random
+            if ($user_current->type == "VCB") {
+                $randomNumberVCB = mt_rand(100000000, 999999999);
+                $data['transaction_code'] = "5".$randomNumberVCB; // tự động random
+            }else{
+                $randomNumber = mt_rand(100000000000, 999999999999);
+                $data['transaction_code'] = "FT23".$randomNumber; // tự động random
+            }
             $data['user_bank_account_id'] = $user_current->id;
             $data['from_name'] = $user_current->bank_username;
             $data['from_number'] = $user_current->bank_number;
