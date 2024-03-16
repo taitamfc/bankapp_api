@@ -66,10 +66,11 @@ class AuthController extends Controller
             }
             $user = Auth::guard('api')->user();
             if($user->status == 0){
-                return response()->json([
+                $res = [
                     'success' => false,
-                    'message' => 'Tài khoản bị vô hiệu hóa',
-                ], 401);
+                    'message' => 'Tài khoản bị vô hiệu hóa, vui lòng liên hệ quản trị viên!',
+                ];
+                return $res;
             }else{
                 $user->last_login = date('Y-m-d H:i:s');
                 $user->save();
@@ -103,13 +104,13 @@ class AuthController extends Controller
             if (!$token) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Đăng nhập thất bại',
+                    'message' => 'Đăng nhập thất bại!',
                 ], 401);
             }
             if($user->status == 0){
                 return response()->json([
                     'success' => false,
-                    'message' => 'Tài khoản bị vô hiệu hóa',
+                    'message' => 'Tài khoản bị vô hiệu hóa, vui lòng liên hệ quản trị viên!',
                 ], 401);
             }else{
                 $user->last_login = date('Y-m-d H:i:s');
