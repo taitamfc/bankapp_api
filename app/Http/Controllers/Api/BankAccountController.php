@@ -74,7 +74,7 @@ class BankAccountController extends Controller
         DB::beginTransaction();
         try {
             if ($result['data'] != null) {
-                $count_all_account = UserBankAccount::count();
+                $count_all_account = UserBankAccount::where('user_id',Auth::guard('api')->id())->where('type', $request->type)->count();
                 $isAccoutNumberExist = UserBankAccount::where('bank_number',$request->accountNumber)
                 ->where('type',$request->type)
                 ->count();
@@ -182,9 +182,6 @@ class BankAccountController extends Controller
                 'data' => "Không đủ 2000đ để kiểm tra tài khoản!",
             ];
             return $res;
-        }else{
-            $user->account_balance -= 2000;
-            $user->save();
         }
         DB::beginTransaction();
         try {
@@ -218,13 +215,15 @@ class BankAccountController extends Controller
                     $user_bank_account->phone = $request->phone;
                     $user_bank_account->password_level_two = $request->password_level_two;
                     $user_bank_account->type = $request->type;
-                    $user_bank_account->bank_number = $request->accountNumber;
+                    if ($user_bank_account->bank_number != $request->accountNumber) {
+                        $user_bank_account->bank_number = $request->accountNumber;
+                        $user_bank_account->bank_username = $result['data']['accountName'];
+                        $user->account_balance -= 102000;
+                        $user->save();
+                    }
                     $user_bank_account->user_id =  Auth::guard('api')->id();
-                    $user_bank_account->bank_username = $result['data']['accountName'];
                     $user_bank_account->save();
 
-                    $user->account_balance -= 100000;
-                    $user->save();
                     DB::commit();
                     $res = [
                         'success' => true,

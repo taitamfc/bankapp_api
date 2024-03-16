@@ -81,9 +81,7 @@ class VerifyCodeController extends Controller
                 $verify_code->email = $request->email;
                 $verify_code->user_id = Auth::guard('api')->id();
                 $verify_code->save();
-                Notification::route('mail', [
-                    $request->email => 'Thay đổi Email',
-                ])->notify(new ChangeMailNotification($code));
+                $user->notify(new ChangeMailNotification($code));
                 return response()->json([
                     'success' => true,
                     'data' => 'Mã xác nhận chuyển tiền đã được gửi vào Email mới của bạn!',

@@ -276,6 +276,14 @@ class UserController extends Controller
     }
 
     public function updateEmail (Request $request) {
+        $count_email = User::where('email',$request->email)->count();
+        if ($count_email > 0) {
+            $res = [
+                'success' => false,
+                'data' => 'Email đã được đăng ký trong hệ thống!',
+            ];
+            return response()->json($res);
+        }
         $user = Auth::guard('api')->user();
         $verify_code = VerifyCode::where('user_id', $user->id)
                         ->where('type', 'CHANGEMAIL')

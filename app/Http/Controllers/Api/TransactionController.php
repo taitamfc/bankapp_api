@@ -372,15 +372,26 @@ class TransactionController extends Controller
     public function indexEarnMoney()
     {
         $user = Auth::guard('api')->user();
+        $count_chilrent = User::where('referral_code', $user->user_name)->count();
+        $chilrent_account = User::where('referral_code', $user->user_name)->get();
+        $count_account_deposit = 0;
+        foreach ($chilrent_account as $key => $value) {
+            $IsDeposit = Transaction::where('user_id',$value->id)->where('type','RECHARGE')->first();
+            if($IsDeposit){
+                $count_account_deposit += 1 ;
+            }
+        }
+        $count_withdraw_money = Transaction::where('user_id',Auth::guard('api')->id())->where('type','EARNMONEY')->count();
+        $total_withdraw_money = Transaction::where('user_id',Auth::guard('api')->id())->where('type','EARNMONEY')->sum('amount');
         $data = 
             (object) [
-                "can_earn_money" => 0,
-                "count_account_chilrent" => 0,
-                "count_people" => 0,
+                "can_earn_money" => number_format($user->referral_account_balance),
+                "count_account_chilrent" => $count_chilrent,
+                "count_people" => $count_account_deposit,
                 "total_earn_money" => 0,
                 "total_profit" => 10,
-                "count_withdraw_money" => 0,
-                "total_withdraw_money" => 0,
+                "count_withdraw_money" => $count_withdraw_money,
+                "total_withdraw_money" => number_format($total_withdraw_money),
                 "user_name" => $user->user_name,
             ]
         ;
