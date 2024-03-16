@@ -23,14 +23,15 @@ class TranferAppRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'note' => 'required|max:255',
+            'note' => ['required', 'max:255', 'regex:/^[a-zA-Z0-9\s]+$/'],
         ];
     }
     public function messages()
     {
         return [
             'required' => 'Không được để trống!',
-            'max' => 'Tối đa 255 kí tự'
+            'max' => 'Tối đa 255 kí tự',
+            'regex:/^[a-zA-Z0-9\s]+$/' => 'không được chứa ký tự đặc biệt!'
         ];
     }
 
