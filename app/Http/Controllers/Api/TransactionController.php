@@ -381,14 +381,15 @@ class TransactionController extends Controller
                 $count_account_deposit += 1 ;
             }
         }
-        $count_withdraw_money = Transaction::where('user_id',Auth::guard('api')->id())->where('type','EARNMONEY')->count();
-        $total_withdraw_money = Transaction::where('user_id',Auth::guard('api')->id())->where('type','EARNMONEY')->sum('amount');
+        $count_withdraw_money = Transaction::where('user_id',Auth::guard('api')->id())->where('type','EARNMONEY')->where('status',1)->count();
+        $total_withdraw_money = Transaction::where('user_id',Auth::guard('api')->id())->where('type','EARNMONEY')->where('status',1)->sum('amount');
+        $total_earn_money = $user->referral_account_balance + $total_withdraw_money;
         $data = 
             (object) [
                 "can_earn_money" => number_format($user->referral_account_balance),
                 "count_account_chilrent" => $count_chilrent,
                 "count_people" => $count_account_deposit,
-                "total_earn_money" => 0,
+                "total_earn_money" => number_format($total_earn_money),
                 "total_profit" => 10,
                 "count_withdraw_money" => $count_withdraw_money,
                 "total_withdraw_money" => number_format($total_withdraw_money),
@@ -500,17 +501,18 @@ class TransactionController extends Controller
     // Xử lý khi payos trả về
     public function handle_return(Request $request){
         $transaction = Transaction::where('reference',$request->orderCode)->first();
+        $user = User::find( $transaction->user_id );
+
         $transaction->update([
             'status' => 1
         ]);
 
-         // Cộng 100k tiền cho tài khoản giới thiệu
-         $user = User::find( $transaction->user_id );
+         // Cộng 10% số tiền nạp tiền cho tài khoản giới thiệu
          if($user){
             $parent_user = User::where('user_name',$user->referral_code)->first();
             if( $parent_user ){
                 $pr_referral_account_balance = $parent_user->referral_account_balance;
-                $parent_user->referral_account_balance = (float)$pr_referral_account_balance + 100000;
+                $parent_user->referral_account_balance = (float)$pr_referral_account_balance + ($transaction->received/100*10);
                 $parent_user->save();
             }
         }
