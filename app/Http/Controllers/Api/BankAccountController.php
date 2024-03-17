@@ -34,6 +34,15 @@ class BankAccountController extends Controller
 
     public function getbankVietqr(Request $request)
     {
+        $item = UserBankAccount::where('user_id', Auth::guard('api')->id())
+        ->where('type', $request->type)
+        ->get();
+        $res = [
+            'success' => true,
+            'data' => new UserBankAccountResource($item),
+        ];
+        return $res;
+
         $items = UserBankAccount::where('user_id', Auth::guard('api')->id())
             ->where('type', $request->type)
             ->get();
