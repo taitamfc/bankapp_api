@@ -16,6 +16,8 @@ use App\Http\Controllers\Api\BankListController;
 use App\Http\Controllers\Api\BankAccountController;
 use App\Http\Controllers\Api\TransactionAppController;
 use App\Http\Controllers\Api\HomeAdminController;
+use App\Http\Controllers\Api\VietqrBankController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -115,6 +117,10 @@ Route::put('app/user-bank-account', [BankAccountController::class,'updateAcountB
 Route::get('app/transactions', [TransactionAppController::class,'index']);
 Route::post('app/transfer', [TransactionAppController::class,'transfer']);
 Route::post('tranctions-app/deposit', [TransactionAppController::class,'depositApp']);
+
+// vietqr all bank
+Route::get('vietqr-bank-all', [VietqrBankController::class,'index']);
+
 
 
 //Auth
