@@ -36,7 +36,7 @@ class BankAccountController extends Controller
     {
         $item = UserBankAccount::where('user_id', Auth::guard('api')->id())
         ->where('type', $request->type)
-        ->get();
+        ->first();
         $res = [
             'success' => true,
             'data' => new UserBankAccountResource($item),
