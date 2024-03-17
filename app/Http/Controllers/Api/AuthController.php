@@ -118,7 +118,7 @@ class AuthController extends Controller
             }
             return response()->json([
                 'data' => $user,
-                'app_data' => $user_bank_acount,
+                // 'app_data' => $user_bank_acount,
                 'success' => true,
                 'authorization' => [
                     'token' => $token,
