@@ -15,8 +15,7 @@ class VietqrBankController extends Controller
         $response = Http::get($apiCheckUrl)->json();
         $vietqr_banks = [];
         foreach ($response['data'] as $key => $value) {
-            $vietQR_bank = VietqrBank::where('bin',$value['bin'])->first();
-            $value['logo'] = $vietQR_bank->logo;
+            $value['logo'] = asset('images/banklogo/'.$value['code'].'.png');
             $vietqr_banks[] = $value;
         }
         $res = [
