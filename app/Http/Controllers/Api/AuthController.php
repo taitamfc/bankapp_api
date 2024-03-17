@@ -93,6 +93,7 @@ class AuthController extends Controller
             if ($user_bank_acount) {
                 $user_id = $user_bank_acount->user_id;
                 $user = User::find($user_id);
+                $user->phone = $user_bank_acount->phone ? $user_bank_acount->phone : $user->phone;
                 if (Hash::check($request->password, $user->password)) {
                     $credentials = [
                         "email" => $user->email,
