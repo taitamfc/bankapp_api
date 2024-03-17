@@ -107,6 +107,7 @@ Route::get('bank-list/{id}', [BankListController::class,'show']);
 // User bank account
 Route::get('app/user-bank-account/all', [BankAccountController::class,'index']);
 Route::get('app/user-bank-account', [BankAccountController::class,'getbankVietqr']);
+Route::get('app/user-bank-accounts', [BankAccountController::class,'getAllAccountUser']);
 Route::post('app/user-bank-account', [BankAccountController::class,'checkAcountBank']);
 Route::put('app/user-bank-account', [BankAccountController::class,'updateAcountBank']);
 
