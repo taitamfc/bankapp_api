@@ -1,0 +1,15 @@
+/* ==== 
+ --------- (4.5) footer styles start ---------
+ ==== */
+
+.footer {
+  background-color: #18045B !important;
+  padding: 3rem 0 3rem;
+  &__heading-link{
+  font-size: clamp(1.4rem, 1.3em + 0.5vw, 1.9rem);
+  }
+}
+
+/* ==== 
+ --------- (4.5) footer styles end ---------
+ ==== */

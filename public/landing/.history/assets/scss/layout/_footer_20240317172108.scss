@@ -1,0 +1,37 @@
+/* ==== 
+ --------- (4.5) footer styles start ---------
+ ==== */
+
+// .footer__cta {
+//   max-width: 856px;
+//   margin: 0px auto;
+//   padding: 80px 20px;
+//   background-color: #4022a7;
+//   text-align: center;
+//   border-radius: 20px;
+//   @include responsive(lg) {
+//     padding: 60px 20px;
+//   }
+//   @include responsive(sm) {
+//     border-radius: 5px;
+//     padding: 40px 20px;
+//   }
+//   .footer_alt {
+//     @include center(450px);
+//   }
+// }
+
+
+
+
+.footer {
+  background-color: #18045B !important;
+  padding: 3rem 0 3rem;
+  &__heading-link{
+    font-size: 30px;
+  }
+}
+
+/* ==== 
+ --------- (4.5) footer styles end ---------
+ ==== */

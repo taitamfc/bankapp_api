@@ -34,7 +34,7 @@ return new class extends Migration
             $table->string('ios_download_link')->nullable(); // Link tải IOS
             $table->string('ios_download_qr')->nullable(); // Link tải IOS
             $table->string('url_video_setting_app')->nullable(); 
-            $table->string('url_video_setting_bank')->nullable(); 
+            $table->string('url_video_setting_bank')->nullable();
             $table->timestamps();
         });
     }

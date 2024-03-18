@@ -1,0 +1,236 @@
+/* ==== 
+ --------- (4.5) footer styles start ---------
+ ==== */
+.footer {
+    background-image: linear-gradient(to top, #18045B 60%, transparent 40%);
+}
+
+
+.footer__cta {
+  max-width: 856px;
+  margin: 0px auto;
+  padding: 80px 20px;
+  background-color: #4022a7;
+  text-align: center;
+  border-radius: 20px;
+  @include responsive(lg) {
+    padding: 60px 20px;
+  }
+  @include responsive(sm) {
+    border-radius: 5px;
+    padding: 40px 20px;
+  }
+  .footer_alt {
+    @include center(450px);
+  }
+}
+
+.input__group {
+  max-width: 560px;
+  margin: 30px auto 0px;
+  position: relative;
+  background-color: transparent;
+  @include responsive(lg) {
+    margin-top: 20px;
+  }
+  @include responsive(sm) {
+    margin-top: 30px;
+  }
+  input[type="email"] {
+    width: 100%;
+    padding: 20px 80px 20px 30px;
+    border-radius: 10px;
+    border: 1px solid #7154d8;
+    font-size: 18px;
+    color: $white;
+    background-color: transparent;
+    @include responsive(sm) {
+      padding: 10px 70px 10px 20px;
+    }
+    &:focus {
+      outline: none !important;
+    }
+    &::placeholder {
+      color: $white;
+    }
+  }
+
+  button {
+    width: 50px;
+    height: 50px;
+    background-color: #006bff;
+    line-height: 50px;
+    text-align: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    outline: none;
+    border-radius: 10px;
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    transform: translateY(-50%);
+    @include responsive(lg) {
+      right: 10px;
+      width: 40px;
+      height: 40px;
+      line-height: 40px;
+    }
+    @include responsive(sm) {
+      border-radius: 5px;
+    }
+    i {
+      font-size: 20px;
+      color: $white;
+      @include responsive(lg) {
+        font-size: 16px;
+      }
+    }
+  }
+}
+
+.footer__nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0px 0px 30px;
+  border-bottom: 1px solid #58439f;
+  @include responsive(md) {
+    flex-direction: column;
+  }
+  @include responsive(sm) {
+    padding-bottom: 23px;
+  }
+  .logo {
+    img {
+      max-width: 165px;
+      height: auto;
+      @include responsive(sm) {
+        max-width: 120px;
+        height: auto;
+      }
+    }
+  }
+  ul {
+    margin: 0px;
+    padding: 0px;
+    list-style-type: none;
+    display: flex;
+    @include responsive(md) {
+      margin-bottom: 25px;
+    }
+    @include responsive(sm) {
+      text-align: center;
+      margin-top: 0px;
+    }
+    li {
+      display: inline-block;
+      margin-top: 0px;
+      @include responsive(sm) {
+        margin-top: 0px;
+      }
+      a {
+        padding: 0px 20px;
+        line-height: 24px;
+        font-weight: 600;
+        color: $white;
+        border-right: 1px solid #58439f;
+        @include responsive(sm) {
+          padding: 0px 10px;
+        }
+        &:hover {
+          color: $white;
+        }
+      }
+      &:last-of-type {
+        a {
+          padding-right: 0px;
+          border-right: none;
+          @include responsive(sm) {
+            padding-right: 10px;
+          }
+        }
+      }
+    }
+  }
+  .social {
+    margin-top: 0px;
+  }
+}
+
+.footer__credit {
+  padding: 30px 0px;
+  @include responsive(sm) {
+    padding: 25px 0px;
+  }
+  ul {
+    margin: 0px;
+    padding: 0px;
+    list-style-type: none;
+    display: flex;
+    justify-content: flex-end;
+    @include responsive(md) {
+      margin-top: 20px;
+      justify-content: center;
+    }
+    @include responsive(sm) {
+      text-align: center;
+      margin-top: 0px;
+    }
+    li {
+      display: inline-block;
+      margin-top: 0px;
+      @include responsive(sm) {
+        margin-top: 19px;
+      }
+      a {
+        padding: 0px 20px;
+        line-height: 24px;
+        font-weight: 600;
+        color: $white;
+        border-right: 1px solid #58439f;
+        @include responsive(sm) {
+          padding: 0px 10px;
+        }
+        &:hover {
+          color: $white;
+        }
+      }
+      &:last-of-type {
+        a {
+          padding-right: 0px;
+          border-right: none;
+          @include responsive(sm) {
+            padding-right: 10px;
+          }
+        }
+      }
+    }
+  }
+}
+
+.footer__credit__left {
+  p {
+    a {
+      color: $white;
+      line-height: inherit;
+      font-weight: 600;
+      display: inline;
+      font-size: inherit;
+      letter-spacing: inherit;
+      &:hover {
+        color: $senary-color;
+      }
+    }
+  }
+}
+
+.footer__credit__right {
+  @include responsive(md) {
+    margin-top: 0px;
+  }
+}
+/* ==== 
+ --------- (4.5) footer styles end ---------
+ ==== */
