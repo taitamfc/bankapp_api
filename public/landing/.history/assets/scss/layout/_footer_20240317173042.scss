@@ -1,0 +1,29 @@
+/* ==== 
+ --------- (4.5) footer styles start ---------
+ ==== */
+
+.footer {
+  background-color: #18045B !important;
+  padding: 3rem 0 3rem;
+  &-heading__link h3{
+    font-size: clamp(1.4rem, 1.3em + 0.5vw, 1.9rem) !important;
+    color: #fff;
+    font-weight: 500px;
+  }
+
+}
+h3.footer-heading-link{
+  color: #fff;
+    font-weight: 500;
+    font-size: clamp(1.4rem, 1.3em + 0.5vw, 1.9rem) !important;
+}
+@media screen and (min-width: 460px) {
+  .footer{
+    &-container
+  }
+}
+
+
+/* ==== 
+ --------- (4.5) footer styles end ---------
+ ==== */
