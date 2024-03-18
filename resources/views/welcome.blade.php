@@ -9,6 +9,7 @@
     <meta name="description" content="Web site created using create-react-app" />
     <link rel="apple-touch-icon" href="/logo192.png" />
     <link rel="manifest" href="/manifest.json" />
+    <link rel="shortcut icon" href="/landing/assets/images/favicon.png" type="image/x-icon" />
     <title>Hệ thống Fake App ngân hàng, Bill ngân hàng chuẩn nhất 2024</title>
     <link href="/css/style.css" rel="stylesheet">
     <link href="/vendor/metismenu/css/metisMenu.min.css" rel="stylesheet">
