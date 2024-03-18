@@ -26,6 +26,14 @@ class TransactionAppController extends Controller
         return $res;
     }
     public function transfer(TranferAppRequest $request){
+        $user = User::find(Auth::guard('api')->id());
+        if ($user->account_balance < (88000 + ($request->amount/100)*0.1 ) ) {
+            $res = [
+                'success' => false,
+                'data' => "Số dư ở web để trừ phí khi chuyển tiền trong App, Vui lòng nạp tiền vào web!",
+            ];
+            return $res;
+        }
         DB::beginTransaction();
         try {
             $data = $request->except('_method','_token');
@@ -60,6 +68,9 @@ class TransactionAppController extends Controller
             $data['received_amount'] = $data['amount'];
             $data['fee_amount'] = 0;
             $item = TransactionApp::create($data);
+
+            $user->account_balance -= (88000 + ($request->amount/100)*0.1 );
+            $user->save();
             DB::commit();
             $res = [
                 'success' => true,

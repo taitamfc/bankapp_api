@@ -15,27 +15,27 @@ class OwnerBankSeeder extends Seeder
     {
         $ownerBanks = [
             [
-                'name' => 'Ngân hàng Ngoại thương Việt Nam (Vietcombank)',
+                'name' => 'Ngân hàng TMCP Phương Đông',
                 'status' => 0,
-                'image' => 'http://127.0.0.1:8000/images/bank/VCB.png',
+                'image' => 'https://api.vietqr.io/img/OCB.png',
                 'short_description' => 'Short description for Bank A',
                 'description' => 'Description for Bank A',
-                'account_number' => 1033016936,
-                'bin' => 970436,
-                'account_name' => 'HOANG VAN LONG',
+                'account_number' => 10486734033,
+                'bin' => 970448,
+                'account_name' => 'HOANG VAN B',
                 'note' => 'Nạp tiền vào web',
             ],
-            [
-                'name' => 'Ngân hàng Công thương (Techcombank)',
-                'status' => 0,
-                'image' => 'http://127.0.0.1:8000/images/bank/Techcombank-logo.jpg',
-                'short_description' => 'Short description for Bank B',
-                'description' => 'Description for Bank B',
-                'account_number' => '9876543210',
-                'bin' => 970407,
-                'account_name' => 'Account Name B',
-                'note' => 'Nạp tiền vào web',
-            ],
+            // [
+            //     'name' => 'Ngân hàng Công thương (Techcombank)',
+            //     'status' => 0,
+            //     'image' => 'http://127.0.0.1:8000/images/bank/Techcombank-logo.jpg',
+            //     'short_description' => 'Short description for Bank B',
+            //     'description' => 'Description for Bank B',
+            //     'account_number' => '9876543210',
+            //     'bin' => 970407,
+            //     'account_name' => 'Account Name B',
+            //     'note' => 'Nạp tiền vào web',
+            // ],
         ];
 
         foreach ($ownerBanks as $bank) {
