@@ -112,6 +112,8 @@ Route::get('app/user-bank-account', [BankAccountController::class,'getbankVietqr
 Route::get('app/user-bank-accounts', [BankAccountController::class,'getAllAccountUser']);
 Route::post('app/user-bank-account', [BankAccountController::class,'checkAcountBank']);
 Route::put('app/user-bank-account', [BankAccountController::class,'updateAcountBank']);
+Route::post('app/checkVietQr', [BankAccountController::class,'checkVietQrBank']);
+
 
 //Transaction App
 Route::get('app/transactions', [TransactionAppController::class,'index']);

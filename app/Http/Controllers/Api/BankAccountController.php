@@ -267,5 +267,45 @@ class BankAccountController extends Controller
         
     }
 
+    public function checkVietQrBank(Request $request){
+        $param = [
+            "bin" => $request->bin,
+            'accountNumber' => $request->accountNumber
+        ];
+        $apiCheckUrl = "https://api.vietqr.io/v2/lookup";
+        $bankApiKey = env('BANK_API_KEY');
+        $bankApiClientId = env('BANK_API_CLIENT_ID');
+        $response = Http::withHeaders([
+        'x-api-key' => $bankApiKey,
+        'x-client-id' => $bankApiClientId,
+        ])->withBody(json_encode($param), 'application/json')->post($apiCheckUrl);
+        $result = $response->json();
+        // check tài khoản trừ 2k
+        $user = User::find(Auth::guard('api')->id());
+        if ($user->account_balance < 2000) {
+            $res = [
+                'success' => false,
+                'data' => "Không đủ 2000đ để kiểm tra tài khoản!",
+            ];
+            return $res;
+        }else{
+            if ($result['data'] != null) {
+                $user->account_balance -= 2000;
+                $user->save();
+                $res = [
+                    'success' => true,
+                    'data' => $result,
+                ];
+                return $res;
+            }else{
+                $res = [
+                    'success' => false,
+                    'data' => "Số tài khoản không hợp lệ!",
+                ];
+                return $res;
+            }
+        }
+    }
+
 
 }
