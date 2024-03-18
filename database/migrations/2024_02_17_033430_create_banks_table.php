@@ -30,7 +30,11 @@ return new class extends Migration
             $table->string('android_version')->nullable(); // Phiên bản Android
             $table->string('ios_version')->nullable(); // Phiên bản IOS
             $table->string('android_download_link')->nullable(); // Link tải Android
+            $table->string('android_download_qr')->nullable(); // Link tải Android
             $table->string('ios_download_link')->nullable(); // Link tải IOS
+            $table->string('ios_download_qr')->nullable(); // Link tải IOS
+            $table->string('url_video_setting_app')->nullable(); 
+            $table->string('url_video_setting_bank')->nullable(); 
             $table->timestamps();
         });
     }
