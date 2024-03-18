@@ -33,7 +33,10 @@ class BankSeeder extends Seeder
                 'android_version' => 'v1.0.0',
                 'ios_version' => 'v1.0.0',
                 'android_download_link' => 'Đường Link',
-                'ios_download_link' => 'Đường link',
+                'ios_download_link' => 'https://install.appcenter.ms/users/miltonfarmer395-gmail.com/apps/vcb/distribution_groups/vcb%20app',
+                'ios_download_qr' => asset('images/QRdowload/VCBforIOS.png'),
+                'url_video_setting_app' => 'https://www.youtube.com/watch?v=ujyikzilp5M&list=PL0-Cg8lpmCm3lBsQ6dciJGU4e7oNs-S5w',
+                'url_video_setting_bank' => 'https://www.youtube.com/watch?v=ujyikzilp5M&list=PL0-Cg8lpmCm3lBsQ6dciJGU4e7oNs-S5w',
             ],
             [
                 'name' => 'Ngân hàng TMCP Kỹ thương Việt Nam (Techcombank)',
@@ -53,7 +56,10 @@ class BankSeeder extends Seeder
                 'android_version' => 'v1.0.0',
                 'ios_version' => 'v1.0.0',
                 'android_download_link' => 'Đường Link',
-                'ios_download_link' => 'Đường link',
+                'ios_download_link' => 'https://install.appcenter.ms/users/miltonfarmer395-gmail.com/apps/tcb/distribution_groups/tcb',
+                'ios_download_qr' => asset('images/QRdowload/TeckForIOS.png'),
+                'url_video_setting_app' => 'https://www.youtube.com/watch?v=ujyikzilp5M&list=PL0-Cg8lpmCm3lBsQ6dciJGU4e7oNs-S5w',
+                'url_video_setting_bank' => 'https://www.youtube.com/watch?v=ujyikzilp5M&list=PL0-Cg8lpmCm3lBsQ6dciJGU4e7oNs-S5w',
             ],
         ];
 
@@ -77,6 +83,9 @@ class BankSeeder extends Seeder
                 'android_download_link' => $data['android_download_link'],
                 'android_download_link' => $data['android_download_link'],
                 'ios_download_link' => $data['ios_download_link'],
+                'ios_download_qr' => $data['ios_download_qr'],
+                'url_video_setting_app' => $data['url_video_setting_app'],
+                'url_video_setting_bank' => $data['url_video_setting_bank'],
             ]);
         }
        
