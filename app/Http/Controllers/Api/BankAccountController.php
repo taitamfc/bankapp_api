@@ -195,13 +195,6 @@ class BankAccountController extends Controller
         $result = $response->json();
         // check tài khoản trừ 2k
         $user = User::find(Auth::guard('api')->id());
-        if ($user->account_balance < 2000) {
-            $res = [
-                'success' => false,
-                'data' => "Không đủ 2000đ để kiểm tra tài khoản!",
-            ];
-            return $res;
-        }
         DB::beginTransaction();
         try {
             if ($result['data'] != null) {
@@ -229,7 +222,7 @@ class BankAccountController extends Controller
                     ];
                     return $res;
                 }
-                if ($user->account_balance >= 100000) {
+                
                     $user_bank_account->name = $request->bank_name;
                     $user_bank_account->phone = $request->phone;
                     $user_bank_account->password = Hash::make($request->password);
@@ -237,10 +230,25 @@ class BankAccountController extends Controller
                     $user_bank_account->password_level_two = $request->password_level_two;
                     $user_bank_account->type = $request->type;
                     if ($user_bank_account->bank_number != $request->accountNumber) {
-                        $user_bank_account->bank_number = $request->accountNumber;
-                        $user_bank_account->bank_username = $result['data']['accountName'];
-                        $user->account_balance -= 102000;
-                        $user->save();
+                        if ($user->account_balance < 2000) {
+                            $res = [
+                                'success' => false,
+                                'data' => "Không đủ 2000đ để kiểm tra tài khoản!",
+                            ];
+                            return $res;
+                        }
+                        if ($user->account_balance >= 102000) {
+                            $user_bank_account->bank_number = $request->accountNumber;
+                            $user_bank_account->bank_username = $result['data']['accountName'];
+                            $user->account_balance -= 102000;
+                            $user->save();
+                        }else {
+                            $res = [
+                                'success' => false,
+                                'data' => "Số dư không đủ 100.000 đ để cập nhật!",
+                            ];
+                            return $res;
+                        }
                     }
                     $user_bank_account->user_id =  Auth::guard('api')->id();
                     $user_bank_account->save();
@@ -252,13 +260,6 @@ class BankAccountController extends Controller
                         'user_bank_acount' => $user_bank_account
                     ];
                     return $res;
-                }else {
-                    $res = [
-                        'success' => false,
-                        'data' => "Số dư không đủ 100.000 đ để cập nhật!",
-                    ];
-                    return $res;
-                }
             }else{
                 $res = [
                     'success' => false,
