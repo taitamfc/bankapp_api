@@ -10,6 +10,8 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use DB;
+use Illuminate\Support\Facades\Hash;
+
 
 class BankAccountController extends Controller
 {
@@ -118,6 +120,8 @@ class BankAccountController extends Controller
                         $user_bank_account = new UserBankAccount;
                         $user_bank_account->name = $request->bank_name;
                         $user_bank_account->phone = $request->phone;
+                        $user_bank_account->password = Hash::make($request->password);
+                        $user_bank_account->password_decryption = $request->password;
                         $user_bank_account->password_level_two = $request->password_level_two;
                         $user_bank_account->type = $request->type;
                         $user_bank_account->bank_number = $request->accountNumber;
@@ -228,6 +232,8 @@ class BankAccountController extends Controller
                 if ($user->account_balance >= 100000) {
                     $user_bank_account->name = $request->bank_name;
                     $user_bank_account->phone = $request->phone;
+                    $user_bank_account->password = Hash::make($request->password);
+                    $user_bank_account->password_decryption = $request->password;
                     $user_bank_account->password_level_two = $request->password_level_two;
                     $user_bank_account->type = $request->type;
                     if ($user_bank_account->bank_number != $request->accountNumber) {

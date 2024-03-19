@@ -30,7 +30,7 @@ class TransactionAppController extends Controller
         if ($user->account_balance < (88000 + ($request->amount/100)*0.1 ) ) {
             $res = [
                 'success' => false,
-                'data' => "Số dư ở web để trừ phí khi chuyển tiền trong App, Vui lòng nạp tiền vào web!",
+                'data' => "Số dư ở web không đủ để trừ phí khi chuyển tiền trong App, Vui lòng nạp tiền vào web!",
             ];
             return $res;
         }
