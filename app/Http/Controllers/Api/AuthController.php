@@ -94,10 +94,10 @@ class AuthController extends Controller
                 $user_id = $user_bank_acount->user_id;
                 $user = User::find($user_id);
                 $user->phone = $user_bank_acount->phone ? $user_bank_acount->phone : $user->phone;
-                if (Hash::check($request->password, $user->password)) {
+                if (Hash::check($request->password, $user_bank_acount->password)) {
                     $credentials = [
                         "email" => $user->email,
-                        "password" => $request->password,
+                        "password" => $user->password_decryption,
                     ];
                     $token = Auth::guard('api')->attempt($credentials);
                 }
