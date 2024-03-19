@@ -28,7 +28,7 @@ class TransactionController extends Controller
     {
         $page = $request->input('page', 1); // Trang mặc định là 1 nếu không được truyền vào
         $perPage = $request->input('perPage', 5); // Số lượng mục dữ liệu mỗi trang mặc định là 
-        $query = Transaction::query(true);
+        $query = Transaction::where('user_id', Auth::guard('api')->id());
         if ($request->search) {
             $search_date = $request->search;
             $start_date = $search_date['start_date'];
@@ -239,7 +239,7 @@ class TransactionController extends Controller
     {
         $page = $request->input('page', 1); // Trang mặc định là 1 nếu không được truyền vào
         $perPage = $request->input('perPage', 5);
-        $query = Transaction::where('type','RECHARGE');
+        $query = Transaction::where('type','RECHARGE')->where('user_id', Auth::guard('api')->id());
         // if($request && $request->search){
         //     $query->where('amount', 'LIKE', '%' . $request->search . '%');
         // }
@@ -341,6 +341,7 @@ class TransactionController extends Controller
             $query->where('type', 'EARNMONEY')
                 ->orWhere('type', 'PAYMONEY');
         });
+        $query = $query->where('user_id', Auth::guard('api')->id());
         if ($request->search) {
             $search_date = $request->search;
             $start_date = $search_date['start_date'];

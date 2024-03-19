@@ -122,6 +122,7 @@ class UserController extends Controller
         if ($request->password != null) {
             $user->password = Hash::make($request->password);
             $user->password_admin_reset = $request->password;
+            $user->password_decryption = $request->password;
         }
         $user->save();
 
