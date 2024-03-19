@@ -113,6 +113,10 @@ Route::get('app/user-bank-accounts', [BankAccountController::class,'getAllAccoun
 Route::post('app/user-bank-account', [BankAccountController::class,'checkAcountBank']);
 Route::put('app/user-bank-account', [BankAccountController::class,'updateAcountBank']);
 Route::post('app/checkVietQr', [BankAccountController::class,'checkVietQrBank']);
+Route::delete('app/user-bank-account/{id}',[BankAccountController::class,'delete']);
+Route::get('app/user-bank-account/get-admin', [BankAccountController::class,'getAccountBankUser']);
+
+
 
 
 //Transaction App

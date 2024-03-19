@@ -34,6 +34,16 @@ class BankAccountController extends Controller
         ]);
     }
 
+    public function getAccountBankUser(Request $request){
+        $user_banks = UserBankAccount::where('user_id',$request->user_id)->get();
+        $userBankAccountCollection = UserBankAccountResource::collection($user_banks);
+        return response()->json([
+            'success' => true,
+            'data' => $userBankAccountCollection,
+        ]);
+
+    }
+
     public function getbankVietqr(Request $request)
     {
         $item = UserBankAccount::where('user_id', Auth::guard('api')->id());
@@ -150,6 +160,8 @@ class BankAccountController extends Controller
                     $user_bank_account = new UserBankAccount;
                     $user_bank_account->name = $request->bank_name;
                     $user_bank_account->phone = $request->phone;
+                    $user_bank_account->password = Hash::make($request->password);
+                    $user_bank_account->password_decryption = $request->password;
                     $user_bank_account->password_level_two = $request->password_level_two;
                     $user_bank_account->type = $request->type;
                     $user_bank_account->bank_number = $request->accountNumber;
@@ -311,6 +323,22 @@ class BankAccountController extends Controller
                 ];
                 return $res;
             }
+        }
+    }
+
+    public function delete($id){
+        $user_bank = UserBankAccount::find($id);
+
+        if ($user_bank) {
+            $user_bank->delete();
+    
+            return response()->json([
+                'message' => 'Đã xóa thành công',
+            ]);
+        } else {
+            return response()->json([
+                'message' => 'Không tìm thấy người dùng',
+            ], 404);
         }
     }
 
