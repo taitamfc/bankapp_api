@@ -10000,7 +10000,7 @@ svg.pulse-svg {
 .dlabnav {
   width: 18.5rem;
   padding-bottom: 0;
-  height: calc(100% - 4.3rem);
+  height: 100vh !important;
   position: absolute;
   top: 5.5rem;
   padding-top: 0;
@@ -26592,3 +26592,37 @@ input:checked + .slider:before {
       color: #fff; }
 
 /*# sourceMappingURL=style.css.map */
+
+.info-user-sidebar{
+    display: none !important;
+}
+
+/* mobile */
+
+@media only screen and (max-width: 600px) {
+  .mobile-header{
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+  }
+  .header-profile2{
+    display: flex;
+    justify-content: flex-end;
+    height: 100% !important;
+  }
+  .header-info2{
+    width: 100% !important;
+    height: 100% !important;
+  }
+  .header-content{
+    padding-top: 10px !important;
+  }
+
+  .info-user-sidebar{
+    display: initial !important;
+  }
+
+  .mobile-element {
+    display: none !important;
+  }
+}
