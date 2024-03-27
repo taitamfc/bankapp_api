@@ -9838,7 +9838,15 @@ svg.pulse-svg {
   transition: all .2s ease; }
   @media only screen and (max-width: 87.5rem) {
     .content-body {
-      margin-left: 17rem; } }
+      margin-left: 0; 
+    } 
+    [data-sidebar-style="full"][data-layout="vertical"] .menu-toggle .content-body {
+      margin-left: 0 !important;
+    }
+    .menu-toggle .dlabnav {
+      display: none;
+    }
+  }
 
 .bell img {
   -webkit-animation: ring 8s .7s ease-in-out infinite;
@@ -10023,7 +10031,7 @@ svg.pulse-svg {
   @media only screen and (max-width: 47.9375rem) {
     .dlabnav {
       width: 18rem;
-      background: linear-gradient(180deg, #763ed0, #2e1ba0); } }
+      background: linear-gradient(180deg, #1f2270, #061d58); } }
   .dlabnav .dlabnav-scroll {
     position: relative;
     height: 100%; }
@@ -26625,4 +26633,10 @@ input:checked + .slider:before {
   .mobile-element {
     display: none !important;
   }
+
+  .text-fm-sd{
+    color: #62eb73;
+  }
+
+  
 }
