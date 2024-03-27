@@ -103,30 +103,30 @@ class TransactionAppController extends Controller
             $user_bank_account->account_balance = $account_balance;
             $user_bank_account->save();
             // lưu vào lịch sử app
-            $transaction_app_deposit = new TransactionApp;
-            $transaction_app_deposit->user_bank_account_id = $user_bank_account->id;
-            $transaction_app_deposit->type = "RECEIVE";
-            $transaction_app_deposit->reference = "123cfd456";
-            $transaction_app_deposit->from_name = "BankWeb";
-            $transaction_app_deposit->recipient_name = $user_bank_account->bank_username;
-            $transaction_app_deposit->recipient_account_number = $user_bank_account->bank_number;
-            $transaction_app_deposit->amount = $request->amount;
-            $transaction_app_deposit->account_balance = $user_bank_account->account_balance;
-            $transaction_app_deposit->note = "Nạp tiền từ tài khoản Web";
-            $transaction_app_deposit->transaction_code = "RE."."CEI.".time(); // tự động random
-            if ($user_bank_account->type == "VIETCOMBANK") {
-                $transaction_app_deposit->bank_code_id = "VCB";
-            }else{
-                $transaction_app_deposit->bank_code_id = "BANK";
-            }
-            $transaction_app_deposit->received_amount = $user_bank_account->account_balance;
-            $transaction_app_deposit->fee_amount = 0;
-            if ($user_bank_account->type == "VIETCOMBANK") {
-                $transaction_app_deposit->bank_name = "Ngân hàng Ngoại thương Việt Nam (Vietcombank)";
-            }else{
-                $transaction_app_deposit->bank_name = "Ngân Hàng B";
-            }
-            $transaction_app_deposit->save();
+            // $transaction_app_deposit = new TransactionApp;
+            // $transaction_app_deposit->user_bank_account_id = $user_bank_account->id;
+            // $transaction_app_deposit->type = "RECEIVE";
+            // $transaction_app_deposit->reference = "123cfd456";
+            // $transaction_app_deposit->from_name = "BankWeb";
+            // $transaction_app_deposit->recipient_name = $user_bank_account->bank_username;
+            // $transaction_app_deposit->recipient_account_number = $user_bank_account->bank_number;
+            // $transaction_app_deposit->amount = $request->amount;
+            // $transaction_app_deposit->account_balance = $user_bank_account->account_balance;
+            // $transaction_app_deposit->note = "Nạp tiền từ tài khoản Web";
+            // $transaction_app_deposit->transaction_code = "RE."."CEI.".time(); // tự động random
+            // if ($user_bank_account->type == "VIETCOMBANK") {
+            //     $transaction_app_deposit->bank_code_id = "VCB";
+            // }else{
+            //     $transaction_app_deposit->bank_code_id = "BANK";
+            // }
+            // $transaction_app_deposit->received_amount = $user_bank_account->account_balance;
+            // $transaction_app_deposit->fee_amount = 0;
+            // if ($user_bank_account->type == "VIETCOMBANK") {
+            //     $transaction_app_deposit->bank_name = "Ngân hàng Ngoại thương Việt Nam (Vietcombank)";
+            // }else{
+            //     $transaction_app_deposit->bank_name = "Ngân Hàng B";
+            // }
+            // $transaction_app_deposit->save();
 
             // lưu vào lịch sử web
             $user_id = Auth::guard('api')->id();
