@@ -16,12 +16,14 @@ use App\Http\Requests\TranferAppRequest;
 
 class TransactionAppController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $data = TransactionAppResource::collection(TransactionApp::orderBy('id', 'desc')->paginate(5));
+        $query = TransactionApp::where('user_bank_account_id', $request->user_bank_account_id);
+        $items = $query->orderBy('id', 'desc')->paginate(5);
+        $transactionAppCollection = TransactionAppResource::collection($items);
         $res = [
             'success' => true,
-            'data' => $data,
+            'data' => $transactionAppCollection,
         ];
         return $res;
     }
@@ -148,7 +150,6 @@ class TransactionAppController extends Controller
             $res = [
                 'success' => true,
                 'data' => $user_bank_account,
-                'transactionApp' => $transaction_app_deposit,
                 'transactionWeb' => $transaction,
             ];
             return $res;
