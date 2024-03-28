@@ -17,6 +17,7 @@ use App\Http\Controllers\Api\BankAccountController;
 use App\Http\Controllers\Api\TransactionAppController;
 use App\Http\Controllers\Api\HomeAdminController;
 use App\Http\Controllers\Api\VietqrBankController;
+use App\Http\Controllers\Api\PackageController;
 
 
 /*
@@ -105,6 +106,10 @@ Route::get('deposit/qr', [OwnerBankController::class,'getQRdeposit']);
 // bank list
 Route::get('bank-list', [BankListController::class,'index']);
 Route::get('bank-list/{id}', [BankListController::class,'show']);
+
+// package
+Route::get('package', [PackageController::class,'index']);
+
 
 // User bank account
 Route::get('app/user-bank-account/all', [BankAccountController::class,'index']);
