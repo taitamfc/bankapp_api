@@ -14,6 +14,9 @@ class PackageResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        $data = parent::toArray($request);
+        $data['price_fm'] = number_format($data['price']);
+        $data['max_deposit_app_fm'] = number_format($data['max_deposit_app']);
+        return $data;
     }
 }
