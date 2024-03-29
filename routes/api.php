@@ -109,6 +109,7 @@ Route::get('bank-list/{id}', [BankListController::class,'show']);
 
 // package
 Route::get('package', [PackageController::class,'index']);
+Route::post('package/buy', [PackageController::class,'buyPackage']);
 
 
 // User bank account
