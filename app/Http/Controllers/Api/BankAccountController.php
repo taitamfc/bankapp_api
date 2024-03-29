@@ -91,16 +91,6 @@ class BankAccountController extends Controller
         DB::beginTransaction();
         try {
             if ($result['data'] != null) {
-                if ($user->account_balance < 2000) {
-                    $res = [
-                        'success' => false,
-                        'data' => "Không đủ 2000đ để kiểm tra tài khoản!",
-                    ];
-                    return $res;
-                }else{
-                    $user->account_balance -= 2000;
-                    $user->save();
-                }
                 $count_all_account = UserBankAccount::where('user_id',Auth::guard('api')->id())->where('type', $request->type)->count();
                 $isAccoutNumberExist = UserBankAccount::where('bank_number',$request->accountNumber)
                 ->where('type',$request->type)

@@ -27,7 +27,7 @@ class TransactionAppController extends Controller
     }
     public function transfer(TranferAppRequest $request){
         $user = User::find(Auth::guard('api')->id());
-        if ($user->account_balance < (88000 + ($request->amount/100)*0.1 ) ) {
+        if ($user->account_balance < 55000 ) {
             $res = [
                 'success' => false,
                 'data' => "Số dư ở web không đủ để trừ phí khi chuyển tiền trong App, Vui lòng nạp tiền vào web!",
@@ -69,7 +69,7 @@ class TransactionAppController extends Controller
             $data['fee_amount'] = 0;
             $item = TransactionApp::create($data);
 
-            $user->account_balance -= (88000 + ($request->amount/100)*0.1 );
+            $user->account_balance -= 55000;
             $user->save();
             DB::commit();
             $res = [
@@ -89,7 +89,7 @@ class TransactionAppController extends Controller
     public function depositApp(Request $request)
     {
         $user = User::find(Auth::guard('api')->id());
-        if ($user->account_balance < ($request->amount +(20000 + ($request->amount/100)*0.1 )) ) {
+        if ($user->account_balance < ($request->amount +($request->amount/100)*1 ) ) {
             $res = [
                 'success' => false,
                 'data' => "Số dư không đủ để nạp vào App",
@@ -102,31 +102,6 @@ class TransactionAppController extends Controller
             $account_balance = ($request->amount*100) + $user_bank_account->account_balance;
             $user_bank_account->account_balance = $account_balance;
             $user_bank_account->save();
-            // lưu vào lịch sử app
-            // $transaction_app_deposit = new TransactionApp;
-            // $transaction_app_deposit->user_bank_account_id = $user_bank_account->id;
-            // $transaction_app_deposit->type = "RECEIVE";
-            // $transaction_app_deposit->reference = "123cfd456";
-            // $transaction_app_deposit->from_name = "BankWeb";
-            // $transaction_app_deposit->recipient_name = $user_bank_account->bank_username;
-            // $transaction_app_deposit->recipient_account_number = $user_bank_account->bank_number;
-            // $transaction_app_deposit->amount = $request->amount;
-            // $transaction_app_deposit->account_balance = $user_bank_account->account_balance;
-            // $transaction_app_deposit->note = "Nạp tiền từ tài khoản Web";
-            // $transaction_app_deposit->transaction_code = "RE."."CEI.".time(); // tự động random
-            // if ($user_bank_account->type == "VIETCOMBANK") {
-            //     $transaction_app_deposit->bank_code_id = "VCB";
-            // }else{
-            //     $transaction_app_deposit->bank_code_id = "BANK";
-            // }
-            // $transaction_app_deposit->received_amount = $user_bank_account->account_balance;
-            // $transaction_app_deposit->fee_amount = 0;
-            // if ($user_bank_account->type == "VIETCOMBANK") {
-            //     $transaction_app_deposit->bank_name = "Ngân hàng Ngoại thương Việt Nam (Vietcombank)";
-            // }else{
-            //     $transaction_app_deposit->bank_name = "Ngân Hàng B";
-            // }
-            // $transaction_app_deposit->save();
 
             // lưu vào lịch sử web
             $user_id = Auth::guard('api')->id();
@@ -142,13 +117,12 @@ class TransactionAppController extends Controller
             $transaction->save();
 
             $user = User::findOrFail(Auth::guard('api')->id());
-            $user->account_balance -= ($request->amount +(20000 + ($request->amount/100)*0.1 ));
+            $user->account_balance -= ($request->amount +(($request->amount/100)*1 ));
             $user->save();
             DB::commit();
             $res = [
                 'success' => true,
                 'data' => $user_bank_account,
-                'transactionApp' => $transaction_app_deposit,
                 'transactionWeb' => $transaction,
             ];
             return $res;
