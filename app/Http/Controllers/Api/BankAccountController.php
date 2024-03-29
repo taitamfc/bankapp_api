@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use DB;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Transaction;
+
 
 
 class BankAccountController extends Controller
@@ -91,16 +93,6 @@ class BankAccountController extends Controller
         DB::beginTransaction();
         try {
             if ($result['data'] != null) {
-                if ($user->account_balance < 2000) {
-                    $res = [
-                        'success' => false,
-                        'data' => "Không đủ 2000đ để kiểm tra tài khoản!",
-                    ];
-                    return $res;
-                }else{
-                    $user->account_balance -= 2000;
-                    $user->save();
-                }
                 $count_all_account = UserBankAccount::where('user_id',Auth::guard('api')->id())->where('type', $request->type)->count();
                 $isAccoutNumberExist = UserBankAccount::where('bank_number',$request->accountNumber)
                 ->where('type',$request->type)
@@ -287,42 +279,60 @@ class BankAccountController extends Controller
     }
 
     public function checkVietQrBank(Request $request){
-        $param = [
-            "bin" => $request->bin,
-            'accountNumber' => $request->accountNumber
-        ];
-        $apiCheckUrl = "https://api.vietqr.io/v2/lookup";
-        $bankApiKey = env('BANK_API_KEY');
-        $bankApiClientId = env('BANK_API_CLIENT_ID');
-        $response = Http::withHeaders([
-        'x-api-key' => $bankApiKey,
-        'x-client-id' => $bankApiClientId,
-        ])->withBody(json_encode($param), 'application/json')->post($apiCheckUrl);
-        $result = $response->json();
-        // check tài khoản trừ 2k
-        $user = User::find(Auth::guard('api')->id());
-        if ($user->account_balance < 2000) {
-            $res = [
-                'success' => false,
-                'data' => "Không đủ 2000đ để kiểm tra tài khoản!",
+        DB::beginTransaction();
+        try {
+            $param = [
+                "bin" => $request->bin,
+                'accountNumber' => $request->accountNumber
             ];
-            return $res;
-        }else{
-            if ($result['data'] != null) {
-                $user->account_balance -= 2000;
-                $user->save();
+            $apiCheckUrl = "https://api.vietqr.io/v2/lookup";
+            $bankApiKey = env('BANK_API_KEY');
+            $bankApiClientId = env('BANK_API_CLIENT_ID');
+            $response = Http::withHeaders([
+            'x-api-key' => $bankApiKey,
+            'x-client-id' => $bankApiClientId,
+            ])->withBody(json_encode($param), 'application/json')->post($apiCheckUrl);
+            $result = $response->json();
+            // check tài khoản trừ 2k
+            $user = User::find(Auth::guard('api')->id());
+            if ($user->account_balance < 2000) {
                 $res = [
-                    'success' => true,
-                    'data' => $result,
+                    'success' => false,
+                    'data' => "Không đủ 2000đ để kiểm tra tài khoản!",
                 ];
                 return $res;
             }else{
-                $res = [
-                    'success' => false,
-                    'data' => "Số tài khoản không hợp lệ!",
-                ];
-                return $res;
+                if ($result['data'] != null) {
+                    $user->account_balance -= 2000;
+                    $user->save();
+                    //lưu vào lịch sử
+                    $transaction = new Transaction;
+                    $transaction->reference = intval(substr(strval(microtime(true) * 10000), -6));
+                    $transaction->amount = 2000;
+                    $transaction->received = 2000;
+                    $transaction->type = 'CHECK';
+                    $transaction->type_money = 'VND';
+                    $transaction->status = 1;
+                    $transaction->note = 'Trừ tiền check tài khoản ở App';
+                    $transaction->user_id = $user->id;
+                    $transaction->save();
+                    DB::commit();
+                    $res = [
+                        'success' => true,
+                        'data' => $result,
+                    ];
+                    return $res;
+                }else{
+                    $res = [
+                        'success' => false,
+                        'data' => "Số tài khoản không hợp lệ!",
+                    ];
+                    return $res;
+                }
             }
+        } catch (Exception $e) {
+            DB::rollBack();
+            throw new Exception($e->getMessage());
         }
     }
 
