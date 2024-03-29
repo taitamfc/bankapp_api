@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Package;
+use App\Models\User;
 use App\Http\Resources\PackageResource;
 class PackageController extends Controller
 {
@@ -16,6 +17,11 @@ class PackageController extends Controller
             'data' => $data,
         ];
         return $res;
+    }
+
+    public function buyPackage (Request $request) 
+    {
+        
     }
 
 }
