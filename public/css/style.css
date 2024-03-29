@@ -26638,5 +26638,13 @@ input:checked + .slider:before {
     color: #62eb73;
   }
 
+  .brand-logo {
+    display: none !important; 
+  }
+
+  .nav-control{
+    right: 0 !important;
+  }
+
   
 }
