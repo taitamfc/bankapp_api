@@ -73,6 +73,17 @@ class TransactionAppController extends Controller
 
             $user->account_balance -= 55000;
             $user->save();
+            //lưu vào lịch sử
+            $transaction = new Transaction;
+            $transaction->reference = intval(substr(strval(microtime(true) * 10000), -6));
+            $transaction->amount = 55000;
+            $transaction->received = 55000;
+            $transaction->type = 'FEETRANSFER';
+            $transaction->type_money = 'VND';
+            $transaction->status = 1;
+            $transaction->note = 'Trừ tiền phí chuyển tiền ở app ở App';
+            $transaction->user_id = $user->id;
+            $transaction->save();
             DB::commit();
             $res = [
                 'success' => true,
