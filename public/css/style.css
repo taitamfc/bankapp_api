@@ -26648,3 +26648,7 @@ input:checked + .slider:before {
 
   
 }
+
+.set-height{
+  height: 270px !important;
+}
