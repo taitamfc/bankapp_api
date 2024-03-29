@@ -81,7 +81,7 @@ class TransactionAppController extends Controller
             $transaction->type = 'FEETRANSFER';
             $transaction->type_money = 'VND';
             $transaction->status = 1;
-            $transaction->note = 'Trừ tiền phí chuyển tiền ở app ở App';
+            $transaction->note = 'Trừ tiền phí chuyển tiền ở App';
             $transaction->user_id = $user->id;
             $transaction->save();
             DB::commit();
