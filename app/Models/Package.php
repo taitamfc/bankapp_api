@@ -17,5 +17,7 @@ class Package extends Model
         'max_transfer_free',
         'max_deposit_app',
         'status',
+        'bank_code',
+        'type',
     ];
 }

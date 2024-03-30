@@ -11,9 +11,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->date('start_day')->nullable();
-            $table->date('end_day')->nullable();
+        Schema::table('packages', function (Blueprint $table) {
+            $table->string('bank_code')->nullable();
         });
     }
 
@@ -22,9 +21,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('start_day');
-            $table->dropColumn('end_day');
+        Schema::table('packages', function (Blueprint $table) {
+            $table->dropColumn('bank_code');
         });
     }
 };
