@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Package;
 use App\Models\User;
 use App\Models\UserPackage;
+use App\Models\UserBankAccount;
 use App\Http\Resources\PackageResource;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
@@ -30,6 +31,7 @@ class PackageController extends Controller
     {
         DB::beginTransaction();
         try {
+
             $package = Package::where('type',$request->type_package)->where('bank_code',$request->bank_code)->first();
             $today = Carbon::now();
             $user = Auth::guard('api')->user();
@@ -42,6 +44,8 @@ class PackageController extends Controller
                     ];
                     return $res;
                 }
+                $count_user_bank_account = UserBankAccount::where('user_id', Auth::guard('api')->id())
+                ->where('type', $request->bank_code)->count();
                 //trừ tiền
                 $user->account_balance -= $package->price;
                 $user->save();
@@ -52,7 +56,11 @@ class PackageController extends Controller
                 $user_package->bank_code = $request->bank_code;
                 $user_package->start_day = $today;
                 $user_package->end_day = $today->copy()->addDays(30);
-                $user_package->total_create_account = 0;
+                if ($count_user_bank_account > 0) {
+                    $user_package->total_create_account = $count_user_bank_account;
+                }else {
+                    $user_package->total_create_account = 0;
+                }
                 $user_package->total_edit_account = 0;
                 $user_package->total_transfer_app = 0;
                 $user_package->total_deposit_app = 0;

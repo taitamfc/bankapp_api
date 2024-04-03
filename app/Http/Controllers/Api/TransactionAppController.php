@@ -128,6 +128,9 @@ class TransactionAppController extends Controller
                         $data['received_amount'] = $data['amount'];
                         $data['fee_amount'] = 0;
                         $item = TransactionApp::create($data);
+
+                        $is_UserPackage->total_transfer_app += 1;
+                        $is_UserPackage->save();
                         DB::commit();
                         $res = [
                             'success' => true,
@@ -292,20 +295,13 @@ class TransactionAppController extends Controller
         $user = User::find(Auth::guard('api')->id());
         $user_bank_account = UserBankAccount::where('id',$request->user_bank_account_id)->first();
         $is_UserPackage = UserPackage::where('user_id',$user->id)->where('bank_code',$user_bank_account->type)->first();
-        $total_amount_deposit = $request->amount + $is_UserPackage->total_deposit_app;
         if ($is_UserPackage) {
+            $total_amount_deposit = $request->amount + $is_UserPackage->total_deposit_app;
             $package = Package::where('type',$is_UserPackage->type_package)->where('bank_code',$user_bank_account->type)->first();
             if ($package->max_deposit_app == -1) {
                 $amount_deposit = $request->amount/100;
                 // xử lý miễn phí chiết khấu 80%
                 $user = User::find(Auth::guard('api')->id());
-                if ($user->account_balance < (($amount_deposit/100)*20) ) {
-                    $res = [
-                        'success' => false,
-                        'data' => "Số dư không đủ để nạp vào App",
-                    ];
-                    return $res;
-                }
                 DB::beginTransaction();
                 try {
                     $user_bank_account = UserBankAccount::where('id',$request->user_bank_account_id)->first();
@@ -326,9 +322,7 @@ class TransactionAppController extends Controller
                     $transaction->note = "Nạp tiền vào App";
                     $transaction->save();
 
-                    $user = User::findOrFail(Auth::guard('api')->id());
-                    $user->account_balance -= (($amount_deposit/100)*20);
-                    $user->save();
+                    
 
                     DB::commit();
                     $res = [
@@ -346,13 +340,6 @@ class TransactionAppController extends Controller
                     $amount_deposit = $request->amount/100;
                     // xử lý miễn phí chiết khấu 80%
                     $user = User::find(Auth::guard('api')->id());
-                    if ($user->account_balance < (($amount_deposit/100)*20) ) {
-                        $res = [
-                            'success' => false,
-                            'data' => "Số dư không đủ để nạp vào App",
-                        ];
-                        return $res;
-                    }
                     DB::beginTransaction();
                     try {
                         $user_bank_account = UserBankAccount::where('id',$request->user_bank_account_id)->first();
@@ -373,9 +360,6 @@ class TransactionAppController extends Controller
                         $transaction->note = "Nạp tiền vào App";
                         $transaction->save();
 
-                        $user = User::findOrFail(Auth::guard('api')->id());
-                        $user->account_balance -= (($amount_deposit/100)*20);
-                        $user->save();
 
                         $is_UserPackage->total_deposit_app += $request->amount;
                         $is_UserPackage->save();
@@ -393,12 +377,11 @@ class TransactionAppController extends Controller
                     }
                 }else{
                     if ($is_UserPackage->total_deposit_app < $package->max_deposit_app) {
-                        $amount_deposit = ($request->amount/10000)*20;
                         $money_over_limit = $total_amount_deposit - $package->max_deposit_app;
-                        $fee_money_over_limit = ((($money_over_limit/10000)*20)/100)*1;
+                        $fee_money_over_limit = ($money_over_limit/10000)*20;
                         // xử lý bình thường
                         $user = User::find(Auth::guard('api')->id());
-                        if ($user->account_balance < ($amount_deposit +  $fee_money_over_limit)) {
+                        if ($user->account_balance < ($fee_money_over_limit)) {
                             $res = [
                                 'success' => false,
                                 'data' => "Số dư không đủ để nạp vào App",
@@ -416,8 +399,8 @@ class TransactionAppController extends Controller
                             $user_id = Auth::guard('api')->id();
                             $transaction = new Transaction;
                             $transaction->reference = 6;
-                            $transaction->amount = ($amount_deposit +  $fee_money_over_limit);
-                            $transaction->received = ($amount_deposit +  $fee_money_over_limit);
+                            $transaction->amount = ($fee_money_over_limit);
+                            $transaction->received = ($fee_money_over_limit);
                             $transaction->type = 'DEPOSITAPP';
                             $transaction->type_money = 'VND';
                             $transaction->status = 1;
@@ -426,7 +409,7 @@ class TransactionAppController extends Controller
                             $transaction->save();
     
                             $user = User::findOrFail(Auth::guard('api')->id());
-                            $user->account_balance -= ($amount_deposit +  $fee_money_over_limit);
+                            $user->account_balance -= ($fee_money_over_limit);
                             $user->save();
     
                             $is_UserPackage->total_deposit_app += $request->amount;
@@ -444,11 +427,10 @@ class TransactionAppController extends Controller
                         }
                     }
                     if($is_UserPackage->total_deposit_app >= $package->max_deposit_app){
-                        $amount_deposit = ($request->amount/10000)*20;
-                        $fee_money_over_limit = ($amount_deposit/100)*1;
+                        $fee_money_over_limit = ($request->amount/10000)*20;
                         // xử lý bình thường
                         $user = User::find(Auth::guard('api')->id());
-                        if ($user->account_balance < ($amount_deposit + $fee_money_over_limit)) {
+                        if ($user->account_balance < ($fee_money_over_limit)) {
                             $res = [
                                 'success' => false,
                                 'data' => "Số dư không đủ để nạp vào App",
@@ -466,8 +448,8 @@ class TransactionAppController extends Controller
                             $user_id = Auth::guard('api')->id();
                             $transaction = new Transaction;
                             $transaction->reference = 6;
-                            $transaction->amount = ($amount_deposit + $fee_money_over_limit);
-                            $transaction->received = ($amount_deposit + $fee_money_over_limit);
+                            $transaction->amount = ($fee_money_over_limit);
+                            $transaction->received = ($fee_money_over_limit);
                             $transaction->type = 'DEPOSITAPP';
                             $transaction->type_money = 'VND';
                             $transaction->status = 1;
@@ -476,7 +458,7 @@ class TransactionAppController extends Controller
                             $transaction->save();
     
                             $user = User::findOrFail(Auth::guard('api')->id());
-                            $user->account_balance -= ($amount_deposit + $fee_money_over_limit);
+                            $user->account_balance -= ($fee_money_over_limit);
                             $user->save();
     
                             $is_UserPackage->total_deposit_app += $request->amount;
@@ -499,7 +481,7 @@ class TransactionAppController extends Controller
             $amount_deposit = $request->amount/100;
             // xử lý bình thường
             $user = User::find(Auth::guard('api')->id());
-            if ($user->account_balance < ($amount_deposit + ($amount_deposit/100)*1)  ) {
+            if ($user->account_balance < ($amount_deposit)  ) {
                 $res = [
                     'success' => false,
                     'data' => "Số dư không đủ để nạp vào App",
@@ -517,8 +499,8 @@ class TransactionAppController extends Controller
                 $user_id = Auth::guard('api')->id();
                 $transaction = new Transaction;
                 $transaction->reference = 6;
-                $transaction->amount = ($amount_deposit + ($amount_deposit/100)*1);
-                $transaction->received = ($amount_deposit + ($amount_deposit/100)*1);
+                $transaction->amount = $amount_deposit;
+                $transaction->received = $amount_deposit;
                 $transaction->type = 'DEPOSITAPP';
                 $transaction->type_money = 'VND';
                 $transaction->status = 1;
@@ -527,7 +509,7 @@ class TransactionAppController extends Controller
                 $transaction->save();
 
                 $user = User::findOrFail(Auth::guard('api')->id());
-                $user->account_balance -= ($amount_deposit + ($amount_deposit/100)*1);
+                $user->account_balance -= ($amount_deposit);
                 $user->save();
 
                 DB::commit();

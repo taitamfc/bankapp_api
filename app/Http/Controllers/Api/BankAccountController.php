@@ -68,10 +68,13 @@ class BankAccountController extends Controller
         $items = UserBankAccount::where('user_id', Auth::guard('api')->id())
             ->where('type', $request->type)
             ->get();
+        $count_user_bank_account = UserBankAccount::where('user_id', Auth::guard('api')->id())
+        ->where('type', $request->type)->count();
         $userBankAccountCollection = UserBankAccountResource::collection($items);
         $res = [
             'success' => true,
             'data' => $userBankAccountCollection,
+            'countAccount' =>  $count_user_bank_account
         ];
         return $res;
     }
@@ -81,7 +84,7 @@ class BankAccountController extends Controller
         $user = User::find(Auth::guard('api')->id());
         $is_UserPackage = UserPackage::where('user_id',$user->id)->where('bank_code',$request->type)->first();
         $count_all_account = UserBankAccount::where('user_id',Auth::guard('api')->id())->where('type', $request->type)->count();
-        if ($is_UserPackage && ($count_all_account > 0)) {
+        if ($is_UserPackage) {
             $package = Package::where('type',$is_UserPackage->type_package)->where('bank_code',$request->type)->first();
             if($is_UserPackage->total_create_account < $package->max_create_account){
                 // xử lí miễn phí
@@ -216,6 +219,20 @@ class BankAccountController extends Controller
         
                                 $user->account_balance -= 100000;
                                 $user->save();
+
+                                // lưu vào lịch sử
+                                $user_id = Auth::guard('api')->id();
+                                $transaction = new Transaction;
+                                $transaction->reference = 6;
+                                $transaction->amount = 100000;
+                                $transaction->received = 100000;
+                                $transaction->type = 'CREATEACCOUTNAPP';
+                                $transaction->type_money = 'VND';
+                                $transaction->status = 1;
+                                $transaction->user_id = $user_id;
+                                $transaction->note = "tạo mới tài khoản App";
+                                $transaction->save();
+
                                 DB::commit();
                                 $res = [
                                     'success' => true,
@@ -328,6 +345,19 @@ class BankAccountController extends Controller
                         $user_bank_account->user_id =  Auth::guard('api')->id();
                         $user_bank_account->bank_username = $result['data']['accountName'];
                         $user_bank_account->save();
+
+                         // lưu vào lịch sử
+                         $user_id = Auth::guard('api')->id();
+                         $transaction = new Transaction;
+                         $transaction->reference = 6;
+                         $transaction->amount = 100000;
+                         $transaction->received = 100000;
+                         $transaction->type = 'CREATEACCOUTNAPP';
+                         $transaction->type_money = 'VND';
+                         $transaction->status = 1;
+                         $transaction->user_id = $user_id;
+                         $transaction->note = "Tạo mới tài khoản App";
+                         $transaction->save();
     
                         DB::commit();
                         $res = [
@@ -503,6 +533,20 @@ class BankAccountController extends Controller
                             $user_bank_account->user_id =  Auth::guard('api')->id();
                             $user_bank_account->save();
 
+                            // lưu vào lịch sử
+                            $user_id = Auth::guard('api')->id();
+                            $transaction = new Transaction;
+                            $transaction->reference = 6;
+                            $transaction->amount = 100000;
+                            $transaction->received = 100000;
+                            $transaction->type = 'EDITACCOUTNAPP';
+                            $transaction->type_money = 'VND';
+                            $transaction->status = 1;
+                            $transaction->user_id = $user_id;
+                            $transaction->note = "sử số tài khoản App";
+                            $transaction->save();
+    
+
                             DB::commit();
                             $res = [
                                 'success' => true,
@@ -596,6 +640,19 @@ class BankAccountController extends Controller
                         }
                         $user_bank_account->user_id =  Auth::guard('api')->id();
                         $user_bank_account->save();
+
+                         // lưu vào lịch sử
+                         $user_id = Auth::guard('api')->id();
+                         $transaction = new Transaction;
+                         $transaction->reference = 6;
+                         $transaction->amount = 100000;
+                         $transaction->received = 100000;
+                         $transaction->type = 'EDITACCOUTNAPP';
+                         $transaction->type_money = 'VND';
+                         $transaction->status = 1;
+                         $transaction->user_id = $user_id;
+                         $transaction->note = "sử số tài khoản App";
+                         $transaction->save();
     
                         DB::commit();
                         $res = [
