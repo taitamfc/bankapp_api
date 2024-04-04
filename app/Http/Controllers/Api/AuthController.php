@@ -21,7 +21,8 @@ use App\Notifications\PasswordNotification;
 use App\Notifications\SecondPassNotification;
 use App\Models\VerifyCode;
 use App\Models\UserBankAccount;
-
+use App\Models\UserPackage;
+use App\Models\Package;
 
 
 class AuthController extends Controller
@@ -65,6 +66,22 @@ class AuthController extends Controller
                 ], 401);
             }
             $user = Auth::guard('api')->user();
+            // xử lí xóa gói khi hết hạn
+            $is_UserPackage_vcb = UserPackage::where('user_id',$user->id)->where('bank_code','VCB')->first();
+            $is_UserPackage_tcb = UserPackage::where('user_id',$user->id)->where('bank_code','TCB')->first();
+            if ($is_UserPackage_vcb) {
+                $today = Carbon::now();
+                if ($today >= $is_UserPackage_vcb->end_day) {
+                    $is_UserPackage_vcb->delete();
+                }
+            }
+            if ($is_UserPackage_tcb) {
+                $today = Carbon::now();
+                if ($today >= $is_UserPackage_tcb->end_day) {
+                    $is_UserPackage_tcb->delete();
+                }
+            }
+            // check status
             if($user->status == 0){
                 $res = [
                     'success' => false,
