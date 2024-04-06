@@ -41,8 +41,8 @@ class TransactionAppController extends Controller
             // Lấy ngày hôm nay
             $today = Carbon::today();
             // Đếm số lần tạo bản ghi trong ngày hôm nay
-            $countTransferToday = TransactionApp::whereDate('created_at', $today)->where('bank_code_id', $request->bank_code_id)->where('from_number', $user_bank_account->bank_number)->where('created_at', '>' ,$is_UserPackage->created_at)->count();
             if ($is_UserPackage) {
+                $countTransferToday = TransactionApp::whereDate('created_at', $today)->where('bank_code_id', $request->bank_code_id)->where('from_number', $user_bank_account->bank_number)->where('created_at', '>' ,$is_UserPackage->created_at)->count();
                 $package = Package::where('type',$is_UserPackage->type_package)->where('bank_code',$request->type)->first();
                 if ($package->max_transfer_free == -1) {
                     // xử lí miễn phí
