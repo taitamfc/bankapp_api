@@ -39,7 +39,7 @@ class TransactionAppController extends Controller
         // Lấy ngày hôm nay
         $today = Carbon::today();
         // Đếm số lần tạo bản ghi trong ngày hôm nay
-        $countTransferToday = TransactionApp::whereDate('created_at', $today)->where('bank_code_id', $request->bank_code_id)->where('from_number', $user_bank_account->bank_number)->count();
+        $countTransferToday = TransactionApp::whereDate('created_at', $today)->where('bank_code_id', $request->bank_code_id)->where('from_number', $user_bank_account->bank_number)->where('created_at', '>' ,$is_UserPackage->created_at)->count();
         if ($is_UserPackage) {
             $package = Package::where('type',$is_UserPackage->type_package)->where('bank_code',$request->type)->first();
             if ($package->max_transfer_free == -1) {
@@ -93,7 +93,7 @@ class TransactionAppController extends Controller
                      throw new Exception($e->getMessage());
                  }
             }else{
-                if($countTransferToday < $package->max_transfer_free){
+                if($countTransferToday < $package->max_transfer_free ){
                     // xử lí miễn phí
                     $user = User::find(Auth::guard('api')->id());
                     DB::beginTransaction();
