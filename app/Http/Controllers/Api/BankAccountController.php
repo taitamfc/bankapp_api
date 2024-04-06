@@ -678,7 +678,8 @@ class BankAccountController extends Controller
 
     public function checkVietQrBank(Request $request){
         $user = User::find(Auth::guard('api')->id());
-        $is_UserPackage = UserPackage::where('user_id',$user->id)->where('bank_code',$request->type)->first();
+        $user_bank_account = json_decode($user->active_bank_acount);
+        $is_UserPackage = UserPackage::where('user_id',$user->id)->where('bank_code',$user_bank_account->type)->first();
         if ($is_UserPackage) {
             // xử lí miễn phí
             DB::beginTransaction();
