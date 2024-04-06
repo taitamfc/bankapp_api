@@ -17,6 +17,9 @@ use App\Models\VerifyCode;
 use App\Http\Requests\OtpPasswordRequest;
 use Illuminate\Support\Str;
 
+// Add new
+use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
+
 
 class UserController extends Controller
 {

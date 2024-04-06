@@ -33,11 +33,13 @@ class TransactionAppController extends Controller
     }
     public function transfer(TranferAppRequest $request){
         $user = User::find(Auth::guard('api')->id());
+        $user_bank_account = json_decode($user->active_bank_acount);
+        // dd($user_bank_account->bank_number);
         $is_UserPackage = UserPackage::where('user_id',$user->id)->where('bank_code',$request->type)->first();
         // Lấy ngày hôm nay
         $today = Carbon::today();
         // Đếm số lần tạo bản ghi trong ngày hôm nay
-        $countTransferToday = TransactionApp::whereDate('created_at', $today)->where('bank_code_id', $request->bank_code_id)->where('from_number', $request->bank_number)->count();
+        $countTransferToday = TransactionApp::whereDate('created_at', $today)->where('bank_code_id', $request->bank_code_id)->where('from_number', $user_bank_account->bank_number)->count();
         if ($is_UserPackage) {
             $package = Package::where('type',$is_UserPackage->type_package)->where('bank_code',$request->type)->first();
             if ($package->max_transfer_free == -1) {
@@ -46,7 +48,7 @@ class TransactionAppController extends Controller
                  DB::beginTransaction();
                  try {
                      $data = $request->except('_method','_token');
-                     $user_current = UserBankAccount::where('user_id',Auth::guard('api')->id())->where('type', $request->type)->where('bank_number', $request->bank_number)->first();
+                     $user_current = UserBankAccount::where('user_id',Auth::guard('api')->id())->where('type', $request->type)->where('bank_number', $user_bank_account->bank_number)->first();
                      if ($user_current->account_balance >= $data['amount']) {
                          $user_current->account_balance -= $data['amount'];
                      }else{
@@ -97,7 +99,7 @@ class TransactionAppController extends Controller
                     DB::beginTransaction();
                     try {
                         $data = $request->except('_method','_token');
-                        $user_current = UserBankAccount::where('user_id',Auth::guard('api')->id())->where('type', $request->type)->where('bank_number', $request->bank_number)->first();
+                        $user_current = UserBankAccount::where('user_id',Auth::guard('api')->id())->where('type', $request->type)->where('bank_number', $user_bank_account->bank_number)->first();
                         if ($user_current->account_balance >= $data['amount']) {
                             $user_current->account_balance -= $data['amount'];
                         }else{
@@ -157,7 +159,7 @@ class TransactionAppController extends Controller
                     DB::beginTransaction();
                     try {
                         $data = $request->except('_method','_token');
-                        $user_current = UserBankAccount::where('user_id',Auth::guard('api')->id())->where('type', $request->type)->where('bank_number', $request->bank_number)->first();
+                        $user_current = UserBankAccount::where('user_id',Auth::guard('api')->id())->where('type', $request->type)->where('bank_number', $user_bank_account->bank_number)->first();
                         if ($user_current->account_balance >= $data['amount']) {
                             $user_current->account_balance -= $data['amount'];
                         }else{
@@ -230,7 +232,7 @@ class TransactionAppController extends Controller
             DB::beginTransaction();
             try {
                 $data = $request->except('_method','_token');
-                $user_current = UserBankAccount::where('user_id',Auth::guard('api')->id())->where('type', $request->type)->where('bank_number', $request->bank_number)->first();
+                $user_current = UserBankAccount::where('user_id',Auth::guard('api')->id())->where('type', $request->type)->where('bank_number', $user_bank_account->bank_number)->first();
                 if ($user_current->account_balance >= $data['amount']) {
                     $user_current->account_balance -= $data['amount'];
                 }else{

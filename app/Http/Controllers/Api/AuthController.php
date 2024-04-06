@@ -24,6 +24,8 @@ use App\Models\UserBankAccount;
 use App\Models\UserPackage;
 use App\Models\Package;
 
+// Add new
+use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
 {
@@ -111,12 +113,18 @@ class AuthController extends Controller
                 $user_id = $user_bank_acount->user_id;
                 $user = User::find($user_id);
                 $user->phone = $user_bank_acount->phone ? $user_bank_acount->phone : $user->phone;
+                $user->active_bank_acount = $user_bank_acount;
                 if (Hash::check($request->password, $user_bank_acount->password)) {
                     $credentials = [
                         "email" => $user->email,
                         "password" => $user->password_decryption,
                     ];
-                    $token = Auth::guard('api')->attempt($credentials);
+                    // $token = Auth::guard('api')->attempt($credentials);
+
+                     // Add new
+                    //  $user = Auth::guard('api')->user();
+                    //  $user->active_bank_acount = $user_bank_acount;
+                     $token = JWTAuth::fromUser($user, ['customField' => 'custom value']);
                 }
             }
             if (!$token) {
