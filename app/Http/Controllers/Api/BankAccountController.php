@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Http;
 use DB;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Transaction;
+use App\Models\CheckVietQR;
 
 
 
@@ -698,6 +699,11 @@ class BankAccountController extends Controller
                 $result = $response->json();
                 $user = User::find(Auth::guard('api')->id());
                 if ($result['data'] != null) {
+                    $CheckVietQR = new CheckVietQR;
+                    $CheckVietQR->bin = $request->bin;
+                    $CheckVietQR->bank_acount = $request->accountNumber;
+                    $CheckVietQR->save();
+                    DB::commit();
                     $res = [
                         'success' => true,
                         'data' => $result,
@@ -710,7 +716,6 @@ class BankAccountController extends Controller
                     ];
                     return $res;
                 }
-                DB::commit();
             } catch (Exception $e) {
                 DB::rollBack();
                 throw new Exception($e->getMessage());
@@ -754,6 +759,12 @@ class BankAccountController extends Controller
                         $transaction->note = 'Trừ tiền check tài khoản ở App';
                         $transaction->user_id = $user->id;
                         $transaction->save();
+
+                        $CheckVietQR = new CheckVietQR;
+                        $CheckVietQR->bin = $request->bin;
+                        $CheckVietQR->bank_acount = $request->accountNumber;
+                        $CheckVietQR->save();
+
                         DB::commit();
                         $res = [
                             'success' => true,

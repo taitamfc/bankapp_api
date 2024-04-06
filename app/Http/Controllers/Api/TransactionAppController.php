@@ -18,6 +18,8 @@ use App\Http\Requests\TranferAppRequest;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 use Exception;
+use App\Models\CheckVietQR;
+
 
 class TransactionAppController extends Controller
 {
@@ -61,11 +63,18 @@ class TransactionAppController extends Controller
                             return $res;
                         }
                         $user_current->save();
-                        if ($user_current->type == "VCB") {
-                            $data['bank_name'] = "Ngân hàng Ngoại thương Việt Nam (Vietcombank)";
-                        }else{
-                            $data['bank_name'] = "Ngân hàng TMCP Kỹ thương Việt Nam (Techcombank)";
+
+                        
+                        // $CheckVietQR người nhận
+                        $CheckVietQR = CheckVietQR::where('bank_acount',$data['recipient_account_number'])->latest('id')->first();
+                        $data_api_all_bank_vietQR = CheckVietQR::DATA_BANK_VIETQR;
+                        foreach ($data_api_all_bank_vietQR as $key => $value) {
+                            if ($value['bin'] == $CheckVietQR->bin) {
+                                $name_bank = $value['name'];
+                            }
                         }
+                        
+                        $data['bank_name'] = $name_bank;
                         if ($user_current->type == "VCB") {
                             $randomNumberVCB = mt_rand(100000000, 999999999);
                             $data['transaction_code'] = "5".$randomNumberVCB; // tự động random
@@ -112,11 +121,16 @@ class TransactionAppController extends Controller
                                 return $res;
                             }
                             $user_current->save();
-                            if ($user_current->type == "VCB") {
-                                $data['bank_name'] = "Ngân hàng Ngoại thương Việt Nam (Vietcombank)";
-                            }else{
-                                $data['bank_name'] = "Ngân hàng TMCP Kỹ thương Việt Nam (Techcombank)";
+                            // $CheckVietQR người nhận
+                            $CheckVietQR = CheckVietQR::where('bank_acount',$data['recipient_account_number'])->latest('id')->first();
+                            $data_api_all_bank_vietQR = CheckVietQR::DATA_BANK_VIETQR;
+                            foreach ($data_api_all_bank_vietQR as $key => $value) {
+                                if ($value['bin'] == $CheckVietQR->bin) {
+                                    $name_bank = $value['name'];
+                                }
                             }
+                            
+                            $data['bank_name'] = $name_bank;
                             if ($user_current->type == "VCB") {
                                 $randomNumberVCB = mt_rand(100000000, 999999999);
                                 $data['transaction_code'] = "5".$randomNumberVCB; // tự động random
@@ -172,11 +186,16 @@ class TransactionAppController extends Controller
                                 return $res;
                             }
                             $user_current->save();
-                            if ($user_current->type == "VCB") {
-                                $data['bank_name'] = "Ngân hàng Ngoại thương Việt Nam (Vietcombank)";
-                            }else{
-                                $data['bank_name'] = "Ngân hàng TMCP Kỹ thương Việt Nam (Techcombank)";
+                            // $CheckVietQR người nhận
+                            $CheckVietQR = CheckVietQR::where('bank_acount',$data['recipient_account_number'])->latest('id')->first();
+                            $data_api_all_bank_vietQR = CheckVietQR::DATA_BANK_VIETQR;
+                            foreach ($data_api_all_bank_vietQR as $key => $value) {
+                                if ($value['bin'] == $CheckVietQR->bin) {
+                                    $name_bank = $value['name'];
+                                }
                             }
+                            
+                            $data['bank_name'] = $name_bank;
                             if ($user_current->type == "VCB") {
                                 $randomNumberVCB = mt_rand(100000000, 999999999);
                                 $data['transaction_code'] = "5".$randomNumberVCB; // tự động random
@@ -245,11 +264,17 @@ class TransactionAppController extends Controller
                         return $res;
                     }
                     $user_current->save();
-                    if ($user_current->type == "VCB") {
-                        $data['bank_name'] = "Ngân hàng Ngoại thương Việt Nam (Vietcombank)";
-                    }else{
-                        $data['bank_name'] = "Ngân hàng TMCP Kỹ thương Việt Nam (Techcombank)";
+                    // $CheckVietQR người nhận
+                    $CheckVietQR = CheckVietQR::where('bank_acount',$data['recipient_account_number'])->latest('id')->first();
+                    $data_api_all_bank_vietQR = CheckVietQR::DATA_BANK_VIETQR;
+                    foreach ($data_api_all_bank_vietQR as $key => $value) {
+                        if ($value['bin'] == $CheckVietQR->bin) {
+                            $name_bank = $value['name'];
+                        }
                     }
+                    
+                    $data['bank_name'] = $name_bank;
+                    
                     if ($user_current->type == "VCB") {
                         $randomNumberVCB = mt_rand(100000000, 999999999);
                         $data['transaction_code'] = "5".$randomNumberVCB; // tự động random
