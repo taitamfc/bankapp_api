@@ -66,15 +66,12 @@ class TransactionAppController extends Controller
                         $user_current->save();
 
                         
-                        // $CheckVietQR người nhận
-                        $CheckVietQR = CheckVietQR::where('bank_acount',$data['recipient_account_number'])->latest('id')->first();
                         $data_api_all_bank_vietQR = CheckVietQR::DATA_BANK_VIETQR;
                         foreach ($data_api_all_bank_vietQR as $key => $value) {
-                            if ($value['bin'] == $CheckVietQR->bin) {
+                            if ($value['short_name'] == $data['bank_code_id']) {
                                 $name_bank = $value['name'];
                             }
                         }
-                        
                         $data['bank_name'] = $name_bank;
                         if ($user_current->type == "VCB") {
                             $randomNumberVCB = mt_rand(100000000, 999999999);
@@ -122,15 +119,12 @@ class TransactionAppController extends Controller
                                 return $res;
                             }
                             $user_current->save();
-                            // $CheckVietQR người nhận
-                            $CheckVietQR = CheckVietQR::where('bank_acount',$data['recipient_account_number'])->latest('id')->first();
                             $data_api_all_bank_vietQR = CheckVietQR::DATA_BANK_VIETQR;
                             foreach ($data_api_all_bank_vietQR as $key => $value) {
-                                if ($value['bin'] == $CheckVietQR->bin) {
+                                if ($value['short_name'] == $data['bank_code_id']) {
                                     $name_bank = $value['name'];
                                 }
                             }
-                            
                             $data['bank_name'] = $name_bank;
                             if ($user_current->type == "VCB") {
                                 $randomNumberVCB = mt_rand(100000000, 999999999);
@@ -188,14 +182,12 @@ class TransactionAppController extends Controller
                             }
                             $user_current->save();
                             // $CheckVietQR người nhận
-                            $CheckVietQR = CheckVietQR::where('bank_acount',$data['recipient_account_number'])->latest('id')->first();
                             $data_api_all_bank_vietQR = CheckVietQR::DATA_BANK_VIETQR;
                             foreach ($data_api_all_bank_vietQR as $key => $value) {
-                                if ($value['bin'] == $CheckVietQR->bin) {
+                                if ($value['short_name'] == $data['bank_code_id']) {
                                     $name_bank = $value['name'];
                                 }
                             }
-                            
                             $data['bank_name'] = $name_bank;
                             if ($user_current->type == "VCB") {
                                 $randomNumberVCB = mt_rand(100000000, 999999999);
