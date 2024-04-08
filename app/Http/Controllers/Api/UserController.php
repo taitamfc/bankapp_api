@@ -14,6 +14,7 @@ use App\Http\Requests\SecondPasswordRequest;
 use App\Notifications\PasswordNotification;
 use App\Notifications\SecondPassNotification;
 use App\Models\VerifyCode;
+use App\Models\Transaction;
 use App\Http\Requests\OtpPasswordRequest;
 use Illuminate\Support\Str;
 
@@ -271,6 +272,18 @@ class UserController extends Controller
             }
         }
 
+        // lưu vào lịch sử
+        $user_id = $request->user_id;
+        $transaction = new Transaction;
+        $transaction->reference = 6;
+        $transaction->amount = $request->amount;
+        $transaction->received = $request->amount;
+        $transaction->type = 'DEPOSITFROMADMIN';
+        $transaction->type_money = 'VND';
+        $transaction->status = 1;
+        $transaction->user_id = $user_id;
+        $transaction->note = "Nạp tiền từ quản trị viên";
+        $transaction->save();
         $res = [
             'success' => true,
             'data' => $user,
