@@ -239,7 +239,7 @@ class TransactionController extends Controller
     {
         $page = $request->input('page', 1); // Trang mặc định là 1 nếu không được truyền vào
         $perPage = $request->input('perPage', 5);
-        $query = Transaction::where('type','RECHARGE')->where('user_id', Auth::guard('api')->id());
+        $query = Transaction::where('type','RECHARGE')->orWhere('type','DEPOSITFROMADMIN')->where('user_id', Auth::guard('api')->id());
         // if($request && $request->search){
         //     $query->where('amount', 'LIKE', '%' . $request->search . '%');
         // }

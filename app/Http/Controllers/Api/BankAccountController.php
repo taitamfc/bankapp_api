@@ -523,6 +523,19 @@ class BankAccountController extends Controller
                                     $user_bank_account->bank_username = $result['data']['accountName'];
                                     $user->account_balance -= 100000;
                                     $user->save();
+
+                                    // lưu vào lịch sử
+                                    $user_id = Auth::guard('api')->id();
+                                    $transaction = new Transaction;
+                                    $transaction->reference = 6;
+                                    $transaction->amount = 100000;
+                                    $transaction->received = 100000;
+                                    $transaction->type = 'EDITACCOUTNAPP';
+                                    $transaction->type_money = 'VND';
+                                    $transaction->status = 1;
+                                    $transaction->user_id = $user_id;
+                                    $transaction->note = "sửa số tài khoản App";
+                                    $transaction->save();
                                 }else {
                                     $res = [
                                         'success' => false,
@@ -533,20 +546,6 @@ class BankAccountController extends Controller
                             }
                             $user_bank_account->user_id =  Auth::guard('api')->id();
                             $user_bank_account->save();
-
-                            // lưu vào lịch sử
-                            $user_id = Auth::guard('api')->id();
-                            $transaction = new Transaction;
-                            $transaction->reference = 6;
-                            $transaction->amount = 100000;
-                            $transaction->received = 100000;
-                            $transaction->type = 'EDITACCOUTNAPP';
-                            $transaction->type_money = 'VND';
-                            $transaction->status = 1;
-                            $transaction->user_id = $user_id;
-                            $transaction->note = "sử số tài khoản App";
-                            $transaction->save();
-    
 
                             DB::commit();
                             $res = [
@@ -631,6 +630,19 @@ class BankAccountController extends Controller
                                 $user_bank_account->bank_username = $result['data']['accountName'];
                                 $user->account_balance -= 102000;
                                 $user->save();
+
+                                // lưu vào lịch sử
+                                $user_id = Auth::guard('api')->id();
+                                $transaction = new Transaction;
+                                $transaction->reference = 6;
+                                $transaction->amount = 102000;
+                                $transaction->received = 102000;
+                                $transaction->type = 'EDITACCOUTNAPP';
+                                $transaction->type_money = 'VND';
+                                $transaction->status = 1;
+                                $transaction->user_id = $user_id;
+                                $transaction->note = "sửa số tài khoản App";
+                                $transaction->save();
                             }else {
                                 $res = [
                                     'success' => false,
@@ -642,19 +654,7 @@ class BankAccountController extends Controller
                         $user_bank_account->user_id =  Auth::guard('api')->id();
                         $user_bank_account->save();
 
-                         // lưu vào lịch sử
-                         $user_id = Auth::guard('api')->id();
-                         $transaction = new Transaction;
-                         $transaction->reference = 6;
-                         $transaction->amount = 100000;
-                         $transaction->received = 100000;
-                         $transaction->type = 'EDITACCOUTNAPP';
-                         $transaction->type_money = 'VND';
-                         $transaction->status = 1;
-                         $transaction->user_id = $user_id;
-                         $transaction->note = "sử số tài khoản App";
-                         $transaction->save();
-    
+                         
                         DB::commit();
                         $res = [
                             'success' => true,
