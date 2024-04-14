@@ -18,6 +18,7 @@ use App\Http\Controllers\Api\TransactionAppController;
 use App\Http\Controllers\Api\HomeAdminController;
 use App\Http\Controllers\Api\VietqrBankController;
 use App\Http\Controllers\Api\PackageController;
+use App\Http\Controllers\Api\BankInfoBillController;
 
 
 /*
@@ -122,6 +123,8 @@ Route::post('app/checkVietQr', [BankAccountController::class,'checkVietQrBank'])
 Route::delete('app/user-bank-account/{id}',[BankAccountController::class,'delete']);
 Route::get('app/user-bank-account/get-admin', [BankAccountController::class,'getAccountBankUser']);
 
+// bank info bill
+Route::get('bankinfobills', [BankInfoBillController::class,'index']);
 
 
 
