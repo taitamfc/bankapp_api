@@ -59,7 +59,7 @@ Route::post('users/deposit/handmade', [UserController::class,'depositAppHandmade
 Route::post('users/update-status', [UserController::class,'updateStatus']);
 Route::post('users/admin-update', [UserController::class,'adminUpdate']);
 Route::post('users/update-email', [UserController::class,'updateEmail']);
-
+Route::post('users/fee-dowload-bill', [UserController::class,'handleFeeDowloadBill']);
 
 // Transaction
 Route::get('transactions/history',[TransactionController::class,'index']);

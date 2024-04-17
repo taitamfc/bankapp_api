@@ -17,6 +17,8 @@ use App\Models\VerifyCode;
 use App\Models\Transaction;
 use App\Http\Requests\OtpPasswordRequest;
 use Illuminate\Support\Str;
+use DB;
+
 
 // Add new
 use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
@@ -349,6 +351,45 @@ class UserController extends Controller
                 'data' => 'Mã xác nhận sai, vui lòng kiểm tra lại!',
             ];
             return response()->json($res);
+        }
+    }
+
+    public function handleFeeDowloadBill (Request $request) {
+        DB::beginTransaction();
+        try {
+            $user = Auth::guard('api')->user();
+            if ($user->account_balance < 1000) {
+                $res = [
+                    'success' => false,
+                    'messange' => 'Không đủ số dư để tải bill!',
+                ];
+                return $res;
+            }
+            $user->account_balance -= 1000;
+            $user->save();
+
+            $transaction = new Transaction;
+            $transaction->reference = intval(substr(strval(microtime(true) * 10000), -6));
+            $transaction->amount = 1000;
+            $transaction->received = 1000;
+            $transaction->type = 'DOWLOADBILL';
+            $transaction->type_money = 'VND';
+            $transaction->status = 1;
+            $transaction->note = "Phí tạo bill";
+            $transaction->user_id = $user->id;
+            $transaction->save();
+
+            DB::commit();
+
+            $res = [
+                'success' => true,
+                'data' => $user,
+                'transaction' => $transaction,
+            ];
+            return $res;
+        } catch (Exception $e) {
+            DB::rollBack();
+            throw new Exception($e->getMessage());
         }
     }
 
