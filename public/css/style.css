@@ -26652,3 +26652,14 @@ input:checked + .slider:before {
 .set-height{
   height: 270px !important;
 }
+div#renderBill {
+    position: relative;
+    overflow: hidden;
+}
+div#renderBill .bill-mark {
+  width: 600px;
+  height: auto;
+  position: absolute;
+  z-index: 1;
+  left: 0;
+}
