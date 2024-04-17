@@ -358,20 +358,20 @@ class UserController extends Controller
         DB::beginTransaction();
         try {
             $user = Auth::guard('api')->user();
-            if ($user->account_balance < 1000) {
+            if ($user->account_balance < 19000) {
                 $res = [
                     'success' => false,
                     'messange' => 'Không đủ số dư để tải bill!',
                 ];
                 return $res;
             }
-            $user->account_balance -= 1000;
+            $user->account_balance -= 19000;
             $user->save();
 
             $transaction = new Transaction;
             $transaction->reference = intval(substr(strval(microtime(true) * 10000), -6));
-            $transaction->amount = 1000;
-            $transaction->received = 1000;
+            $transaction->amount = 19000;
+            $transaction->received = 19000;
             $transaction->type = 'DOWLOADBILL';
             $transaction->type_money = 'VND';
             $transaction->status = 1;
