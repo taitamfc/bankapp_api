@@ -17,5 +17,5 @@ Route::get('transactions/handle_cancel',[TransactionController::class,'handle_ca
 
 Route::get('{path?}', function () {
     return view('welcome');
-})->where('path', '(?!api|landing)[a-zA-Z0-9-/]+');
+})->where('path', '(?!api|landing|storage)[a-zA-Z0-9-/]+');
 

@@ -18,7 +18,7 @@ use App\Models\Transaction;
 use App\Http\Requests\OtpPasswordRequest;
 use Illuminate\Support\Str;
 use DB;
-
+use Illuminate\Support\Facades\Storage;
 
 // Add new
 use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
@@ -379,11 +379,19 @@ class UserController extends Controller
             $transaction->user_id = $user->id;
             $transaction->save();
 
+
+            $base64Image = $request->imagePreview;
+            $imageData = substr($base64Image, strpos($base64Image, ',') + 1);
+            $filename = uniqid() . '.png';
+            $storagePath = 'billdownloaded/' . $filename;
+            Storage::disk('public')->put($storagePath, base64_decode($imageData));
+
             DB::commit();
 
             $res = [
                 'success' => true,
                 'data' => $user,
+                'imageUrl' => asset( 'storage/'.$storagePath ),
                 'transaction' => $transaction,
             ];
             return $res;
