@@ -18,7 +18,7 @@
     <link href="/fonts/Inter/Inter.css" rel="stylesheet">
     <link href="/fonts/BeVietnamPro/BeVietnamPro.css" rel="stylesheet">
     <link href="/vendor/metismenu/css/metisMenu.min.css" rel="stylesheet">
-    <script defer="defer" src="/static/js/main.136de475.js"></script>
+    <script defer="defer" src="/static/js/main.ba634837.js"></script>
 </head>
 
 <body data-theme="theme_2" data-sidebar-style="full" data-layout="vertical"><noscript>You need to enable JavaScript to
