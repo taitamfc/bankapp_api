@@ -19,6 +19,7 @@ use App\Http\Controllers\Api\HomeAdminController;
 use App\Http\Controllers\Api\VietqrBankController;
 use App\Http\Controllers\Api\PackageController;
 use App\Http\Controllers\Api\BankInfoBillController;
+use App\Http\Controllers\Api\BankNameBillController;
 
 
 /*
@@ -126,6 +127,8 @@ Route::get('app/user-bank-account/get-admin', [BankAccountController::class,'get
 // bank info bill
 Route::get('bankinfobills', [BankInfoBillController::class,'index']);
 
+// bank name bill
+Route::get('bank-name-bill', [BankNameBillController::class,'index']);
 
 
 //Transaction App

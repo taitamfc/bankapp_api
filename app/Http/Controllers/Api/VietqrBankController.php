@@ -25,4 +25,6 @@ class VietqrBankController extends Controller
         ];
         return $res;
     }
+
+    
 }
