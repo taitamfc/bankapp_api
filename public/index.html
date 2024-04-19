@@ -18,11 +18,50 @@
     <link href="/fonts/Inter/Inter.css" rel="stylesheet">
     <link href="/fonts/BeVietnamPro/BeVietnamPro.css" rel="stylesheet">
     <link href="/vendor/metismenu/css/metisMenu.min.css" rel="stylesheet">
-    <script defer="defer" src="/static/js/main.bcbce3da.js"></script>
+    <style>
+        .load-font {
+            position: absolute;
+            color: #011d54
+        }
+
+        .font-be {
+            font-family: 'Be Vietnam Pro'
+        }
+
+        .font-Normal {
+            font-weight: 400
+        }
+
+        .font-Medium {
+            font-weight: 500
+        }
+
+        .font-Bold {
+            font-weight: 700
+        }
+
+        .font-inter {
+            font-family: Inter
+        }
+
+        .font-SFProDisplay {
+            font-family: SFProDisplay
+        }
+    </style>
+    <script defer="defer" src="/static/js/main.41a3cc2f.js"></script>
 </head>
 
-<body data-theme="theme_2" data-sidebar-style="full" data-layout="vertical"><noscript>You need to enable JavaScript to
-        run this app.</noscript>
+<body data-theme="theme_2" data-sidebar-style="full" data-layout="vertical">
+    <div><span class="load-font font-be font-Bold">font-be</span> <span
+            class="load-font font-be font-Medium">font-be</span> <span
+            class="load-font font-be font-Normal">font-be</span> <span
+            class="load-font font-inter font-Bold">font-inter</span> <span
+            class="load-font font-inter font-Medium">font-inter</span> <span
+            class="load-font font-inter font-Normal">font-inter</span> <span
+            class="load-font font-SFProDisplay font-Medium">font-SFProDisplay</span> <span
+            class="load-font font-SFProDisplay font-Bold">font-SFProDisplay</span> <span
+            class="load-font font-SFProDisplay font-Normal">font-SFProDisplay</span></div><noscript>You need to enable
+        JavaScript to run this app.</noscript>
     <div id="root"></div>
 </body>
 
