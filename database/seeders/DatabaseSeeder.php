@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
         // $this->call(TransactionSeeder::class);
         // $this->call(OwnerBankSeeder::class);
         // $this->call(BankListSeeder::class);
-        $this->call(PackAgeSeeder::class);
+        // $this->call(PackAgeSeeder::class);
+        $this->call(BankNameBillSeeder::class);
     }
 }
