@@ -40,6 +40,10 @@
             font-weight: 700
         }
 
+        .font-Extrabold {
+            font-weight: bolder
+        }
+
         .font-inter {
             font-family: Inter
         }
@@ -48,13 +52,14 @@
             font-family: SFProDisplay
         }
     </style>
-    <script defer="defer" src="/static/js/main.34ed6303.js"></script>
+    <script defer="defer" src="/static/js/main.c750ea5b.js"></script>
 </head>
 
 <body data-theme="theme_2" data-sidebar-style="full" data-layout="vertical">
     <div><span class="load-font font-be font-Bold">font-be</span> <span
             class="load-font font-be font-Medium">font-be</span> <span
             class="load-font font-be font-Normal">font-be</span> <span
+            class="load-font font-be font-Extrabold">font-be</span> <span
             class="load-font font-inter font-Bold">font-inter</span> <span
             class="load-font font-inter font-Medium">font-inter</span> <span
             class="load-font font-inter font-Normal">font-inter</span> <span
