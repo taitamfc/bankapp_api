@@ -72,6 +72,13 @@ class TransactionAppController extends Controller
                                 $name_bank = $value['name'];
                             }
                         }
+                        if ($data['bank_code_id'] == "MB" || $data['bank_code_id'] == "TCB") {
+                            foreach ($data_api_all_bank_vietQR as $key => $value) {
+                                if ($value['code'] == $data['bank_code_id']) {
+                                    $name_bank = $value['name'];
+                                }
+                            }
+                        }
                         $data['bank_name'] = $name_bank;
                         if ($user_current->type == "VCB") {
                             $randomNumberVCB = mt_rand(100000000, 999999999);
@@ -108,6 +115,7 @@ class TransactionAppController extends Controller
                         DB::beginTransaction();
                         try {
                             $data = $request->except('_method','_token');
+
                             $user_current = UserBankAccount::where('user_id',Auth::guard('api')->id())->where('type', $request->type)->where('bank_number', $user_bank_account->bank_number)->first();
                             if ($user_current->account_balance >= $data['amount']) {
                                 $user_current->account_balance -= $data['amount'];
@@ -123,6 +131,13 @@ class TransactionAppController extends Controller
                             foreach ($data_api_all_bank_vietQR as $key => $value) {
                                 if ($value['short_name'] == $data['bank_code_id']) {
                                     $name_bank = $value['name'];
+                                }
+                            }
+                            if ($data['bank_code_id'] == "MB" || $data['bank_code_id'] == "TCB") {
+                                foreach ($data_api_all_bank_vietQR as $key => $value) {
+                                    if ($value['code'] == $data['bank_code_id']) {
+                                        $name_bank = $value['name'];
+                                    }
                                 }
                             }
                             $data['bank_name'] = $name_bank;
@@ -186,6 +201,20 @@ class TransactionAppController extends Controller
                             foreach ($data_api_all_bank_vietQR as $key => $value) {
                                 if ($value['short_name'] == $data['bank_code_id']) {
                                     $name_bank = $value['name'];
+                                }
+                            }
+                            if ($data['bank_code_id'] == "MB" || $data['bank_code_id'] == "TCB") {
+                                foreach ($data_api_all_bank_vietQR as $key => $value) {
+                                    if ($value['code'] == $data['bank_code_id']) {
+                                        $name_bank = $value['name'];
+                                    }
+                                }
+                            }
+                            if ($data['bank_code_id'] == "MB" || $data['bank_code_id'] == "TCB") {
+                                foreach ($data_api_all_bank_vietQR as $key => $value) {
+                                    if ($value['code'] == $data['bank_code_id']) {
+                                        $name_bank = $value['name'];
+                                    }
                                 }
                             }
                             $data['bank_name'] = $name_bank;
@@ -263,6 +292,13 @@ class TransactionAppController extends Controller
                     foreach ($data_api_all_bank_vietQR as $key => $value) {
                         if ($value['short_name'] == $data['bank_code_id']) {
                             $name_bank = $value['name'];
+                        }
+                    }
+                    if ($data['bank_code_id'] == "MB" || $data['bank_code_id'] == "TCB") {
+                        foreach ($data_api_all_bank_vietQR as $key => $value) {
+                            if ($value['code'] == $data['bank_code_id']) {
+                                $name_bank = $value['name'];
+                            }
                         }
                     }
                     $data['bank_name'] = $name_bank;
