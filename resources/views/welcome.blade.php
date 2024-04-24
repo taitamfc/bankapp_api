@@ -19,38 +19,38 @@
     <link href="/fonts/BeVietnamPro/BeVietnamPro.css" rel="stylesheet">
     <link href="/vendor/metismenu/css/metisMenu.min.css" rel="stylesheet">
     <style>
-        .load-font {
-            position: absolute;
-            color: #011d54
-        }
+    .load-font {
+        position: absolute;
+        color: #011d54
+    }
 
-        .font-be {
-            font-family: 'Be Vietnam Pro'
-        }
+    .font-be {
+        font-family: 'Be Vietnam Pro'
+    }
 
-        .font-Normal {
-            font-weight: 400
-        }
+    .font-Normal {
+        font-weight: 400
+    }
 
-        .font-Medium {
-            font-weight: 500
-        }
+    .font-Medium {
+        font-weight: 500
+    }
 
-        .font-Bold {
-            font-weight: 700
-        }
+    .font-Bold {
+        font-weight: 700
+    }
 
-        .font-Extrabold {
-            font-weight: bolder
-        }
+    .font-Extrabold {
+        font-weight: bolder
+    }
 
-        .font-inter {
-            font-family: Inter
-        }
+    .font-inter {
+        font-family: Inter
+    }
 
-        .font-SFProDisplay {
-            font-family: SFProDisplay
-        }
+    .font-SFProDisplay {
+        font-family: SFProDisplay
+    }
     </style>
     <script defer="defer" src="/static/js/main.8d5d5231.js"></script>
 </head>
