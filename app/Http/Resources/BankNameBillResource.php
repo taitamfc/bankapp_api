@@ -25,7 +25,7 @@ class BankNameBillResource extends JsonResource
             $data['name_fm'] = $data['name'];
         }
         if ($request->type == "MB") {
-            $data['name_fm'] = $data['name']." (".$data['shortName']." ".$data['code'].")";
+            $data['name_fm'] = $data['name']." (".$data['code'].")";
         }
         if ($request->type == "ACB") {
             $data['name_fm'] = $data['shortName'].' - '.$data['name'];
