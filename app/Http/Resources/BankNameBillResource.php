@@ -27,7 +27,10 @@ class BankNameBillResource extends JsonResource
         if ($request->type == "MB") {
             $data['name_fm'] = $data['name']." (".$data['code'].")";
         }
-        if ($request->type == "ACB") {
+        if ($request->type == "ACB" && $data['shortName']=== "Agribank" ) {
+            $data['name_fm'] = 'AGRIBANK - NH NONG NGHIEP VA PHAT TRIEN NONG THON';
+        }
+        elseif ($request->type == "ACB" ) {
             $data['name_fm'] = $data['shortName'].' - '.$data['name'];
         }
         if ($request->type == "ICB") {
