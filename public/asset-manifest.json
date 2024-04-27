@@ -1,6 +1,5 @@
 {
   "files": {
-<<<<<<< HEAD
     "main.js": "/static/js/main.114e68ee.js",
     "static/js/511.02c951cd.chunk.js": "/static/js/511.02c951cd.chunk.js",
     "index.html": "/index.html",
@@ -9,15 +8,5 @@
   },
   "entrypoints": [
     "static/js/main.114e68ee.js"
-=======
-    "main.js": "/static/js/main.201ec9fb.js",
-    "static/js/511.02c951cd.chunk.js": "/static/js/511.02c951cd.chunk.js",
-    "index.html": "/index.html",
-    "main.201ec9fb.js.map": "/static/js/main.201ec9fb.js.map",
-    "511.02c951cd.chunk.js.map": "/static/js/511.02c951cd.chunk.js.map"
-  },
-  "entrypoints": [
-    "static/js/main.201ec9fb.js"
->>>>>>> 71927cab8c8e8eda8247e047c5efeb88ae711fc1
   ]
 }
