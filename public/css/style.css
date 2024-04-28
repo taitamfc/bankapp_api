@@ -26640,8 +26640,8 @@ div#react-select-3-listbox > div[aria-selected="true"]{
 .react-select__input-container {
   color: black !important;
 }
-.react-select__value-container .react-select__single-value {
-  color: white;
+.react-select__single-value {
+  color:white !important;
 }
 .react-select__control--is-focused .react-select__single-value {
   color: black !important;

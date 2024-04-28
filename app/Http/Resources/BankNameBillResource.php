@@ -15,42 +15,32 @@ class BankNameBillResource extends JsonResource
     public function toArray(Request $request): array
     {
         $data = parent::toArray($request);
-        if ($request->type == "VCB") {
-            $data['name_fm'] = $data['name']." (".$data['shortName'].")";
+        switch ($request->type) {
+            case 'VCB':
+                $data['name_fm'] = $data['name']." (".$data['shortName'].")";
+                break;
+            case 'TPB':
+            case 'VBA':
+            case 'VPB':
+            case 'STB':
+            case 'MSB':
+                $data['name_fm'] = $data['shortName'];
+                break;
+            case 'TCB':
+            case 'ICB':
+            case 'BIDV':
+                $data['name_fm'] = $data['name'];
+                break;
+            case 'MB':
+                $data['name_fm'] = $data['name']." (".$data['code'].")";
+                break;
+            case 'ACB':
+                $data['name_fm'] = $data['name_no_sign'];
+                break;
+            default:
+                $data['name_fm'] = $data['shortName'];
+                break;
         }
-        if ($request->type == "TPB") {
-            $data['name_fm'] = $data['shortName'];
-        }
-        if ($request->type == "TCB") {
-            $data['name_fm'] = $data['name'];
-        }
-        if ($request->type == "MB") {
-            $data['name_fm'] = $data['name']." (".$data['code'].")";
-        }
-        if ($request->type == "ACB" && $data['shortName']=== "Agribank" ) {
-            $data['name_fm'] = 'AGRIBANK - NH NONG NGHIEP VA PHAT TRIEN NONG THON';
-        }
-        elseif ($request->type == "ACB" ) {
-            $data['name_fm'] = $data['shortName'].' - '.$data['name'];
-        }
-        if ($request->type == "ICB") {
-            $data['name_fm'] = $data['name'];
-        }
-        if ($request->type == "BIDV") {
-            $data['name_fm'] = $data['name'];
-        }
-        if ($request->type == "VBA") {
-            $data['name_fm'] = $data['shortName'];
-        }
-        if ($request->type == "VPB") {
-            $data['name_fm'] = $data['shortName'];
-        }
-        if ($request->type == "STB") {
-            $data['name_fm'] = $data['shortName'];
-        }
-        if ($request->type == "MSB") {
-            $data['name_fm'] = $data['shortName'];
-        }   
         return $data;
     }
 }
