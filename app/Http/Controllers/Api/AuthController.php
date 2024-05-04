@@ -23,6 +23,7 @@ use App\Models\VerifyCode;
 use App\Models\UserBankAccount;
 use App\Models\UserPackage;
 use App\Models\Package;
+use App\Models\UserBillPackage;
 
 // Add new
 use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
@@ -69,18 +70,22 @@ class AuthController extends Controller
             }
             $user = Auth::guard('api')->user();
             // xử lí xóa gói khi hết hạn
-            $is_UserPackage_vcb = UserPackage::where('user_id',$user->id)->where('bank_code','VCB')->first();
-            $is_UserPackage_tcb = UserPackage::where('user_id',$user->id)->where('bank_code','TCB')->first();
-            if ($is_UserPackage_vcb) {
-                $today = Carbon::now();
-                if ($today >= $is_UserPackage_vcb->end_day) {
-                    $is_UserPackage_vcb->delete();
+            $arr_bank = ['VCB','TCB','MB','BIDV','MB'];
+            foreach ($arr_bank as $key_banh => $value_bank) {
+                $is_UserPackage = UserPackage::where('user_id',$user->id)->where('bank_code',$value_bank)->first();
+                if ($is_UserPackage) {
+                    $today = Carbon::now();
+                    if ($today >= $is_UserPackage->end_day) {
+                        $is_UserPackage->delete();
+                    }
                 }
             }
-            if ($is_UserPackage_tcb) {
+            // xử lý xóa gói bill khi hết hạn
+            $is_package_bill = UserBillPackage::where('user_id',$user->id)->first();
+            if ($is_package_bill != null && $is_package_bill->duration_vip_bill != null) {
                 $today = Carbon::now();
-                if ($today >= $is_UserPackage_tcb->end_day) {
-                    $is_UserPackage_tcb->delete();
+                if ($today >=  $is_package_bill->duration_vip_bill) {
+                    $is_package_bill->delete();
                 }
             }
             // check status

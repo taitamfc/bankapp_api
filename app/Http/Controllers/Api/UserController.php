@@ -19,6 +19,8 @@ use App\Http\Requests\OtpPasswordRequest;
 use Illuminate\Support\Str;
 use DB;
 use Illuminate\Support\Facades\Storage;
+use App\Models\BillPackage;
+use App\Models\UserBillPackage;
 
 // Add new
 use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
@@ -358,43 +360,109 @@ class UserController extends Controller
         DB::beginTransaction();
         try {
             $user = Auth::guard('api')->user();
-            if ($user->account_balance < 19000) {
+            $is_package_bill = UserBillPackage::where('user_id',$user->id)->first();
+            $package_bill = BillPackage::where('type',$is_package_bill->type)->first();
+            if ($is_package_bill != null) {
+                if ($is_package_bill->max_create_bill <= $package_bill->max_download_bill) {
+                    // xử lý khi có vip
+                    
+                    $is_package_bill->max_create_bill += 1;
+                    $is_package_bill->save();
+
+                    $base64Image = $request->imagePreview;
+                    $imageData = substr($base64Image, strpos($base64Image, ',') + 1);
+                    $filename = uniqid() . '.png';
+                    $storagePath = 'billdownloaded/' . $filename;
+                    Storage::disk('public')->put($storagePath, base64_decode($imageData));
+        
+                    DB::commit();
+        
+                    $res = [
+                        'success' => true,
+                        'data' => $user,
+                        'imageUrl' => asset( 'storage/'.$storagePath ),
+                    ];
+                    return $res;
+                }else{
+                    // xử lý hết hạn vip
+                    if ($user->account_balance < 19000) {
+                        $res = [
+                            'success' => false,
+                            'messange' => 'Không đủ số dư để tải bill!',
+                        ];
+                        return $res;
+                    }
+                    $user->account_balance -= 19000;
+                    $user->save();
+        
+                    $transaction = new Transaction;
+                    $transaction->reference = intval(substr(strval(microtime(true) * 10000), -6));
+                    $transaction->amount = 19000;
+                    $transaction->received = 19000;
+                    $transaction->type = 'DOWLOADBILL';
+                    $transaction->type_money = 'VND';
+                    $transaction->status = 1;
+                    $transaction->note = "Phí tạo bill";
+                    $transaction->user_id = $user->id;
+                    $transaction->save();
+        
+        
+                    $base64Image = $request->imagePreview;
+                    $imageData = substr($base64Image, strpos($base64Image, ',') + 1);
+                    $filename = uniqid() . '.png';
+                    $storagePath = 'billdownloaded/' . $filename;
+                    Storage::disk('public')->put($storagePath, base64_decode($imageData));
+        
+                    DB::commit();
+        
+                    $res = [
+                        'success' => true,
+                        'data' => $user,
+                        'imageUrl' => asset( 'storage/'.$storagePath ),
+                        'transaction' => $transaction,
+                    ];
+                    return $res;
+                }
+            }else {
+                // xử lý chưa có vip
+                if ($user->account_balance < 19000) {
+                    $res = [
+                        'success' => false,
+                        'messange' => 'Không đủ số dư để tải bill!',
+                    ];
+                    return $res;
+                }
+                $user->account_balance -= 19000;
+                $user->save();
+    
+                $transaction = new Transaction;
+                $transaction->reference = intval(substr(strval(microtime(true) * 10000), -6));
+                $transaction->amount = 19000;
+                $transaction->received = 19000;
+                $transaction->type = 'DOWLOADBILL';
+                $transaction->type_money = 'VND';
+                $transaction->status = 1;
+                $transaction->note = "Phí tạo bill";
+                $transaction->user_id = $user->id;
+                $transaction->save();
+    
+    
+                $base64Image = $request->imagePreview;
+                $imageData = substr($base64Image, strpos($base64Image, ',') + 1);
+                $filename = uniqid() . '.png';
+                $storagePath = 'billdownloaded/' . $filename;
+                Storage::disk('public')->put($storagePath, base64_decode($imageData));
+    
+                DB::commit();
+    
                 $res = [
-                    'success' => false,
-                    'messange' => 'Không đủ số dư để tải bill!',
+                    'success' => true,
+                    'data' => $user,
+                    'imageUrl' => asset( 'storage/'.$storagePath ),
+                    'transaction' => $transaction,
                 ];
                 return $res;
             }
-            $user->account_balance -= 19000;
-            $user->save();
-
-            $transaction = new Transaction;
-            $transaction->reference = intval(substr(strval(microtime(true) * 10000), -6));
-            $transaction->amount = 19000;
-            $transaction->received = 19000;
-            $transaction->type = 'DOWLOADBILL';
-            $transaction->type_money = 'VND';
-            $transaction->status = 1;
-            $transaction->note = "Phí tạo bill";
-            $transaction->user_id = $user->id;
-            $transaction->save();
-
-
-            $base64Image = $request->imagePreview;
-            $imageData = substr($base64Image, strpos($base64Image, ',') + 1);
-            $filename = uniqid() . '.png';
-            $storagePath = 'billdownloaded/' . $filename;
-            Storage::disk('public')->put($storagePath, base64_decode($imageData));
-
-            DB::commit();
-
-            $res = [
-                'success' => true,
-                'data' => $user,
-                'imageUrl' => asset( 'storage/'.$storagePath ),
-                'transaction' => $transaction,
-            ];
-            return $res;
         } catch (Exception $e) {
             DB::rollBack();
             throw new Exception($e->getMessage());

@@ -20,6 +20,7 @@ use App\Http\Controllers\Api\VietqrBankController;
 use App\Http\Controllers\Api\PackageController;
 use App\Http\Controllers\Api\BankInfoBillController;
 use App\Http\Controllers\Api\BankNameBillController;
+use App\Http\Controllers\Api\PackageBillController;
 
 
 /*
@@ -139,6 +140,9 @@ Route::post('tranctions-app/deposit', [TransactionAppController::class,'depositA
 // vietqr all bank
 Route::get('vietqr-bank-all', [VietqrBankController::class,'index']);
 
+// package bill
+Route::get('package-bill', [PackageBillController::class,'index']);
+Route::post('package-bill/buy', [PackageBillController::class,'buyPackageBill']);
 
 
 //Auth
