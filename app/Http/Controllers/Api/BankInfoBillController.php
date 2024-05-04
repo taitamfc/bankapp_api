@@ -8,6 +8,7 @@ use App\Http\Resources\BankInfoBillResource;
 use App\Models\BankInfoBill;
 use App\Models\BillPackage;
 use App\Models\UserBillPackage;
+use App\Models\Device;
 use Illuminate\Support\Facades\Auth;
 use DateTime;
 
@@ -30,6 +31,8 @@ class BankInfoBillController extends Controller
                 $daysRemaining = $interval->format('%a');
                 $is_package_bill->duration_vip_bill = $daysRemaining;
             }
+            $user_devices = Device::where('user_id',$user->id)->get();
+            $is_package_bill->max_login_device = count($user_devices);
             $res = [
                 'success' => true,
                 'data' => [
