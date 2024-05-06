@@ -21,6 +21,10 @@ use DB;
 use Illuminate\Support\Facades\Storage;
 use App\Models\BillPackage;
 use App\Models\UserBillPackage;
+use App\Models\HistoryBillFree;
+use Carbon\Carbon;
+use DateTime;
+
 
 // Add new
 use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
@@ -359,15 +363,26 @@ class UserController extends Controller
     public function handleFeeDowloadBill (Request $request) {
         DB::beginTransaction();
         try {
+            $currentDate = date('Y-m-d');
             $user = Auth::guard('api')->user();
             $is_package_bill = UserBillPackage::where('user_id',$user->id)->first();
-            $package_bill = BillPackage::where('type',$is_package_bill->type)->first();
             if ($is_package_bill != null) {
-                if ($is_package_bill->max_create_bill <= $package_bill->max_download_bill) {
+                $count_dow_free_before = HistoryBillFree::where('user_id', $user->id)
+                    ->whereDate('created_at', $currentDate)
+                    ->where('created_at', '>=' , $is_package_bill->created_at)
+                    ->count();
+                $package_bill = BillPackage::where('type',$is_package_bill->type)->first();
+                if ($count_dow_free_before <= $package_bill->max_download_bill) {
                     // xử lý khi có vip
+                    $history_dowload_free = new HistoryBillFree;
+                    $history_dowload_free->user_id = $user->id;
+                    $history_dowload_free->save();
+
                     
-                    $is_package_bill->max_create_bill += 1;
-                    $is_package_bill->save();
+                    // $count_dow_free_after = HistoryBillFree::where('user_id',$user->id)->where('created_at',$today)->count();
+
+                    // $is_package_bill->max_create_bill = $count_dow_free_after;
+                    // $is_package_bill->save();
 
                     $base64Image = $request->imagePreview;
                     $imageData = substr($base64Image, strpos($base64Image, ',') + 1);

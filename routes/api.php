@@ -143,6 +143,7 @@ Route::get('vietqr-bank-all', [VietqrBankController::class,'index']);
 // package bill
 Route::get('package-bill', [PackageBillController::class,'index']);
 Route::post('package-bill/buy', [PackageBillController::class,'buyPackageBill']);
+Route::post('package-bill/delete', [PackageBillController::class,'deletePackageBill']);
 
 
 //Auth
