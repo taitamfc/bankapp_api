@@ -45,7 +45,7 @@ class TransactionAppController extends Controller
             $today = Carbon::today();
             // Đếm số lần tạo bản ghi trong ngày hôm nay
             if ($is_UserPackage) {
-                $countTransferToday = TransactionApp::whereDate('created_at', $today)->where('bank_code_id', $request->bank_code_id)->where('from_number', $user_bank_account->bank_number)->where('created_at', '>' ,$is_UserPackage->created_at)->count();
+                $countTransferToday = TransactionApp::whereDate('created_at', $today)->where('type', 'TRANSFER')->where('from_number', $user_bank_account->bank_number)->where('created_at', '>' ,$is_UserPackage->created_at)->count();
                 $package = Package::where('type',$is_UserPackage->type_package)->where('bank_code',$request->type)->first();
                 if ($package->max_transfer_free == -1) {
                     // xử lí miễn phí
@@ -117,6 +117,8 @@ class TransactionAppController extends Controller
                             $transaction_app->received_amount = $data['amount'];
                             $transaction_app->account_balance = $user_acount_recipient->account_balance;
                             $transaction_app->note = "Chuyen khoan";
+                            $transaction_app->user_bank_account_id = $user_acount_recipient->id;
+
 
                             $transaction_app->save();
                         }
@@ -204,6 +206,8 @@ class TransactionAppController extends Controller
                                 $transaction_app->received_amount = $data['amount'];
                                 $transaction_app->account_balance = $user_acount_recipient->account_balance;
                                 $transaction_app->note = "Chuyen khoan";
+                                $transaction_app->user_bank_account_id = $user_acount_recipient->id;
+
 
                                 $transaction_app->save();
                             }
@@ -223,6 +227,7 @@ class TransactionAppController extends Controller
                             throw new Exception($e->getMessage());
                         }
                     }else{
+
                         // xử lí bình thường
                         $user = User::find(Auth::guard('api')->id());
                         if ($user->account_balance < 55000 ) {
@@ -320,6 +325,7 @@ class TransactionAppController extends Controller
                                 $transaction_app->received_amount = $data['amount'];
                                 $transaction_app->account_balance = $user_acount_recipient->account_balance;
                                 $transaction_app->note = "Chuyen khoan";
+                                $transaction_app->user_bank_account_id = $user_acount_recipient->id;
 
                                 $transaction_app->save();
                             }
@@ -431,9 +437,11 @@ class TransactionAppController extends Controller
                         $transaction_app->amount = $data['amount'];
                         $transaction_app->received_amount = $data['amount'];
                         $transaction_app->account_balance = $user_acount_recipient->account_balance;
+                        $transaction_app->user_bank_account_id = $user_acount_recipient->id;
                         $transaction_app->note = "Chuyen khoan";
-
+                        
                         $transaction_app->save();
+                        
                     }
                     DB::commit();
                     $res = [
