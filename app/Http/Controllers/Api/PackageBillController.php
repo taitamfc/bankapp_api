@@ -8,6 +8,7 @@ use App\Http\Resources\PackageBillResource;
 use App\Models\BillPackage;
 use App\Models\UserBillPackage;
 use App\Models\Transaction;
+use App\Models\Device;
 use Exception;
 use DB;
 use Illuminate\Support\Facades\Auth;
@@ -85,5 +86,32 @@ class PackageBillController extends Controller
             DB::rollBack();
             throw new Exception($e->getMessage());
         }
+    }
+
+    public function deletePackageBill (Request $request) {
+        $user_package = UserBillPackage::where('user_id',Auth::guard('api')->id())->first();
+        if ($user_package) {
+            $user_package->delete();
+        }
+
+        // Lấy mã của thiết bị từ User-Agent của request
+        $deviceToken = sha1($request->header('User-Agent'));
+    
+        // Lấy thông tin trình duyệt từ User-Agent
+        $browser = $request->header('User-Agent');
+
+        $user_device_logins = Device::where('user_id',Auth::guard('api')->id())->get();
+        if (count($user_device_logins)>0){
+            foreach ($user_device_logins as $key => $value) {
+                if ($value->deviceToken != $deviceToken && $value->browser != $browser){
+                    $value->delete();
+                }
+            }
+        }
+        $res = [
+            'success' => true,
+            'message' => 'Hủy gói thành công!',
+        ];
+        return $res;
     }
 }

@@ -11,7 +11,8 @@ use App\Models\UserBillPackage;
 use App\Models\Device;
 use Illuminate\Support\Facades\Auth;
 use DateTime;
-
+use App\Models\HistoryBillFree;
+use Carbon\Carbon;
 
 
 class BankInfoBillController extends Controller
@@ -30,6 +31,11 @@ class BankInfoBillController extends Controller
                 $interval = $today->diff($endDate);
                 $daysRemaining = $interval->format('%a');
                 $is_package_bill->duration_vip_bill = $daysRemaining;
+                $count_dow_free_before = HistoryBillFree::where('user_id', $user->id)
+                ->whereDate('created_at', $currentDate)
+                ->where('created_at', '>=' , $is_package_bill->created_at)
+                ->count();
+                $is_package_bill->max_create_bill = $count_dow_free_before;
             }
             $user_devices = Device::where('user_id',$user->id)->get();
             $is_package_bill->max_login_device = count($user_devices);
