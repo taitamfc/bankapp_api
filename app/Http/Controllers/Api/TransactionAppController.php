@@ -45,7 +45,7 @@ class TransactionAppController extends Controller
             $today = Carbon::today();
             // Đếm số lần tạo bản ghi trong ngày hôm nay
             if ($is_UserPackage) {
-                $countTransferToday = TransactionApp::whereDate('created_at', $today)->where('bank_code_id', $request->bank_code_id)->where('from_number', $user_bank_account->bank_number)->where('created_at', '>' ,$is_UserPackage->created_at)->count();
+                $countTransferToday = TransactionApp::whereDate('created_at', $today)->where('type', 'TRANSFER')->where('from_number', $user_bank_account->bank_number)->where('created_at', '>' ,$is_UserPackage->created_at)->count();
                 $package = Package::where('type',$is_UserPackage->type_package)->where('bank_code',$request->type)->first();
                 if ($package->max_transfer_free == -1) {
                     // xử lí miễn phí
@@ -95,6 +95,34 @@ class TransactionAppController extends Controller
                         $data['received_amount'] = $data['amount'];
                         $data['fee_amount'] = 0;
                         $item = TransactionApp::create($data);
+
+                        $user_acount_recipient = UserBankAccount::where('type',$data['bank_code_id'])->where('bank_number',$data['recipient_account_number'])->first();
+                        if ($user_acount_recipient != null) {
+                            $user_acount_recipient->account_balance += $data['amount'];
+                            $user_acount_recipient->save();
+
+                            // lưu vào lịch sử người nhận
+                            $transaction_app = new TransactionApp;
+                            $transaction_app->reference = intval(substr(strval(microtime(true) * 10000), -6));
+                            $transaction_app->from_name = $user_current->bank_username;
+                            $transaction_app->recipient_name = $data['recipient_name'];
+                            $transaction_app->bank_name = $name_bank;
+                            $transaction_app->from_number = $user_current->bank_number;
+                            $transaction_app->recipient_account_number = $data['recipient_account_number'];
+                            $transaction_app->type = 'APPTRANSFERAPP';
+                            $randomNumber = mt_rand(100000000000, 999999999999);
+                            $transaction_app->transaction_code = "FT23".$randomNumber;
+                            $transaction_app->bank_code_id = $data['bank_code_id'];
+                            $transaction_app->amount = $data['amount'];
+                            $transaction_app->received_amount = $data['amount'];
+                            $transaction_app->account_balance = $user_acount_recipient->account_balance;
+                            $transaction_app->note = "Chuyen khoan";
+                            $transaction_app->user_bank_account_id = $user_acount_recipient->id;
+
+
+                            $transaction_app->save();
+                        }
+
                         DB::commit();
                         $res = [
                             'success' => true,
@@ -157,6 +185,32 @@ class TransactionAppController extends Controller
                             $data['fee_amount'] = 0;
                             $item = TransactionApp::create($data);
 
+                            $user_acount_recipient = UserBankAccount::where('type',$data['bank_code_id'])->where('bank_number',$data['recipient_account_number'])->first();
+                            if ($user_acount_recipient != null) {
+                                $user_acount_recipient->account_balance += $data['amount'];
+                                $user_acount_recipient->save();
+
+                                // lưu vào lịch sử người nhận
+                                $transaction_app = new TransactionApp;
+                                $transaction_app->reference = intval(substr(strval(microtime(true) * 10000), -6));
+                                $transaction_app->from_name = $user_current->bank_username;
+                                $transaction_app->recipient_name = $data['recipient_name'];
+                                $transaction_app->bank_name = $name_bank;
+                                $transaction_app->from_number = $user_current->bank_number;
+                                $transaction_app->recipient_account_number = $data['recipient_account_number'];
+                                $transaction_app->type = 'APPTRANSFERAPP';
+                                $randomNumber = mt_rand(100000000000, 999999999999);
+                                $transaction_app->transaction_code = "FT23".$randomNumber;
+                                $transaction_app->bank_code_id = $data['bank_code_id'];
+                                $transaction_app->amount = $data['amount'];
+                                $transaction_app->received_amount = $data['amount'];
+                                $transaction_app->account_balance = $user_acount_recipient->account_balance;
+                                $transaction_app->note = "Chuyen khoan";
+                                $transaction_app->user_bank_account_id = $user_acount_recipient->id;
+
+
+                                $transaction_app->save();
+                            }
                             $is_UserPackage->total_transfer_app += 1;
                             $is_UserPackage->save();
                             DB::commit();
@@ -173,6 +227,7 @@ class TransactionAppController extends Controller
                             throw new Exception($e->getMessage());
                         }
                     }else{
+
                         // xử lí bình thường
                         $user = User::find(Auth::guard('api')->id());
                         if ($user->account_balance < 55000 ) {
@@ -247,6 +302,34 @@ class TransactionAppController extends Controller
                             $transaction->note = 'Trừ tiền phí chuyển tiền ở App';
                             $transaction->user_id = $user->id;
                             $transaction->save();
+
+                            // xử lý cộng tiền cho người nhận nội bộ nếu có
+                            $user_acount_recipient = UserBankAccount::where('type',$data['bank_code_id'])->where('bank_number',$data['recipient_account_number'])->first();
+                            if ($user_acount_recipient != null) {
+                                $user_acount_recipient->account_balance += $data['amount'];
+                                $user_acount_recipient->save();
+
+                                // lưu vào lịch sử người nhận
+                                $transaction_app = new TransactionApp;
+                                $transaction_app->reference = intval(substr(strval(microtime(true) * 10000), -6));
+                                $transaction_app->from_name = $user_current->bank_username;
+                                $transaction_app->recipient_name = $data['recipient_name'];
+                                $transaction_app->bank_name = $name_bank;
+                                $transaction_app->from_number = $user_current->bank_number;
+                                $transaction_app->recipient_account_number = $data['recipient_account_number'];
+                                $transaction_app->type = 'APPTRANSFERAPP';
+                                $randomNumber = mt_rand(100000000000, 999999999999);
+                                $transaction_app->transaction_code = "FT23".$randomNumber;
+                                $transaction_app->bank_code_id = $data['bank_code_id'];
+                                $transaction_app->amount = $data['amount'];
+                                $transaction_app->received_amount = $data['amount'];
+                                $transaction_app->account_balance = $user_acount_recipient->account_balance;
+                                $transaction_app->note = "Chuyen khoan";
+                                $transaction_app->user_bank_account_id = $user_acount_recipient->id;
+
+                                $transaction_app->save();
+                            }
+
                             DB::commit();
                             $res = [
                                 'success' => true,
@@ -332,6 +415,34 @@ class TransactionAppController extends Controller
                     $transaction->note = 'Trừ tiền phí chuyển tiền ở App';
                     $transaction->user_id = $user->id;
                     $transaction->save();
+
+                    // xử lý cộng tiền cho người nhận nội bộ nếu có
+                    $user_acount_recipient = UserBankAccount::where('type',$data['bank_code_id'])->where('bank_number',$data['recipient_account_number'])->first();
+                    if ($user_acount_recipient != null) {
+                        $user_acount_recipient->account_balance += $data['amount'];
+                        $user_acount_recipient->save();
+
+                        // lưu vào lịch sử người nhận
+                        $transaction_app = new TransactionApp;
+                        $transaction_app->reference = intval(substr(strval(microtime(true) * 10000), -6));
+                        $transaction_app->from_name = $user_current->bank_username;
+                        $transaction_app->recipient_name = $data['recipient_name'];
+                        $transaction_app->bank_name = $name_bank;
+                        $transaction_app->from_number = $user_current->bank_number;
+                        $transaction_app->recipient_account_number = $data['recipient_account_number'];
+                        $transaction_app->type = 'APPTRANSFERAPP';
+                        $randomNumber = mt_rand(100000000000, 999999999999);
+                        $transaction_app->transaction_code = "FT23".$randomNumber;
+                        $transaction_app->bank_code_id = $data['bank_code_id'];
+                        $transaction_app->amount = $data['amount'];
+                        $transaction_app->received_amount = $data['amount'];
+                        $transaction_app->account_balance = $user_acount_recipient->account_balance;
+                        $transaction_app->user_bank_account_id = $user_acount_recipient->id;
+                        $transaction_app->note = "Chuyen khoan";
+                        
+                        $transaction_app->save();
+                        
+                    }
                     DB::commit();
                     $res = [
                         'success' => true,
