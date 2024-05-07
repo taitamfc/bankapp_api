@@ -113,6 +113,8 @@ Route::get('bank-list/{id}', [BankListController::class,'show']);
 // package
 Route::get('package', [PackageController::class,'index']);
 Route::post('package/buy', [PackageController::class,'buyPackage']);
+Route::post('package/delete-app', [PackageController::class,'deletePackageApp']);
+Route::get('package/get-current-package', [PackageController::class,'curentPackageApp']);
 
 
 // User bank account

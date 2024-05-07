@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
         // $this->call(BankListSeeder::class);
         // $this->call(PackAgeSeeder::class);
         // $this->call(BankNameBillSeeder::class);
-        $this->call(BillPackageSeeder::class);
+        // $this->call(BillPackageSeeder::class);
+        $this->call(PackageALL::class);
     }
 }
