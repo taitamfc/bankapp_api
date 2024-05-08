@@ -36,13 +36,13 @@ class PackageController extends Controller
             if ($is_user_packages != null && $is_user_packages->package_all != "ALL") {
                 $res = [
                     'success' => false,
-                    'message' => 'Bạn đang sử dụng gói '.$is_user_packages->type_package.' của gói '.$request->bank_code.'!',
+                    'message' => 'Bạn đang sử dụng gói '.$is_user_packages->type_package.' của gói '.$request->bank_code.' , Hủy gói hiện tại để có thể mua gói mới!',
                 ];
                 return $res;
             }elseif ($is_user_packages != null && $is_user_packages->package_all == "ALL") {
                 $res = [
                     'success' => false,
-                    'message' => 'Bạn đang sử dụng gói '.$is_user_packages->type_package.' của gói Đặc Biệt!',
+                    'message' => 'Bạn đang sử dụng gói '.$is_user_packages->type_package.' của gói Đặc Biệt, Hủy gói hiện tại để có thể mua gói mới!',
                 ];
                 return $res;
             }
@@ -56,7 +56,7 @@ class PackageController extends Controller
                         }else{
                             $res = [
                                 'success' => false,
-                                'message' => 'Bạn đang sử dụng gói '.$value_arr_user_package->type_package.' của gói Đặc Biệt!',
+                                'message' => 'Bạn đang sử dụng gói '.$value_arr_user_package->type_package.' của gói Đặc Biệt!, Hủy gói hiện tại để có thể mua gói mới',
                             ];
                             return $res;
                         }
@@ -185,6 +185,10 @@ class PackageController extends Controller
             if ($user_package != null) {
                 $user_package->delete();
             }
+            $user_account_banks = UserBankAccount::where('user_id',Auth::guard('api')->id())->where('type',$request->bank_code)->get();
+            foreach ($user_account_banks as $key_user_account_bank => $value_user_account_bank) {
+                $value_user_account_bank->delete();
+            }
             $res = [
                 'success' => true,
                 'message' => 'Hủy gói thành công!',
@@ -194,6 +198,10 @@ class PackageController extends Controller
             $user_packages = UserPackage::where('user_id',Auth::guard('api')->id())->get();
             foreach ($user_packages as $key => $value) {
                 $value->delete();
+            }
+            $user_account_banks = UserBankAccount::where('user_id',Auth::guard('api')->id())->get();
+            foreach ($user_account_banks as $key_user_account_bank => $value_user_account_bank) {
+                $value_user_account_bank->delete();
             }
             $res = [
                 'success' => true,
