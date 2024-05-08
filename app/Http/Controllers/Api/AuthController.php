@@ -91,62 +91,62 @@ class AuthController extends Controller
                     $is_package_bill->delete();
                 }
             }
-            if ($is_package_bill != null) {
-                $package_bill = BillPackage::where('type',$is_package_bill->type)->first();
-                // Lấy mã của thiết bị từ User-Agent của request
-                $deviceToken = sha1($request->header('User-Agent'));
+            // if ($is_package_bill != null) {
+            //     $package_bill = BillPackage::where('type',$is_package_bill->type)->first();
+            //     // Lấy mã của thiết bị từ User-Agent của request
+            //     $deviceToken = sha1($request->header('User-Agent'));
     
-                // Lấy thông tin trình duyệt từ User-Agent
-                $browser = $request->header('User-Agent');
+            //     // Lấy thông tin trình duyệt từ User-Agent
+            //     $browser = $request->header('User-Agent');
 
 
-                $is_device = Device::where('deviceToken',$deviceToken)->where('browser',$browser)->first();
-                if ($is_device == null) {
-                    $device = new Device;
-                    $device->user_id = $user->id;
-                    $device->deviceToken = $deviceToken;
-                    $device->browser = $browser;
-                    $device->save();
-                }
-                $user_devices = Device::where('user_id',$user->id)->get();
-                if (count($user_devices)>$package_bill->max_device_login) {
-                    $new_device = Device::where('deviceToken',$deviceToken)->where('browser',$browser)->first();
-                    if ($new_device) {
-                        $new_device->delete();
-                    }
-                    $res = [
-                        'success' => false,
-                        'message' => 'Tài Khoản Đang quá số thiết bị đăng nhập!',
-                    ];
-                    return $res;
-                }
-            }else{
-                $deviceToken = sha1($request->header('User-Agent'));
+            //     $is_device = Device::where('deviceToken',$deviceToken)->where('browser',$browser)->first();
+            //     if ($is_device == null) {
+            //         $device = new Device;
+            //         $device->user_id = $user->id;
+            //         $device->deviceToken = $deviceToken;
+            //         $device->browser = $browser;
+            //         $device->save();
+            //     }
+            //     $user_devices = Device::where('user_id',$user->id)->get();
+            //     if (count($user_devices)>$package_bill->max_device_login) {
+            //         $new_device = Device::where('deviceToken',$deviceToken)->where('browser',$browser)->first();
+            //         if ($new_device) {
+            //             $new_device->delete();
+            //         }
+            //         $res = [
+            //             'success' => false,
+            //             'message' => 'Tài Khoản Đang quá số thiết bị đăng nhập!',
+            //         ];
+            //         return $res;
+            //     }
+            // }else{
+            //     $deviceToken = sha1($request->header('User-Agent'));
     
-                // Lấy thông tin trình duyệt từ User-Agent
-                $browser = $request->header('User-Agent');
+            //     // Lấy thông tin trình duyệt từ User-Agent
+            //     $browser = $request->header('User-Agent');
 
-                $is_device = Device::where('deviceToken',$deviceToken)->where('browser',$browser)->first();
-                if ($is_device == null) {
-                    $device = new Device;
-                    $device->user_id = $user->id;
-                    $device->deviceToken = $deviceToken;
-                    $device->browser = $browser;
-                    $device->save();
-                }
-                $user_devices = Device::where('user_id',$user->id)->get();
-                if (count($user_devices)>1) {
-                    $new_device = Device::where('deviceToken',$deviceToken)->where('browser',$browser)->first();
-                    if ($new_device) {
-                        $new_device->delete();
-                    }
-                    $res = [
-                        'success' => false,
-                        'message' => 'Tài Khoản Đang quá số thiết bị đăng nhập!',
-                    ];
-                    return $res;
-                }
-            }
+            //     $is_device = Device::where('deviceToken',$deviceToken)->where('browser',$browser)->first();
+            //     if ($is_device == null) {
+            //         $device = new Device;
+            //         $device->user_id = $user->id;
+            //         $device->deviceToken = $deviceToken;
+            //         $device->browser = $browser;
+            //         $device->save();
+            //     }
+            //     $user_devices = Device::where('user_id',$user->id)->get();
+            //     if (count($user_devices)>1) {
+            //         $new_device = Device::where('deviceToken',$deviceToken)->where('browser',$browser)->first();
+            //         if ($new_device) {
+            //             $new_device->delete();
+            //         }
+            //         $res = [
+            //             'success' => false,
+            //             'message' => 'Tài Khoản Đang quá số thiết bị đăng nhập!',
+            //         ];
+            //         return $res;
+            //     }
+            // }
             
             // check status
             if($user->status == 0){
