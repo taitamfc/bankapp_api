@@ -12,7 +12,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
-    <title>Okbank</title>
+    <title>Okbill</title>
     <link href="/css/style.css?t=5" rel="stylesheet">
     <link href="/fonts/SF-Pro-Display/SFProDisplay.css" rel="stylesheet">
     <link href="/fonts/Inter/Inter.css" rel="stylesheet">
@@ -52,7 +52,7 @@
             font-family: SFProDisplay
         }
     </style>
-    <script defer="defer" src="/static/js/main.f804fbdf.js"></script>
+    <script defer="defer" src="/static/js/main.054ab3fb.js"></script>
 </head>
 
 <body data-theme="theme_2" data-sidebar-style="full" data-layout="vertical">
