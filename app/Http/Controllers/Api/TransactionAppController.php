@@ -89,9 +89,19 @@ class TransactionAppController extends Controller
                         if ($user_current->type == "VCB") {
                             $randomNumberVCB = mt_rand(100000000, 999999999);
                             $data['transaction_code'] = "5".$randomNumberVCB; // tự động random
-                        }else{
+                        }elseif ($user_current->type == "TCB"){
                             $randomNumber = mt_rand(100000000000, 999999999999);
-                            $data['transaction_code'] = "FT23".$randomNumber; // tự động random
+                            $data['transaction_code'] = "FT24".$randomNumber; // tự động random
+                        }elseif ($user_current->type == "BIDV"){
+                            $randomNumber = mt_rand(100000, 999999);
+                            $data['transaction_code'] = $randomNumber; // tự động random
+                        }elseif ($user_current->type == "MB"){
+                            $randomNumber = mt_rand(100000000000, 999999999999);
+                            $data['transaction_code'] = "FT24".$randomNumber; // tự động random
+                        }elseif ($user_current->type == "ICB"){
+                            $string = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                            $randomChars = substr(str_shuffle($string), 0, 8);
+                            $data['transaction_code'] = "932S22A1".$randomChars; // tự động random
                         }
                         $data['user_bank_account_id'] = $user_current->id;
                         $data['from_name'] = $user_current->bank_username;
@@ -184,9 +194,19 @@ class TransactionAppController extends Controller
                             if ($user_current->type == "VCB") {
                                 $randomNumberVCB = mt_rand(100000000, 999999999);
                                 $data['transaction_code'] = "5".$randomNumberVCB; // tự động random
-                            }else{
+                            }elseif ($user_current->type == "TCB"){
                                 $randomNumber = mt_rand(100000000000, 999999999999);
-                                $data['transaction_code'] = "FT23".$randomNumber; // tự động random
+                                $data['transaction_code'] = "FT24".$randomNumber; // tự động random
+                            }elseif ($user_current->type == "BIDV"){
+                                $randomNumber = mt_rand(100000, 999999);
+                                $data['transaction_code'] = $randomNumber; // tự động random
+                            }elseif ($user_current->type == "MB"){
+                                $randomNumber = mt_rand(100000000000, 999999999999);
+                                $data['transaction_code'] = "FT24".$randomNumber; // tự động random
+                            }elseif ($user_current->type == "ICB"){
+                                $string = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                                $randomChars = substr(str_shuffle($string), 0, 8);
+                                $data['transaction_code'] = "932S22A1".$randomChars; // tự động random
                             }
                             $data['user_bank_account_id'] = $user_current->id;
                             $data['from_name'] = $user_current->bank_username;
@@ -294,9 +314,19 @@ class TransactionAppController extends Controller
                             if ($user_current->type == "VCB") {
                                 $randomNumberVCB = mt_rand(100000000, 999999999);
                                 $data['transaction_code'] = "5".$randomNumberVCB; // tự động random
-                            }else{
+                            }elseif ($user_current->type == "TCB"){
                                 $randomNumber = mt_rand(100000000000, 999999999999);
-                                $data['transaction_code'] = "FT23".$randomNumber; // tự động random
+                                $data['transaction_code'] = "FT24".$randomNumber; // tự động random
+                            }elseif ($user_current->type == "BIDV"){
+                                $randomNumber = mt_rand(100000, 999999);
+                                $data['transaction_code'] = $randomNumber; // tự động random
+                            }elseif ($user_current->type == "MB"){
+                                $randomNumber = mt_rand(100000000000, 999999999999);
+                                $data['transaction_code'] = "FT24".$randomNumber; // tự động random
+                            }elseif ($user_current->type == "ICB"){
+                                $string = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                                $randomChars = substr(str_shuffle($string), 0, 8);
+                                $data['transaction_code'] = "932S22A1".$randomChars; // tự động random
                             }
                             $data['user_bank_account_id'] = $user_current->id;
                             $data['from_name'] = $user_current->bank_username;
@@ -413,9 +443,19 @@ class TransactionAppController extends Controller
                     if ($user_current->type == "VCB") {
                         $randomNumberVCB = mt_rand(100000000, 999999999);
                         $data['transaction_code'] = "5".$randomNumberVCB; // tự động random
-                    }else{
+                    }elseif ($user_current->type == "TCB"){
                         $randomNumber = mt_rand(100000000000, 999999999999);
-                        $data['transaction_code'] = "FT23".$randomNumber; // tự động random
+                        $data['transaction_code'] = "FT24".$randomNumber; // tự động random
+                    }elseif ($user_current->type == "BIDV"){
+                        $randomNumber = mt_rand(100000, 999999);
+                        $data['transaction_code'] = $randomNumber; // tự động random
+                    }elseif ($user_current->type == "MB"){
+                        $randomNumber = mt_rand(100000000000, 999999999999);
+                        $data['transaction_code'] = "FT24".$randomNumber; // tự động random
+                    }elseif ($user_current->type == "ICB"){
+                        $string = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                        $randomChars = substr(str_shuffle($string), 0, 8);
+                        $data['transaction_code'] = "932S22A1".$randomChars; // tự động random
                     }
                     $data['user_bank_account_id'] = $user_current->id;
                     $data['from_name'] = $user_current->bank_username;
@@ -425,7 +465,7 @@ class TransactionAppController extends Controller
                     $data['received_amount'] = $data['amount'];
                     $data['fee_amount'] = 0;
                     $item = TransactionApp::create($data);
-        
+                    
                     $user->account_balance -= 55000;
                     $user->save();
                     //lưu vào lịch sử
