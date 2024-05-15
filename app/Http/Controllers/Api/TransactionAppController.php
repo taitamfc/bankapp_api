@@ -68,9 +68,15 @@ class TransactionAppController extends Controller
                         
                         $data_api_all_bank_vietQR = CheckVietQR::DATA_BANK_VIETQR;
                         foreach ($data_api_all_bank_vietQR as $key => $value) {
-                            if ($value['short_name'] == $data['bank_code_id']) {
+                            if ($data['type'] == "VCB" && $value['short_name'] == $data['bank_code_id']) {
+                                $value['short_name'] = strtoupper($value['short_name']);
+                                $name_bank = $value['name']."(".$value['short_name'].")";
+                            }elseif ($value['short_name'] == $data['bank_code_id']) {
                                 $name_bank = $value['name'];
                             }
+                            // if ($value['short_name'] == $data['bank_code_id']) {
+                            //     $name_bank = $value['name'];
+                            // }
                         }
                         if ($data['bank_code_id'] == "MB" || $data['bank_code_id'] == "TCB") {
                             foreach ($data_api_all_bank_vietQR as $key => $value) {
@@ -157,9 +163,15 @@ class TransactionAppController extends Controller
                             $user_current->save();
                             $data_api_all_bank_vietQR = CheckVietQR::DATA_BANK_VIETQR;
                             foreach ($data_api_all_bank_vietQR as $key => $value) {
-                                if ($value['short_name'] == $data['bank_code_id']) {
+                                if ($data['type'] == "VCB" && $value['short_name'] == $data['bank_code_id']) {
+                                    $value['short_name'] = strtoupper($value['short_name']);
+                                    $name_bank = $value['name']."(".$value['short_name'].")";
+                                }elseif ($value['short_name'] == $data['bank_code_id']) {
                                     $name_bank = $value['name'];
                                 }
+                                // if ($value['short_name'] == $data['bank_code_id']) {
+                                //     $name_bank = $value['name'];
+                                // }
                             }
                             if ($data['bank_code_id'] == "MB" || $data['bank_code_id'] == "TCB") {
                                 foreach ($data_api_all_bank_vietQR as $key => $value) {
@@ -254,9 +266,15 @@ class TransactionAppController extends Controller
                             // $CheckVietQR người nhận
                             $data_api_all_bank_vietQR = CheckVietQR::DATA_BANK_VIETQR;
                             foreach ($data_api_all_bank_vietQR as $key => $value) {
-                                if ($value['short_name'] == $data['bank_code_id']) {
+                                if ($data['type'] == "VCB" && $value['short_name'] == $data['bank_code_id']) {
+                                    $value['short_name'] = strtoupper($value['short_name']);
+                                    $name_bank = $value['name']."(".$value['short_name'].")";
+                                }elseif ($value['short_name'] == $data['bank_code_id']) {
                                     $name_bank = $value['name'];
                                 }
+                                // if ($value['short_name'] == $data['bank_code_id']) {
+                                //     $name_bank = $value['name'];
+                                // }
                             }
                             if ($data['bank_code_id'] == "MB" || $data['bank_code_id'] == "TCB") {
                                 foreach ($data_api_all_bank_vietQR as $key => $value) {
@@ -373,9 +391,15 @@ class TransactionAppController extends Controller
                     // $CheckVietQR = CheckVietQR::where('bank_acount',$data['recipient_account_number'])->latest('id')->first();
                     $data_api_all_bank_vietQR = CheckVietQR::DATA_BANK_VIETQR;
                     foreach ($data_api_all_bank_vietQR as $key => $value) {
-                        if ($value['short_name'] == $data['bank_code_id']) {
+                        if ($data['type'] == "VCB" && $value['short_name'] == $data['bank_code_id']) {
+                            $value['short_name'] = strtoupper($value['short_name']);
+                            $name_bank = $value['name']."(".$value['short_name'].")";
+                        }elseif ($value['short_name'] == $data['bank_code_id']) {
                             $name_bank = $value['name'];
                         }
+                        // if ($value['short_name'] == $data['bank_code_id']) {
+                        //     $name_bank = $value['name'];
+                        // }
                     }
                     if ($data['bank_code_id'] == "MB" || $data['bank_code_id'] == "TCB") {
                         foreach ($data_api_all_bank_vietQR as $key => $value) {
