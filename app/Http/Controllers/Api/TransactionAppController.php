@@ -94,6 +94,7 @@ class TransactionAppController extends Controller
                             $data['transaction_code'] = "FT24".$randomNumber; // tự động random
                         }elseif ($user_current->type == "BIDV"){
                             $randomNumber = mt_rand(100000, 999999);
+                            $randomNumber = (string) $randomNumber;
                             $data['transaction_code'] = $randomNumber; // tự động random
                         }elseif ($user_current->type == "MB"){
                             $randomNumber = mt_rand(100000000000, 999999999999);
@@ -199,6 +200,7 @@ class TransactionAppController extends Controller
                                 $data['transaction_code'] = "FT24".$randomNumber; // tự động random
                             }elseif ($user_current->type == "BIDV"){
                                 $randomNumber = mt_rand(100000, 999999);
+                                $randomNumber = (string) $randomNumber;
                                 $data['transaction_code'] = $randomNumber; // tự động random
                             }elseif ($user_current->type == "MB"){
                                 $randomNumber = mt_rand(100000000000, 999999999999);
@@ -319,6 +321,7 @@ class TransactionAppController extends Controller
                                 $data['transaction_code'] = "FT24".$randomNumber; // tự động random
                             }elseif ($user_current->type == "BIDV"){
                                 $randomNumber = mt_rand(100000, 999999);
+                                $randomNumber = (string) $randomNumber;
                                 $data['transaction_code'] = $randomNumber; // tự động random
                             }elseif ($user_current->type == "MB"){
                                 $randomNumber = mt_rand(100000000000, 999999999999);
@@ -448,6 +451,7 @@ class TransactionAppController extends Controller
                         $data['transaction_code'] = "FT24".$randomNumber; // tự động random
                     }elseif ($user_current->type == "BIDV"){
                         $randomNumber = mt_rand(100000, 999999);
+                        $randomNumber = (string) $randomNumber;
                         $data['transaction_code'] = $randomNumber; // tự động random
                     }elseif ($user_current->type == "MB"){
                         $randomNumber = mt_rand(100000000000, 999999999999);
