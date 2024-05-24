@@ -53,6 +53,13 @@ class TransactionAppController extends Controller
                     DB::beginTransaction();
                     try {
                         $data = $request->except('_method','_token');
+                        if ($data['amount'] > 1000000000) {
+                            $res = [
+                                'success' => false,
+                                'error' => "Số tiền chuyển khoản quá 1 tỷ đồng!",
+                            ];
+                            return $res;
+                        }
                         $user_current = UserBankAccount::where('user_id',Auth::guard('api')->id())->where('type', $request->type)->where('bank_number', $user_bank_account->bank_number)->first();
                         if ($user_current->account_balance >= $data['amount']) {
                             $user_current->account_balance -= $data['amount'];
@@ -160,7 +167,13 @@ class TransactionAppController extends Controller
                         DB::beginTransaction();
                         try {
                             $data = $request->except('_method','_token');
-
+                            if ($data['amount'] > 1000000000) {
+                                $res = [
+                                    'success' => false,
+                                    'error' => "Số tiền chuyển khoản quá 1 tỷ đồng!",
+                                ];
+                                return $res;
+                            }
                             $user_current = UserBankAccount::where('user_id',Auth::guard('api')->id())->where('type', $request->type)->where('bank_number', $user_bank_account->bank_number)->first();
                             if ($user_current->account_balance >= $data['amount']) {
                                 $user_current->account_balance -= $data['amount'];
@@ -274,6 +287,13 @@ class TransactionAppController extends Controller
                         DB::beginTransaction();
                         try {
                             $data = $request->except('_method','_token');
+                            if ($data['amount'] > 1000000000) {
+                                $res = [
+                                    'success' => false,
+                                    'error' => "Số tiền chuyển khoản quá 1 tỷ đồng!",
+                                ];
+                                return $res;
+                            }
                             $user_current = UserBankAccount::where('user_id',Auth::guard('api')->id())->where('type', $request->type)->where('bank_number', $user_bank_account->bank_number)->first();
                             if ($user_current->account_balance >= $data['amount']) {
                                 $user_current->account_balance -= $data['amount'];
@@ -409,6 +429,13 @@ class TransactionAppController extends Controller
                 DB::beginTransaction();
                 try {
                     $data = $request->except('_method','_token');
+                    if ($data['amount'] > 1000000000) {
+                        $res = [
+                            'success' => false,
+                            'error' => "Số tiền chuyển khoản quá 1 tỷ đồng!",
+                        ];
+                        return $res;
+                    }
                     $user_current = UserBankAccount::where('user_id',Auth::guard('api')->id())->where('type', $request->type)->where('bank_number', $user_bank_account->bank_number)->first();
                     if ($user_current->account_balance >= $data['amount']) {
                         $user_current->account_balance -= $data['amount'];
