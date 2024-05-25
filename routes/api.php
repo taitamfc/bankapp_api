@@ -21,6 +21,7 @@ use App\Http\Controllers\Api\PackageController;
 use App\Http\Controllers\Api\BankInfoBillController;
 use App\Http\Controllers\Api\BankNameBillController;
 use App\Http\Controllers\Api\PackageBillController;
+use App\Http\Controllers\Api\DeviceController;
 
 
 /*
@@ -146,6 +147,10 @@ Route::get('vietqr-bank-all', [VietqrBankController::class,'index']);
 Route::get('package-bill', [PackageBillController::class,'index']);
 Route::post('package-bill/buy', [PackageBillController::class,'buyPackageBill']);
 Route::post('package-bill/delete', [PackageBillController::class,'deletePackageBill']);
+
+// show device
+Route::post('device-show', [DeviceController::class,'show']);
+
 
 
 //Auth
