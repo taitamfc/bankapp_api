@@ -22,6 +22,7 @@ use App\Http\Controllers\Api\BankInfoBillController;
 use App\Http\Controllers\Api\BankNameBillController;
 use App\Http\Controllers\Api\PackageBillController;
 use App\Http\Controllers\Api\DeviceController;
+use App\Http\Controllers\Api\DeviceTokenController;
 
 
 /*
@@ -151,6 +152,8 @@ Route::post('package-bill/delete', [PackageBillController::class,'deletePackageB
 // show device
 Route::post('device-show', [DeviceController::class,'show']);
 
+// device_token
+Route::get('device-token', [DeviceTokenController::class,'save_device_token']);
 
 
 //Auth
