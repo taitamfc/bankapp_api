@@ -26,6 +26,7 @@ use App\Models\Package;
 use App\Models\UserBillPackage;
 use App\Models\Device;
 use App\Models\BillPackage;
+use App\Models\DeviceToken;
 
 // Add new
 use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
@@ -238,19 +239,41 @@ class AuthController extends Controller
         // Lấy thông tin trình duyệt từ User-Agent
         $browser = $request->browserInfo;
 
+        // Check if device exists and delete it
         $is_device = Device::where('deviceToken', $deviceToken)->where('browser', $browser)->first();
-
         if ($is_device) {
             $is_device->delete();
         }
 
-        Auth::guard('api')->logout();
+        // Get the authenticated user
+        $user = Auth::guard('api')->user();
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Successfully logged out',
-        ]);
+        // Check if user is authenticated
+        if ($user) {
+            $user_account_bank = $user->active_bank_acount; // Verify property name
+            if ($user_account_bank) {
+                $object_user = json_decode($user_account_bank);
+                $device_token = DeviceToken::where('user_id', $object_user->id)->first();
+                if ($device_token) {
+                    $device_token->delete();
+                }
+            }
+            
+            // Log the user out
+            Auth::guard('api')->logout();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Successfully logged out',
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'No authenticated user',
+            ], 401);
+        }
     }
+
 
     public function refresh()
     {

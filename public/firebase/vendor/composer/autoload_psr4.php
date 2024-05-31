@@ -6,6 +6,7 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
+    'phpseclib3\\' => array($vendorDir . '/phpseclib/phpseclib/phpseclib'),
     'Symfony\\Polyfill\\Php81\\' => array($vendorDir . '/symfony/polyfill-php81'),
     'Symfony\\Polyfill\\Php80\\' => array($vendorDir . '/symfony/polyfill-php80'),
     'Symfony\\Polyfill\\Mbstring\\' => array($vendorDir . '/symfony/polyfill-mbstring'),
@@ -16,10 +17,11 @@ return array(
     'Ramsey\\Collection\\' => array($vendorDir . '/ramsey/collection/src'),
     'Psr\\SimpleCache\\' => array($vendorDir . '/psr/simple-cache/src'),
     'Psr\\Log\\' => array($vendorDir . '/psr/log/src'),
-    'Psr\\Http\\Message\\' => array($vendorDir . '/psr/http-message/src', $vendorDir . '/psr/http-factory/src'),
+    'Psr\\Http\\Message\\' => array($vendorDir . '/psr/http-factory/src', $vendorDir . '/psr/http-message/src'),
     'Psr\\Http\\Client\\' => array($vendorDir . '/psr/http-client/src'),
     'Psr\\Clock\\' => array($vendorDir . '/psr/clock/src'),
     'Psr\\Cache\\' => array($vendorDir . '/psr/cache/src'),
+    'ParagonIE\\ConstantTime\\' => array($vendorDir . '/paragonie/constant_time_encoding/src'),
     'Monolog\\' => array($vendorDir . '/monolog/monolog/src/Monolog'),
     'Lcobucci\\JWT\\' => array($vendorDir . '/lcobucci/jwt/src'),
     'Lcobucci\\Clock\\' => array($vendorDir . '/lcobucci/clock/src'),
@@ -33,6 +35,7 @@ return array(
     'Grpc\\Gcp\\' => array($vendorDir . '/google/grpc-gcp/src'),
     'Grpc\\' => array($vendorDir . '/grpc/grpc/src/lib'),
     'Google\\Type\\' => array($vendorDir . '/google/common-protos/src/Type'),
+    'Google\\Service\\' => array($vendorDir . '/google/apiclient-services/src'),
     'Google\\Rpc\\' => array($vendorDir . '/google/common-protos/src/Rpc'),
     'Google\\Protobuf\\' => array($vendorDir . '/google/protobuf/src/Google/Protobuf'),
     'Google\\LongRunning\\' => array($vendorDir . '/google/longrunning/src/LongRunning'),
@@ -44,6 +47,7 @@ return array(
     'Google\\Api\\' => array($vendorDir . '/google/common-protos/src/Api'),
     'Google\\ApiCore\\LongRunning\\' => array($vendorDir . '/google/longrunning/src/ApiCore/LongRunning'),
     'Google\\ApiCore\\' => array($vendorDir . '/google/gax/src'),
+    'Google\\' => array($vendorDir . '/google/apiclient/src'),
     'GPBMetadata\\Google\\Type\\' => array($vendorDir . '/google/common-protos/metadata/Type'),
     'GPBMetadata\\Google\\Rpc\\' => array($vendorDir . '/google/common-protos/metadata/Rpc'),
     'GPBMetadata\\Google\\Protobuf\\' => array($vendorDir . '/google/protobuf/src/GPBMetadata/Google/Protobuf'),

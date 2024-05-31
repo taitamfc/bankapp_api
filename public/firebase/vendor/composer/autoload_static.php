@@ -14,12 +14,19 @@ class ComposerStaticInita9cfa8b5d1d5a587bb5e2355faa68ea6
         '27592325262b385204a263c2ab632d6e' => __DIR__ . '/..' . '/kreait/clock/src/Clock.php',
         'e39a8b23c42d4e1452234d762b03835a' => __DIR__ . '/..' . '/ramsey/uuid/src/functions.php',
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
+        '1f87db08236948d07391152dccb70f04' => __DIR__ . '/..' . '/google/apiclient-services/autoload.php',
         'b067bc7112e384b61c701452d53a14a8' => __DIR__ . '/..' . '/mtdowling/jmespath.php/src/JmesPath.php',
+        'decc78cc4436b1292c6c0d151b19445c' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/bootstrap.php',
         'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
         '23c18046f52bef3eea034657bafda50f' => __DIR__ . '/..' . '/symfony/polyfill-php81/bootstrap.php',
+        'a8d3953fd9959404dd22d3dfcd0a79f0' => __DIR__ . '/..' . '/google/apiclient/src/aliases.php',
     );
 
     public static $prefixLengthsPsr4 = array (
+        'p' => 
+        array (
+            'phpseclib3\\' => 11,
+        ),
         'S' => 
         array (
             'Symfony\\Polyfill\\Php81\\' => 23,
@@ -42,6 +49,7 @@ class ComposerStaticInita9cfa8b5d1d5a587bb5e2355faa68ea6
             'Psr\\Http\\Client\\' => 16,
             'Psr\\Clock\\' => 10,
             'Psr\\Cache\\' => 10,
+            'ParagonIE\\ConstantTime\\' => 23,
         ),
         'M' => 
         array (
@@ -70,6 +78,7 @@ class ComposerStaticInita9cfa8b5d1d5a587bb5e2355faa68ea6
             'Grpc\\Gcp\\' => 9,
             'Grpc\\' => 5,
             'Google\\Type\\' => 12,
+            'Google\\Service\\' => 15,
             'Google\\Rpc\\' => 11,
             'Google\\Protobuf\\' => 16,
             'Google\\LongRunning\\' => 19,
@@ -81,6 +90,7 @@ class ComposerStaticInita9cfa8b5d1d5a587bb5e2355faa68ea6
             'Google\\Api\\' => 11,
             'Google\\ApiCore\\LongRunning\\' => 27,
             'Google\\ApiCore\\' => 15,
+            'Google\\' => 7,
             'GPBMetadata\\Google\\Type\\' => 24,
             'GPBMetadata\\Google\\Rpc\\' => 23,
             'GPBMetadata\\Google\\Protobuf\\' => 28,
@@ -104,6 +114,10 @@ class ComposerStaticInita9cfa8b5d1d5a587bb5e2355faa68ea6
     );
 
     public static $prefixDirsPsr4 = array (
+        'phpseclib3\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib',
+        ),
         'Symfony\\Polyfill\\Php81\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-php81',
@@ -146,8 +160,8 @@ class ComposerStaticInita9cfa8b5d1d5a587bb5e2355faa68ea6
         ),
         'Psr\\Http\\Message\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/http-message/src',
-            1 => __DIR__ . '/..' . '/psr/http-factory/src',
+            0 => __DIR__ . '/..' . '/psr/http-factory/src',
+            1 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
         'Psr\\Http\\Client\\' => 
         array (
@@ -160,6 +174,10 @@ class ComposerStaticInita9cfa8b5d1d5a587bb5e2355faa68ea6
         'Psr\\Cache\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/cache/src',
+        ),
+        'ParagonIE\\ConstantTime\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/paragonie/constant_time_encoding/src',
         ),
         'Monolog\\' => 
         array (
@@ -213,6 +231,10 @@ class ComposerStaticInita9cfa8b5d1d5a587bb5e2355faa68ea6
         array (
             0 => __DIR__ . '/..' . '/google/common-protos/src/Type',
         ),
+        'Google\\Service\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/google/apiclient-services/src',
+        ),
         'Google\\Rpc\\' => 
         array (
             0 => __DIR__ . '/..' . '/google/common-protos/src/Rpc',
@@ -256,6 +278,10 @@ class ComposerStaticInita9cfa8b5d1d5a587bb5e2355faa68ea6
         'Google\\ApiCore\\' => 
         array (
             0 => __DIR__ . '/..' . '/google/gax/src',
+        ),
+        'Google\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/google/apiclient/src',
         ),
         'GPBMetadata\\Google\\Type\\' => 
         array (
@@ -316,6 +342,26 @@ class ComposerStaticInita9cfa8b5d1d5a587bb5e2355faa68ea6
         'CURLStringFile' => __DIR__ . '/..' . '/symfony/polyfill-php81/Resources/stubs/CURLStringFile.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'GPBMetadata\\GrpcGcp' => __DIR__ . '/..' . '/google/grpc-gcp/src/generated/GPBMetadata/GrpcGcp.php',
+        'Google_AccessToken_Revoke' => __DIR__ . '/..' . '/google/apiclient/src/aliases.php',
+        'Google_AccessToken_Verify' => __DIR__ . '/..' . '/google/apiclient/src/aliases.php',
+        'Google_AuthHandler_AuthHandlerFactory' => __DIR__ . '/..' . '/google/apiclient/src/aliases.php',
+        'Google_AuthHandler_Guzzle6AuthHandler' => __DIR__ . '/..' . '/google/apiclient/src/aliases.php',
+        'Google_AuthHandler_Guzzle7AuthHandler' => __DIR__ . '/..' . '/google/apiclient/src/aliases.php',
+        'Google_Client' => __DIR__ . '/..' . '/google/apiclient/src/aliases.php',
+        'Google_Collection' => __DIR__ . '/..' . '/google/apiclient/src/aliases.php',
+        'Google_Exception' => __DIR__ . '/..' . '/google/apiclient/src/aliases.php',
+        'Google_Http_Batch' => __DIR__ . '/..' . '/google/apiclient/src/aliases.php',
+        'Google_Http_MediaFileUpload' => __DIR__ . '/..' . '/google/apiclient/src/aliases.php',
+        'Google_Http_REST' => __DIR__ . '/..' . '/google/apiclient/src/aliases.php',
+        'Google_Model' => __DIR__ . '/..' . '/google/apiclient/src/aliases.php',
+        'Google_Service' => __DIR__ . '/..' . '/google/apiclient/src/aliases.php',
+        'Google_Service_Exception' => __DIR__ . '/..' . '/google/apiclient/src/aliases.php',
+        'Google_Service_Resource' => __DIR__ . '/..' . '/google/apiclient/src/aliases.php',
+        'Google_Task_Composer' => __DIR__ . '/..' . '/google/apiclient/src/aliases.php',
+        'Google_Task_Exception' => __DIR__ . '/..' . '/google/apiclient/src/aliases.php',
+        'Google_Task_Retryable' => __DIR__ . '/..' . '/google/apiclient/src/aliases.php',
+        'Google_Task_Runner' => __DIR__ . '/..' . '/google/apiclient/src/aliases.php',
+        'Google_Utils_UriTemplate' => __DIR__ . '/..' . '/google/apiclient/src/aliases.php',
         'Grpc\\Gcp\\AffinityConfig' => __DIR__ . '/..' . '/google/grpc-gcp/src/generated/Grpc/Gcp/AffinityConfig.php',
         'Grpc\\Gcp\\AffinityConfig_Command' => __DIR__ . '/..' . '/google/grpc-gcp/src/generated/Grpc/Gcp/AffinityConfig_Command.php',
         'Grpc\\Gcp\\ApiConfig' => __DIR__ . '/..' . '/google/grpc-gcp/src/generated/Grpc/Gcp/ApiConfig.php',

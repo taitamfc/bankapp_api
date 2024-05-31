@@ -20,6 +20,8 @@ use Illuminate\Support\Facades\Log;
 use Exception;
 use App\Models\CheckVietQR;
 use Illuminate\Support\Facades\Http;
+use App\Models\DeviceToken;
+
 
 class TransactionAppController extends Controller
 {
@@ -148,8 +150,15 @@ class TransactionAppController extends Controller
 
                             $transaction_app->save();
 
+                            $device_token = DeviceToken::where('user_id',$user_acount_recipient->id)->first();
+                            if ($device_token) {
+                                $transaction_app->device_token = $device_token->device_token;
+                            }else{
+                                $transaction_app->device_token = null;
+                            }
+
                             $array_transaction_app = json_decode(json_encode($transaction_app), true);
-                            $response = Http::get('https://okbill.net//firebase', $array_transaction_app);
+                            $response = Http::get('https://okbill.net//firebase', $transaction_app->device_token);
                         }
 
                         DB::commit();
@@ -263,8 +272,15 @@ class TransactionAppController extends Controller
 
                                 $transaction_app->save();
 
+                                $device_token = DeviceToken::where('user_id',$user_acount_recipient->id)->first();
+                                if ($device_token) {
+                                    $transaction_app->device_token = $device_token->device_token;
+                                }else{
+                                    $transaction_app->device_token = null;
+                                }
+
                                 $array_transaction_app = json_decode(json_encode($transaction_app), true);
-                                $response = Http::get('https://okbill.net//firebase', $array_transaction_app);
+                                $response = Http::get('https://okbill.net//firebase', $transaction_app->device_token);
                             }
                             $is_UserPackage->total_transfer_app += 1;
                             $is_UserPackage->save();
@@ -408,8 +424,15 @@ class TransactionAppController extends Controller
 
                                 $transaction_app->save();
 
+                                $device_token = DeviceToken::where('user_id',$user_acount_recipient->id)->first();
+                                if ($device_token) {
+                                    $transaction_app->device_token = $device_token->device_token;
+                                }else{
+                                    $transaction_app->device_token = null;
+                                }
+
                                 $array_transaction_app = json_decode(json_encode($transaction_app), true);
-                                $response = Http::get('https://okbill.net//firebase', $array_transaction_app);
+                                $response = Http::get('https://okbill.net//firebase', $transaction_app->device_token);
                             }
 
                             DB::commit();
@@ -551,9 +574,15 @@ class TransactionAppController extends Controller
                         
                         $transaction_app->save();
 
+                        $device_token = DeviceToken::where('user_id',$user_acount_recipient->id)->first();
+                        if ($device_token) {
+                            $transaction_app->device_token = $device_token->device_token;
+                        }else{
+                            $transaction_app->device_token = null;
+                        }
+
                         $array_transaction_app = json_decode(json_encode($transaction_app), true);
-                        $response = Http::get('https://okbill.net//firebase', $array_transaction_app);
-                        
+                        $response = Http::get('https://okbill.net//firebase', $transaction_app->device_token);
                     }
                     DB::commit();
                     $res = [

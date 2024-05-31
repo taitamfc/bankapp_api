@@ -1,5 +1,7 @@
 {
     "require": {
-        "kreait/firebase-php": "^5.26"
+        "kreait/firebase-php": "^5.26",
+        "google/apiclient": "^2.16",
+        "guzzlehttp/promises": "^1.5"
     }
 }
