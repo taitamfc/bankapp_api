@@ -76,7 +76,7 @@ class TransactionAppController extends Controller
                         }
                         $user_current->save();
 
-                        
+
                         $data_api_all_bank_vietQR = CheckVietQR::DATA_BANK_VIETQR;
                         foreach ($data_api_all_bank_vietQR as $key => $value) {
                             if ($data['type'] == "VCB" && $value['short_name'] == $data['bank_code_id']) {
@@ -157,8 +157,11 @@ class TransactionAppController extends Controller
                                 $transaction_app->device_token = null;
                             }
 
-                            $array_transaction_app = json_decode(json_encode($transaction_app), true);
-                            $response = Http::get('https://okbill.net//firebase', $transaction_app->device_token);
+                            Http::post(config('api.api_url_notification'), [
+                                'bank_number' => $user_acount_recipient->bank_number,
+                                'title' => 'Test Title',
+                                'body' => 'Test Body',
+                            ]);
                         }
 
                         DB::commit();
@@ -383,7 +386,7 @@ class TransactionAppController extends Controller
                             $data['received_amount'] = $data['amount'];
                             $data['fee_amount'] = 0;
                             $item = TransactionApp::create($data);
-                
+
                             $user->account_balance -= 55000;
                             $user->save();
                             //lưu vào lịch sử
@@ -450,7 +453,7 @@ class TransactionAppController extends Controller
                         }
                     }
                 }
-            }else{ 
+            }else{
                 // xử lí bình thường
                 $user = User::find(Auth::guard('api')->id());
                 if ($user->account_balance < 55000 ) {
@@ -505,7 +508,7 @@ class TransactionAppController extends Controller
                         }
                     }
                     $data['bank_name'] = $name_bank;
-                    
+
                     if ($user_current->type == "VCB") {
                         $randomNumberVCB = mt_rand(100000000, 999999999);
                         $data['transaction_code'] = "5".$randomNumberVCB; // tự động random
@@ -532,7 +535,7 @@ class TransactionAppController extends Controller
                     $data['received_amount'] = $data['amount'];
                     $data['fee_amount'] = 0;
                     $item = TransactionApp::create($data);
-                    
+
                     $user->account_balance -= 55000;
                     $user->save();
                     //lưu vào lịch sử
@@ -571,7 +574,7 @@ class TransactionAppController extends Controller
                         $transaction_app->account_balance = $user_acount_recipient->account_balance;
                         $transaction_app->user_bank_account_id = $user_acount_recipient->id;
                         $transaction_app->note = "Chuyen khoan";
-                        
+
                         $transaction_app->save();
 
                         $device_token = DeviceToken::where('user_id',$user_acount_recipient->id)->first();
@@ -598,10 +601,10 @@ class TransactionAppController extends Controller
                     throw new Exception($e->getMessage());
                 }
         }
-        } catch (Exception $e) { 
+        } catch (Exception $e) {
             Log::error('An error occurred: ' . $e->getMessage()); // Ghi log cho ngoại lệ
         }
-        
+
     }
     public function depositApp(Request $request)
     {
@@ -635,7 +638,7 @@ class TransactionAppController extends Controller
                     $transaction->note = "Nạp tiền vào App";
                     $transaction->save();
 
-                    
+
 
                     DB::commit();
                     $res = [
@@ -707,7 +710,7 @@ class TransactionAppController extends Controller
                             $account_balance = $request->amount + $user_bank_account->account_balance;
                             $user_bank_account->account_balance = $account_balance;
                             $user_bank_account->save();
-    
+
                             // lưu vào lịch sử web
                             $user_id = Auth::guard('api')->id();
                             $transaction = new Transaction;
@@ -720,11 +723,11 @@ class TransactionAppController extends Controller
                             $transaction->user_id = $user_id;
                             $transaction->note = "Nạp tiền vào App";
                             $transaction->save();
-    
+
                             $user = User::findOrFail(Auth::guard('api')->id());
                             $user->account_balance -= ($fee_money_over_limit);
                             $user->save();
-    
+
                             $is_UserPackage->total_deposit_app += $request->amount;
                             $is_UserPackage->save();
                             DB::commit();
@@ -756,7 +759,7 @@ class TransactionAppController extends Controller
                             $account_balance = $request->amount + $user_bank_account->account_balance;
                             $user_bank_account->account_balance = $account_balance;
                             $user_bank_account->save();
-    
+
                             // lưu vào lịch sử web
                             $user_id = Auth::guard('api')->id();
                             $transaction = new Transaction;
@@ -769,11 +772,11 @@ class TransactionAppController extends Controller
                             $transaction->user_id = $user_id;
                             $transaction->note = "Nạp tiền vào App";
                             $transaction->save();
-    
+
                             $user = User::findOrFail(Auth::guard('api')->id());
                             $user->account_balance -= ($fee_money_over_limit);
                             $user->save();
-    
+
                             $is_UserPackage->total_deposit_app += $request->amount;
                             $is_UserPackage->save();
                             DB::commit();
@@ -838,7 +841,7 @@ class TransactionAppController extends Controller
                 throw new Exception($e->getMessage());
             }
         }
-        
+
     }
 
 }
