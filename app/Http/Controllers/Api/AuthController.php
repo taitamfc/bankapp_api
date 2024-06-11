@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\User;
+use App\Models\UserToken;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -29,6 +30,7 @@ use App\Models\BillPackage;
 use App\Models\DeviceToken;
 
 // Add new
+use PHPOpenSourceSaver\JWTAuth\Exceptions\JWTException;
 use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
@@ -180,7 +182,7 @@ class AuthController extends Controller
                      // Add new
                     //  $user = Auth::guard('api')->user();
                     //  $user->active_bank_acount = $user_bank_acount;
-                     $token = JWTAuth::fromUser($user, ['customField' => 'custom value']);
+                     $token = JWTAuth::attempt($credentials);
                 }
             }
             if (!$token) {
@@ -197,6 +199,12 @@ class AuthController extends Controller
             }else{
                 $user->last_login = date('Y-m-d H:i:s');
                 $user->save();
+
+                UserToken::updateOrCreate(['user_id' => $user->id], [
+                    'user_id' => $user->id,
+                    'token' => $token,
+                ]);
+
             }
             return response()->json([
                 'data' => $user,
@@ -247,6 +255,20 @@ class AuthController extends Controller
 
         // Get the authenticated user
         $user = Auth::guard('api')->user();
+
+        // Log out app
+        $token = JWTAuth::getToken();
+        try {
+            if (!empty($token)) {
+                JWTAuth::invalidate($token);
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Successfully logged out',
+                ]);
+            }
+        } catch (JWTException  $e) {
+            return response()->json(['success' => false, 'message' => 'Failed to logout, please try again'], 500);
+        }
 
         // Check if user is authenticated
         if ($user) {
