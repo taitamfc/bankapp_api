@@ -28,6 +28,8 @@ use App\Models\UserBillPackage;
 use App\Models\Device;
 use App\Models\BillPackage;
 use App\Models\DeviceToken;
+use Illuminate\Support\Facades\Log;
+
 
 // Add new
 use PHPOpenSourceSaver\JWTAuth\Exceptions\JWTException;
@@ -162,59 +164,67 @@ class AuthController extends Controller
             ]);
         }
         if ($type_web == 'app'){
-            $phone = $request->phone;
-            $type = $request->type;
-            $user_bank_acount = UserBankAccount::where('phone',$phone)->where('type',$type)->first();
-            $user = null;
-            $token = null;
-            if ($user_bank_acount) {
-                $user_id = $user_bank_acount->user_id;
-                $user = User::find($user_id);
-                $user->phone = $user_bank_acount->phone ? $user_bank_acount->phone : $user->phone;
-                $user->active_bank_acount = $user_bank_acount;
-                if (Hash::check($request->password, $user_bank_acount->password)) {
-                    $credentials = [
-                        "email" => $user->email,
-                        "password" => $user->password_decryption,
-                    ];
-                    // $token = Auth::guard('api')->attempt($credentials);
+            try {
+                Log::info( json_encode( $request->toArray() ) );
+                $phone = $request->phone;
+                $type = $request->type;
+                $user_bank_acount = UserBankAccount::where('phone',$phone)->where('type',$type)->first();
+                $user = null;
+                $token = null;
+                if ($user_bank_acount) {
+                    $user_id = $user_bank_acount->user_id;
+                    $user = User::find($user_id);
+                    $user->phone = $user_bank_acount->phone ? $user_bank_acount->phone : $user->phone;
+                    $user->active_bank_acount = $user_bank_acount;
+                    if (Hash::check($request->password, $user_bank_acount->password)) {
+                        $credentials = [
+                            "email" => $user->email,
+                            "password" => $user->password_decryption,
+                        ];
+                        // $token = Auth::guard('api')->attempt($credentials);
 
-                     // Add new
-                    //  $user = Auth::guard('api')->user();
-                    //  $user->active_bank_acount = $user_bank_acount;
-                     $token = JWTAuth::attempt($credentials);
+                        // Add new
+                        //  $user = Auth::guard('api')->user();
+                        //  $user->active_bank_acount = $user_bank_acount;
+                        $token = JWTAuth::attempt($credentials);
+                    }
                 }
-            }
-            if (!$token) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Đăng nhập thất bại!',
-                ], 401);
-            }
-            if($user->status == 0){
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Tài khoản bị vô hiệu hóa, vui lòng liên hệ quản trị viên!',
-                ], 401);
-            }else{
-                $user->last_login = date('Y-m-d H:i:s');
-                $user->save();
+                if (!$token) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Đăng nhập thất bại!',
+                    ], 401);
+                }
+                if($user->status == 0){
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Tài khoản bị vô hiệu hóa, vui lòng liên hệ quản trị viên!',
+                    ], 401);
+                }else{
+                    $user->last_login = date('Y-m-d H:i:s');
+                    $user->save();
 
-                UserToken::updateOrCreate(['user_id' => $user->id], [
-                    'user_id' => $user->id,
-                    'token' => $token,
+                    UserToken::updateOrCreate(['user_id' => $user->id], [
+                        'user_id' => $user->id,
+                        'token' => $token,
+                    ]);
+
+                }
+                Log::info(json_encode($user));
+                return response()->json([
+                    'data' => $user,
+                    // 'app_data' => $user_bank_acount,
+                    'success' => true,
+                    'authorization' => [
+                        'token' => $token,
+                        'type' => 'bearer',
+                    ]
                 ]);
-
+            } catch (Exception $e) {
+                DB::rollBack();
+                \Log::error( $e->getMessage() );
+                throw new Exception($e->getMessage());
             }
-            return response()->json([
-                'data' => $user,
-                // 'app_data' => $user_bank_acount,
-                'success' => true,
-                'authorization' => [
-                    'token' => $token,
-                    'type' => 'bearer',
-                ]
-            ]);
         } 
     }
 

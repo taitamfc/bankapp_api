@@ -15,6 +15,7 @@ use DB;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Transaction;
 use App\Models\CheckVietQR;
+use Illuminate\Support\Facades\Log;
 
 
 
@@ -51,18 +52,27 @@ class BankAccountController extends Controller
 
     public function getbankVietqr(Request $request)
     {
-        $item = UserBankAccount::where('user_id', Auth::guard('api')->id());
-        if( $request->phone ){
-            $item->where('phone', $request->phone);
+        try {
+            Log::info( json_encode( $request->toArray() ) );
+            $item = UserBankAccount::where('user_id', Auth::guard('api')->id());
+            if( $request->phone ){
+                $item->where('phone', $request->phone);
+            }
+            $item->where('type', $request->type);
+            $item = $item->first();
+            Log::info(json_encode($item));
+            
+            $res = [
+                'success' => true,
+                'data' => new UserBankAccountResource($item),
+            ];
+            return $res;    
+        } catch (Exception $e) {
+            DB::rollBack();
+            \Log::error( $e->getMessage() );
+            throw new Exception($e->getMessage());
         }
-        $item->where('type', $request->type);
-        $item = $item->first();
-        
-        $res = [
-            'success' => true,
-            'data' => new UserBankAccountResource($item),
-        ];
-        return $res;        
+            
     }
 
     public function getAllAccountUser(Request $request) {
