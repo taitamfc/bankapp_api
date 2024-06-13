@@ -491,7 +491,7 @@ class UserController extends Controller
     {
         $image = $request->file('file');
 
-        $validator = Validator::make([$image], [
+        $validator = Validator::make($request->all(), [
             'file' => 'required|mimes:jpg,jpeg,png|max:10240'
         ], [
             'file.required' => 'Avatar không được để trống.',
@@ -499,7 +499,7 @@ class UserController extends Controller
             'file.max' => 'Avatar tối đa 10mb.',
         ]);
 
-        if ($validator->failed()) return request()->json([
+        if ($validator->fails()) return response()->json([
             'success' => true,
             'message' => $validator->getMessageBag()->first(),
         ], 422);
