@@ -522,7 +522,7 @@ class UserController extends Controller
 
                 $userBankAccount->image = Storage::disk('public')->url($path);
 
-                return response()->json(['status' => true, 'message' => 'Change avatar success.', 'data' => $userBankAccount]);
+                return response()->json(['status' => true, 'message' => 'Đổi avatar thành công.', 'data' => $userBankAccount]);
             });
 
         }catch (\Exception $exception){
