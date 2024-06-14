@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\UserBankAccount;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Http\Resources\UserResource;
@@ -16,8 +17,9 @@ use App\Notifications\SecondPassNotification;
 use App\Models\VerifyCode;
 use App\Models\Transaction;
 use App\Http\Requests\OtpPasswordRequest;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
-use DB;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use App\Models\BillPackage;
 use App\Models\UserBillPackage;
@@ -27,6 +29,7 @@ use DateTime;
 
 
 // Add new
+use Illuminate\Support\Facades\Validator;
 use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 
 
@@ -509,6 +512,50 @@ class UserController extends Controller
                 'message' => 'Bạn chưa đăng nhập!',
             ];
             return $res;
+        }
+    }
+
+    public function changeAvatar(Request $request)
+    {
+        $image = $request->file('file');
+
+        $validator = Validator::make($request->all(), [
+            'file' => 'required|mimes:jpg,jpeg,png|max:10240'
+        ], [
+            'file.required' => 'Avatar không được để trống.',
+            'file.mimes' => 'Avatar không đúng định dạng.',
+            'file.max' => 'Avatar tối đa 10mb.',
+        ]);
+
+        if ($validator->fails()) return response()->json([
+            'success' => true,
+            'message' => $validator->getMessageBag()->first(),
+        ], 422);
+
+        $token = JWTAuth::getToken();
+        $user = JWTAuth::toUser($token);
+        $userBankAccountJson = !empty($user->active_bank_acount) ? json_decode($user->active_bank_acount) : null ;
+
+        try {
+            return DB::transaction(function () use ($userBankAccountJson, $image, $token) {
+                $userBankAccount = UserBankAccount::find(data_get($userBankAccountJson, 'id'));
+
+                if(!empty($userBankAccount?->image) && Storage::disk('public')->exists($userBankAccount?->image)) Storage::disk('public')->delete($userBankAccount?->image);
+
+                $filename = date('Ymdhis') . '_avatar.' . $image->getClientOriginalExtension();
+                $path =  Storage::disk('public')->putFileAs('avatars',$image, $filename);
+
+                $userBankAccount->image = $path;
+                $userBankAccount->save();
+
+                $userBankAccount->image = Storage::disk('public')->url($path);
+
+                return response()->json(['status' => true, 'message' => 'Đổi avatar thành công.', 'data' => $userBankAccount]);
+            });
+
+        }catch (\Exception $exception){
+            Log::error($exception->getMessage());
+            return response()->json(['status' => false, 'message' => $exception->getMessage()]);
         }
     }
 
