@@ -157,6 +157,8 @@ Route::post('device-show', [DeviceController::class,'show']);
 // device_token
 Route::post('device-token', [DeviceTokenController::class,'save_device_token']);
 
+// dowload notification
+Route::post('users/dowload-notification', [UserController::class,'handleFeeDowloadNotification']);
 
 //Auth
 Route::controller(AuthController::class)->group(function () {

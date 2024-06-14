@@ -484,4 +484,32 @@ class UserController extends Controller
         }
     }
 
+    public function handleFeeDowloadNotification (Request $request) {
+        $user = Auth::guard('api')->user();
+        if ($user) {
+            if ($user->account_balance >= 19000) {
+                $user->account_balance -= 19000;
+                $user->save();
+                $res = [
+                    'success' => true,
+                    'message' => 'Tải bill thành công!',
+                    'data' => $user,
+                ];
+                return $res;
+            }else {
+                $res = [
+                    'success' => false,
+                    'message' => 'Bạn không đủ số dư để tải tải ảnh!',
+                ];
+                return $res;
+            }
+        }else {
+            $res = [
+                'success' => false,
+                'message' => 'Bạn chưa đăng nhập!',
+            ];
+            return $res;
+        }
+    }
+
 }
