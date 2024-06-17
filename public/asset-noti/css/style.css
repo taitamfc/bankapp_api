@@ -1,0 +1,138 @@
+*,
+*:before,
+*:after {
+    box-sizing: border-box;
+}
+* {
+    margin: 0;
+    padding: 0;
+    font: inherit;
+}
+img,
+picture,
+svg,
+video {
+    display: block;
+    max-width: 100%;
+}
+input,
+select,
+textarea {
+    background-color: transparent;
+    outline: none;
+}
+button {
+    cursor: pointer;
+    background-color: transparent;
+    outline: none;
+    border: 0;
+}
+body {
+    min-height: 100vh;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 1;
+}
+a{
+    text-decoration: none;
+}
+.container{
+    margin-inline: 0.5rem;
+}
+.header_custom{
+    /* background-image: url(../image/background.png);
+    min-height: 100vh;
+    background-position: center;
+    background-size: cover; */
+    position: relative;
+    height: 100%;
+}
+.header__bg{
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    width: 100%;
+}
+.nav{
+    height: 3.2rem;
+    display:flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.nav__logo{
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    
+}
+.nav__social img{
+    transform: translateX(10px);
+    height: 13px;
+    width: 27px;
+}
+.header__container{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    row-gap: 21.5rem;
+}
+.header__mains{
+    position: relative;
+    text-align: center;
+    padding-top: 2.5rem;
+}
+.header__subtitle{
+    color: #fff;
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+.header__title{
+    color: #fff;
+    font-size: 96px;
+    font-weight: 600;
+    margin-top: -10px;
+}
+.header__data{
+    background:  hsla(0, 0%, 92%, 0.7);
+    border-radius: 22px;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    column-gap: 10px;
+    padding: 10px;
+}
+.header__img{
+    width: 38px;
+    height: 38px;
+    border-radius: 4px;
+}
+.home__content{
+    width: 286px;
+
+}
+.header__main{
+    display:flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+.header__description{
+    font-weight: 600;
+    color: rgba(17, 17, 17, 1);
+    font-size: 16px;
+}
+.header__span{
+    font-size: 12px;
+    color: rgba(86, 86, 86, 1);
+    font-weight: 400;
+}
+.header__desc{
+    font-size: 14px;
+    font-weight: 500;
+    color: rgba(17, 17, 17, 1);
+}
+.header__descs{
+    margin-bottom: 5px;
+}

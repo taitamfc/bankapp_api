@@ -1,0 +1,256 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+p {
+    text-align: center;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: -0.17px;
+    margin: 0;
+    color: #FFF;
+}
+
+main {
+    flex: 1;
+    padding: 20px;
+    text-align: center;
+}
+
+.containerBackground {
+    background-image: url('/asset-noti-custom/image/android/android_bacground.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    position: absolute;
+    /* top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto; */
+    width: 375px;
+    height: 812px;  
+    flex-shrink: 0;
+}
+
+.containerBackground::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+}
+
+.container {
+    position: relative; 
+    z-index: 1;
+}
+
+.containerHeader {
+    padding: 0 13px;
+    text-align: center;
+    display: flex;
+    color: white;
+    justify-content: space-between;
+    margin-top: 25px;
+}
+
+.blockInfo {
+    display: flex;
+    align-items: center;
+    height: 30px;
+}
+
+.time {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+}
+
+.wifi {
+    width: 15px;
+    height: 11px;
+    margin-left: 5px;
+}
+
+.batteryIndicator {
+    width: 27px;
+    height: 11px;
+    margin-left: 5px;
+}
+
+.date {
+    display: flex;
+    align-items: start;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    padding: 0 13px;
+}
+
+.boltIcon {
+    display: flex;
+    align-items: end;
+    justify-content: end;
+    width: 24px;
+    height: 24px;
+    margin-left: auto;
+    padding-right: 13px;
+}
+
+.androidNotification {
+    display: flex;
+    width: 351px;
+    padding: 12px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 24px;
+}
+
+.notification {
+    font-size: 14px;
+    font-weight: 700;
+    display: flex;
+    align-items: start;
+    justify-content: start;
+    margin-right: auto;
+    padding-left: 13px;
+    margin-top: 15px;
+}
+
+.components {
+    margin: 15px 11.5px 0 11.5px;
+    padding: 12px;
+    background: #2D2D2F;
+    backdrop-filter: blur(5.2083330154418945px);
+    display: flex;
+    flex-direction: column;
+    border-radius: 12px;
+}
+
+.logoVietin1 {
+    display: flex;
+    width: 16px;
+    height: 16px;
+    justify-content: center;
+    align-items: center;
+}
+
+.componentContent {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+}
+
+.componentContent2 {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.content1 {
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    padding-left: 6px;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.balance {
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 150%;
+    padding-top: 7px;
+}
+
+.ellipse {
+    width: 2px;
+    height: 2px;
+    padding-left: 8px;
+
+}
+
+.chevron {
+    width: 15px;
+    height: 15px;
+    padding-left: 14px;
+}
+
+.content2 {
+    color: #A8A8A8;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%;
+}
+
+.content3 {
+    color: #A8A8A8;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%;
+    display: flex;
+    align-items: start;
+    justify-content: start;
+    text-align: start;
+}
+
+.componentContent3 {
+    display: flex;
+    justify-content: space-between;
+}
+
+.imgVietin {
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+}
+
+.containerVietin {
+    display: flex;
+    width: 38px;
+    height: 38px;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    border-radius: 8px;
+    background: #FFF;
+    margin-top: 6px;
+}
+
+.line {
+    border: none;
+    height: 1px;
+    border-top: 1px solid rgba(0, 0, 0, 0.10);
+    background: #2D2D2F;
+    backdrop-filter: blur(5.2083330154418945px);    
+    margin: 6px 0;
+}
+
+header {
+    background-color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+
+footer {
+    background-color: white;
+    text-align: center;
+    padding: 10px;
+}
