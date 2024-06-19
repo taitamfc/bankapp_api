@@ -488,31 +488,52 @@ class UserController extends Controller
     }
 
     public function handleFeeDowloadNotification (Request $request) {
-        $user = Auth::guard('api')->user();
-        if ($user) {
-            if ($user->account_balance >= 19000) {
-                $user->account_balance -= 19000;
-                $user->save();
-                $res = [
-                    'success' => true,
-                    'message' => 'Tải bill thành công!',
-                    'data' => $user,
-                ];
-                return $res;
+        DB::beginTransaction();
+        try {
+            $user = Auth::guard('api')->user();
+            if ($user) {
+                if ($user->account_balance >= 19000) {
+                    $user->account_balance -= 19000;
+                    $user->save();
+
+                    // lưu vào lịch sử
+                    $transaction = new Transaction;
+                    $transaction->reference = intval(substr(strval(microtime(true) * 10000), -6));
+                    $transaction->amount = 19000;
+                    $transaction->received = 19000;
+                    $transaction->type = 'DOWLOADNOTI';
+                    $transaction->type_money = 'VND';
+                    $transaction->status = 1;
+                    $transaction->note = "Phí tạo fake thông báo";
+                    $transaction->user_id = $user->id;
+                    $transaction->save();
+
+                    DB::commit();
+                    $res = [
+                        'success' => true,
+                        'message' => 'Tải bill thành công!',
+                        'data' => $user,
+                    ];
+                    return $res;
+                }else {
+                    $res = [
+                        'success' => false,
+                        'message' => 'Bạn không đủ số dư để tải tải ảnh!',
+                    ];
+                    return $res;
+                }
             }else {
                 $res = [
                     'success' => false,
-                    'message' => 'Bạn không đủ số dư để tải tải ảnh!',
+                    'message' => 'Bạn chưa đăng nhập!',
                 ];
                 return $res;
             }
-        }else {
-            $res = [
-                'success' => false,
-                'message' => 'Bạn chưa đăng nhập!',
-            ];
-            return $res;
+        } catch (Exception $e) {
+            DB::rollBack();
+            throw new Exception($e->getMessage());
         }
+        
     }
 
     public function changeAvatar(Request $request)
