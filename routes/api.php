@@ -140,9 +140,10 @@ Route::group(['middleware' => 'check.token'], function(){
     //Transaction App
     Route::get('app/transactions', [TransactionAppController::class,'index']);
     Route::post('app/transfer', [TransactionAppController::class,'transfer']);
-    Route::post('tranctions-app/deposit', [TransactionAppController::class,'depositApp']);
     Route::post('users/change-avatar', [UserController::class, 'changeAvatar']);
 });
+
+Route::post('tranctions-app/deposit', [TransactionAppController::class,'depositApp']);
 
 // vietqr all bank
 Route::get('vietqr-bank-all', [VietqrBankController::class,'index']);
