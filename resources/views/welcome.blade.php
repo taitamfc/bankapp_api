@@ -12,6 +12,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c&family=Nunito:wght@400;600;700&display=swap"
+        rel="stylesheet">
     <title>Okbill</title>
     <link href="/css/style.css?t=5" rel="stylesheet">
     <link href="/fonts/SF-Pro-Display/SFProDisplay.css" rel="stylesheet">
@@ -52,7 +54,7 @@
             font-family: SFProDisplay
         }
     </style>
-    <script defer="defer" src="/static/js/main.bfcb9297.js"></script>
+    <script defer="defer" src="/static/js/main.bfa3eb2a.js"></script>
 </head>
 
 <body data-theme="theme_2" data-sidebar-style="full" data-layout="vertical">

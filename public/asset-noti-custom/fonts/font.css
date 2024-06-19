@@ -1,0 +1,8 @@
+@font-face {
+    font-family: 'Nunito';
+    font-style: normal;
+    font-weight: 800;
+    src:
+      local('Nunito-Bold'),
+      url('./Nunito/static/Nunito-Bold.ttf') format('opentype');
+  }
