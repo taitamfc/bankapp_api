@@ -8,22 +8,29 @@ body {
 }
 
 p {
-    text-align: center;
+    /* text-align: center; */
     font-style: normal;
     line-height: normal;
     letter-spacing: -0.17px;
     margin: 0;
     color: #FFF;
 }
+ .contentName {
+    /* text-align: center; */
+    font-style: normal;
+    line-height: inherit;
+    letter-spacing: -0.17px;
+    margin: 0;
+    color: rgba(255, 255, 255, 0.6);
+}
 
 main {
     flex: 1;
-    padding: 20px;
-    text-align: center;
+    /* text-align: center; */
 }
 
 .containerBackground {
-    background-image: url('/asset-noti-custom/image/android/android_bacground.png');
+    /* background-image: url('/asset-noti-custom/image/android/android_bacground.png'); */
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
@@ -38,6 +45,29 @@ main {
     flex-shrink: 0;
 }
 
+/* title bank */
+.title-tcb{
+    text-align: start;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    color: #E1E1E1;
+}
+
+.title-acb {
+    text-align: start;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 500;
+    color: #E1E1E1;
+}
+
+.title-scb{
+    font-size: 16px;
+    font-weight: 600;
+}
+/* end title bank */
+
 .containerBackground::before {
     content: "";
     position: absolute;
@@ -49,7 +79,7 @@ main {
     backdrop-filter: blur(10px);
 }
 
-.container {
+.container-android {
     position: relative; 
     z-index: 1;
 }
@@ -103,7 +133,7 @@ main {
     display: flex;
     align-items: end;
     justify-content: end;
-    width: 24px;
+    width: 37px;
     height: 24px;
     margin-left: auto;
     padding-right: 13px;
@@ -111,7 +141,7 @@ main {
 
 .androidNotification {
     display: flex;
-    width: 351px;
+    width: 375px;
     padding: 12px;
     flex-direction: column;
     justify-content: center;
@@ -119,6 +149,52 @@ main {
     margin-top: 24px;
 }
 
+/* pin */
+
+.inner-rect {
+    position: absolute;
+    top: 2.4px;
+    left: 3px;
+    height: 8px;
+    border-radius: 2px;
+    /* background-color: white; */
+}
+
+.icon-container {
+    position: relative;
+    width: 25px;
+    height: 13px;
+}
+
+.battery {
+    display: flex;
+    align-items: center;
+    padding: 0 0 0 4px;
+}
+.blockInfoNetwork {
+    display: flex;
+    align-items: center;
+}
+
+.outer-rect {
+    position: relative;
+    top: 0.5px;
+    left: 1px;
+    width: 24px;
+    height: 12px;
+    border-radius: 3.5px;
+    border: 1.1px solid white;
+}
+.semi-circle {
+    top: 4px;
+    right: -1.5px;
+    width: 0.5px;
+    height: 5px;
+    border-top-right-radius: 100%;
+    border-bottom-right-radius: 100%;
+    background-color: white;
+}
+/* end pin */
 .notification {
     font-size: 14px;
     font-weight: 700;
@@ -165,7 +241,7 @@ main {
     font-size: 12px;
     font-style: normal;
     font-weight: 400;
-    padding-left: 6px;
+    padding-left: 3px;
     color: rgba(255, 255, 255, 0.6);
 }
 
@@ -185,7 +261,7 @@ main {
 }
 
 .chevron {
-    width: 15px;
+    width: 35px;
     height: 15px;
     padding-left: 14px;
 }
@@ -216,8 +292,8 @@ main {
 }
 
 .imgVietin {
-    width: 28px;
-    height: 28px;
+    width: 100%;
+    height: 100%;
     flex-shrink: 0;
 }
 
