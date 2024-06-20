@@ -925,5 +925,12 @@ class TransactionAppController extends Controller
 
         Log::info(json_encode($params));
         Log::info("TOKEN: " . $accessToken);
+
+        $response = array(
+            "status" => true,
+            "msg" => "OK"
+        );
+
+        echo json_encode($response);
     }
 }
