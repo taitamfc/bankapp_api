@@ -537,19 +537,23 @@ class TransactionController extends Controller
 
         if (!data_get($params, 'status')) {
             Log::info("Status: " . data_get($params, 'status'));
-            return response()->json([
-                'success' => false,
-                'msg' => "Status false",
-            ]);
+            $response = [
+                "status" => true,
+                "msg" => "Status is false"
+            ];
+            echo json_encode($response);
+            return;
         }
 
         $data = data_get($params, 'data');
         if (empty($data)){
             Log::info("Data: " . json_encode($data));
-            return response()->json([
-                'success' => false,
-                'msg' => "Data is invalid". json_encode($data),
-            ]);
+            $response = [
+                "status" => true,
+                "msg" => "Data is invalid". json_encode($data)
+            ];
+            echo json_encode($response);
+            return;
         };
 
         $lastTransaction = $data[0];
@@ -570,27 +574,31 @@ class TransactionController extends Controller
 
             if (empty($username)) {
                 Log::info("Username is empty");
-                return response()->json([
-                    'success' => false,
-                    'msg' => "Username is empty",
-                ]);
+                $response = [
+                    "status" => true,
+                    "msg" => "Username is empty"
+                ];
+                echo json_encode($response);
+                return;
             }
 
             $user = User::where('user_name', $username)->first();
             if (empty($user)) {
                 Log::info("Username is not exist: " . $username);
-                return response()->json([
-                    'success' => false,
-                    'msg' => "Username is not exist ".$username,
-                ]);
+                $response = [
+                    "status" => true,
+                    "msg" => "Username is not exist ".$username
+                ];
+                echo json_encode($response);
+                return;
             }
 
             $transactionId = $lastTransaction['transactionID'] ?? "";
-            $check = Transaction::where('reference', $transactionId)->where('user_id', $user->id)->exist();
+            $check = Transaction::where('reference', $transactionId)->where('user_id', $user->id)->exists();
             if ($check) {
                 $response = [
                     "status" => true,
-                    "msg" => "OK"
+                    "msg" => "Transaction has exists"
                 ];
                 echo json_encode($response);
                 return;
@@ -628,17 +636,20 @@ class TransactionController extends Controller
             } catch (\Exception $exception) {
                 DB::rollBack();
                 Log::error($exception->getMessage());
-                return response()->json([
-                    'success' => false,
-                    'message' => $exception->getMessage(),
-                ]);
+                $response = [
+                    "status" => true,
+                    "msg" =>  $exception->getMessage()
+                ];
+                echo json_encode($response);
+                return;
             }
 
         }
 
-        return response()->json([
-            'success' => false,
-            'message' => 'error',
-        ]);
+        $response = [
+            "status" => true,
+            "msg" =>  'error'
+        ];
+        echo json_encode($response);
     }
 }
