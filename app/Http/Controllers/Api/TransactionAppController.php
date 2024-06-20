@@ -918,4 +918,12 @@ class TransactionAppController extends Controller
         return $res;
     }
 
+    public function handleACBReturn(Request $request)
+    {
+        $accessToken = config('acb_config.spayment_access_token');
+        $params = $request->all();
+
+        Log::info(json_encode($params));
+        Log::info("TOKEN: " . $accessToken);
+    }
 }
