@@ -16,7 +16,7 @@ use App\Models\VerifyCode;
 use App\Models\OwnerBank;
 use App\Http\Requests\TransferRequest;
 use Illuminate\Support\Facades\Http;
-use DB;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use PayOS\PayOS;
 use Exception;
@@ -531,17 +531,78 @@ class TransactionController extends Controller
 
     public function handleACBReturn(Request $request)
     {
-        $accessToken = config('acb_config.spayment_access_token');
+        Log::info("-- WEBHOOK PAYMENT ACB ---");
         $params = $request->all();
 
-        Log::info(json_encode($params));
-        Log::info("TOKEN: " . $accessToken);
+        if (!data_get($params, 'status')) {
+            Log::info("Status: " . data_get($params, 'status'));
+            return;
+        }
 
-        $response = array(
-            "status" => true,
-            "msg" => "OK"
-        );
+        $data = data_get($params, 'data');
+        if (empty($data)) return;
 
-        echo json_encode($response);
+        $lastTransaction = $data[0];
+
+        if (empty($lastTransaction['type']) || $lastTransaction['type'] !== 'IN') {
+            Log::info("Type: " . $lastTransaction['type'] ?? "NULL");
+            return;
+        }
+
+        $pattern = '/okbill\s+(\S+)\s+/';
+        if (preg_match($pattern, $lastTransaction['description'], $matches)) {
+            $username = trim($matches[1]) ?? "";
+
+            if (empty($username)) {
+                Log::info("Username is null");
+                return;
+            }
+
+            $user = User::where('user_name', $username)->first();
+            if (empty($user)) {
+                Log::info("Username is not exist: " . $username);
+                return;
+            }
+
+            DB::beginTransaction();
+            try {
+                $transaction = new Transaction;
+                $transaction->reference = $lastTransaction['id'];
+                $transaction->amount = $lastTransaction['amount'];
+                $transaction->received = $lastTransaction['amount'];
+                $transaction->type = 'RECHARGE';
+                $transaction->type_money = 'VND';
+                $transaction->status = 1;
+                $transaction->user_id = $user->id;
+                $transaction->ownerbank_id = 2;
+                $transaction->save();
+
+
+                if (!empty($user->referral_code)) {
+                    $parent_user = User::where('user_name', $user->referral_code)->first();
+                    if ($parent_user) {
+                        $pr_referral_account_balance = $parent_user->referral_account_balance;
+                        $parent_user->referral_account_balance = (float)$pr_referral_account_balance + ($transaction->received / 100 * 10);
+                        $parent_user->save();
+                    }
+                }
+
+                DB::commit();
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Nạp tiền thành công',
+                ]);
+            } catch (\Throwable $throwable) {
+                DB::rollBack();
+                Log::error($throwable->getMessage());
+                return response()->json([
+                    'success' => false,
+                    'message' => $throwable->getMessage(),
+                ]);
+            }
+
+        } else {
+            Log::info("Messages invalid: " . $lastTransaction['description']);
+        }
     }
 }

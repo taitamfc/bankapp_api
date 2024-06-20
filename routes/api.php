@@ -144,6 +144,7 @@ Route::group(['middleware' => 'check.token'], function(){
 });
 
 Route::post('tranctions-app/deposit', [TransactionAppController::class,'depositApp']);
+Route::post('test', [TransactionController::class,'handleACBReturn']);
 
 // vietqr all bank
 Route::get('vietqr-bank-all', [VietqrBankController::class,'index']);

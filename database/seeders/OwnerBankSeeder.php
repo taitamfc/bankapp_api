@@ -25,6 +25,17 @@ class OwnerBankSeeder extends Seeder
                 'account_name' => 'HOANG VAN B',
                 'note' => 'Nạp tiền vào web',
             ],
+            [
+                'name' => 'Ngân hàng Thương Mại Cổ Phần Á Châu',
+                'status' => 0,
+                'image' => 'https://api.vietqr.io/img/ACB.png',
+                'short_description' => 'Short description for Bank ACB',
+                'description' => 'Description for Bank ACB',
+                'account_number' => 40910727,
+                'bin' => 970416,
+                'account_name' => 'NGUYEN TIEN TRIEU',
+                'note' => 'Nạp tiền vào web',
+            ],
             // [
             //     'name' => 'Ngân hàng Công thương (Techcombank)',
             //     'status' => 0,
