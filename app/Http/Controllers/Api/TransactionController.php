@@ -553,6 +553,7 @@ class TransactionController extends Controller
         };
 
         $lastTransaction = $data[0];
+        Log::info("Last Transaction: " . json_encode($lastTransaction));
 
         if (empty($lastTransaction['type']) || $lastTransaction['type'] !== 'IN') {
             Log::info("Type: " . $lastTransaction['type'] ?? "NULL");
@@ -565,6 +566,7 @@ class TransactionController extends Controller
         $pattern = '/okbill\s+(\S+)\s+/';
         if (preg_match($pattern, $lastTransaction['description'], $matches)) {
             $username = trim($matches[1]) ?? "";
+            Log::info("Username: " .$username);
 
             if (empty($username)) {
                 Log::info("Username is empty");
@@ -628,7 +630,5 @@ class TransactionController extends Controller
             'success' => false,
             'message' => 'error',
         ]);
-
-        Log::info("-- END WEBHOOK PAYMENT ACB ---");
     }
 }
