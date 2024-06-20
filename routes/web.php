@@ -14,7 +14,7 @@ use App\Http\Controllers\Api\TransactionController;
 */
 Route::get('transactions/handle_return',[TransactionController::class,'handle_return'])->name('transactions.handle_return');
 Route::get('transactions/handle_cancel',[TransactionController::class,'handle_cancel'])->name('transactions.handle_cancel');
-Route::get('webhook/transactions/acb_return',[TransactionController::class,'handleACBReturn'])->name('transactions.handle_acb_return');
+Route::post('webhook/transactions/acb_return',[TransactionController::class,'handleACBReturn'])->name('transactions.handle_acb_return');
 
 Route::get('{path?}', function () {
     return view('welcome');
