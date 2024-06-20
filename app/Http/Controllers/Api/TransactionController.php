@@ -567,7 +567,7 @@ class TransactionController extends Controller
             DB::beginTransaction();
             try {
                 $transaction = new Transaction;
-                $transaction->reference = $lastTransaction['id'];
+                $transaction->reference = $lastTransaction['transactionID'];
                 $transaction->amount = $lastTransaction['amount'];
                 $transaction->received = $lastTransaction['amount'];
                 $transaction->type = 'RECHARGE';
