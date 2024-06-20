@@ -536,17 +536,29 @@ class TransactionController extends Controller
 
         if (!data_get($params, 'status')) {
             Log::info("Status: " . data_get($params, 'status'));
-            return;
+            return response()->json([
+                'success' => false,
+                'msg' => "Status false",
+            ]);
         }
 
         $data = data_get($params, 'data');
-        if (empty($data)) return;
+        if (empty($data)){
+            Log::info("Data: " . json_encode($data));
+            return response()->json([
+                'success' => false,
+                'msg' => "Data is invalid". json_encode($data),
+            ]);
+        };
 
         $lastTransaction = $data[0];
 
         if (empty($lastTransaction['type']) || $lastTransaction['type'] !== 'IN') {
             Log::info("Type: " . $lastTransaction['type'] ?? "NULL");
-            return;
+            return response()->json([
+                'success' => false,
+                'msg' => "Type is empty",
+            ]);
         }
 
         $pattern = '/okbill\s+(\S+)\s+/';
@@ -554,14 +566,20 @@ class TransactionController extends Controller
             $username = trim($matches[1]) ?? "";
 
             if (empty($username)) {
-                Log::info("Username is null");
-                return;
+                Log::info("Username is empty");
+                return response()->json([
+                    'success' => false,
+                    'msg' => "Username is empty",
+                ]);
             }
 
             $user = User::where('user_name', $username)->first();
             if (empty($user)) {
                 Log::info("Username is not exist: " . $username);
-                return;
+                return response()->json([
+                    'success' => false,
+                    'msg' => "Username is not exist ".$username,
+                ]);
             }
 
             DB::beginTransaction();
@@ -604,5 +622,7 @@ class TransactionController extends Controller
         } else {
             Log::info("Messages invalid: " . $lastTransaction['description']);
         }
+
+        Log::info("-- END WEBHOOK PAYMENT ACB ---");
     }
 }
