@@ -585,6 +585,17 @@ class TransactionController extends Controller
                 ]);
             }
 
+            $transactionId = $lastTransaction['transactionID'] ?? "";
+            $check = Transaction::where('reference', $transactionId)->where('user_id', $user->id)->exist();
+            if ($check) {
+                $response = [
+                    "status" => true,
+                    "msg" => "OK"
+                ];
+                echo json_encode($response);
+                return;
+            }
+
             DB::beginTransaction();
             try {
                 $transaction = new Transaction;
@@ -598,8 +609,6 @@ class TransactionController extends Controller
                 $transaction->ownerbank_id = 2;
                 $transaction->save();
 
-                Log::info('Create transaction success.'.$transaction->id);
-
                 if (!empty($user->referral_code)) {
                     $parent_user = User::where('user_name', $user->referral_code)->first();
                     if ($parent_user) {
@@ -609,12 +618,13 @@ class TransactionController extends Controller
                     }
                 }
 
-                Log::info('All done.');
                 DB::commit();
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Nạp tiền thành công',
-                ]);
+                $response = [
+                    "status" => true,
+                    "msg" => "Nạp tiền thành công"
+                ];
+                echo json_encode($response);
+                return;
             } catch (\Exception $exception) {
                 DB::rollBack();
                 Log::error($exception->getMessage());
