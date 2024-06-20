@@ -533,7 +533,7 @@ class TransactionController extends Controller
     {
         Log::info("-- WEBHOOK PAYMENT ACB ---");
         $params = $request->all();
-        Log::info("Data: " . json_encode($params));
+
 
         if (!data_get($params, 'status')) {
             Log::info("Status: " . data_get($params, 'status'));
@@ -553,7 +553,6 @@ class TransactionController extends Controller
         };
 
         $lastTransaction = $data[0];
-        Log::info("Last Transaction: " . json_encode($lastTransaction));
 
         if (empty($lastTransaction['type']) || $lastTransaction['type'] !== 'IN') {
             Log::info("Type: " . $lastTransaction['type'] ?? "NULL");
@@ -564,9 +563,10 @@ class TransactionController extends Controller
         }
 
         $pattern = '/okbill\s+(\S+)\s+/';
-        if (preg_match($pattern, $lastTransaction['description'], $matches)) {
+
+
+        if (preg_match($pattern, strtolower($lastTransaction['description']), $matches)) {
             $username = trim($matches[1]) ?? "";
-            Log::info("Username: " .$username);
 
             if (empty($username)) {
                 Log::info("Username is empty");
@@ -598,6 +598,7 @@ class TransactionController extends Controller
                 $transaction->ownerbank_id = 2;
                 $transaction->save();
 
+                Log::info('Create transaction success.'.$transaction->id);
 
                 if (!empty($user->referral_code)) {
                     $parent_user = User::where('user_name', $user->referral_code)->first();
@@ -608,22 +609,21 @@ class TransactionController extends Controller
                     }
                 }
 
+                Log::info('All done.');
                 DB::commit();
                 return response()->json([
                     'success' => true,
                     'message' => 'Nạp tiền thành công',
                 ]);
-            } catch (\Throwable $throwable) {
+            } catch (\Exception $exception) {
                 DB::rollBack();
-                Log::error($throwable->getMessage());
+                Log::error($exception->getMessage());
                 return response()->json([
                     'success' => false,
-                    'message' => $throwable->getMessage(),
+                    'message' => $exception->getMessage(),
                 ]);
             }
 
-        } else {
-            Log::info("Messages invalid: " . $lastTransaction['description']);
         }
 
         return response()->json([
