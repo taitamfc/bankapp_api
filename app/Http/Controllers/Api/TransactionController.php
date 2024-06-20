@@ -17,6 +17,7 @@ use App\Models\OwnerBank;
 use App\Http\Requests\TransferRequest;
 use Illuminate\Support\Facades\Http;
 use DB;
+use Illuminate\Support\Facades\Log;
 use PayOS\PayOS;
 use Exception;
 
@@ -528,5 +529,19 @@ class TransactionController extends Controller
         return view('transactions.handle_cancel');
     }
 
-    
+    public function handleACBReturn(Request $request)
+    {
+        $accessToken = config('acb_config.spayment_access_token');
+        $params = $request->all();
+
+        Log::info(json_encode($params));
+        Log::info("TOKEN: " . $accessToken);
+
+        $response = array(
+            "status" => true,
+            "msg" => "OK"
+        );
+
+        echo json_encode($response);
+    }
 }
