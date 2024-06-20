@@ -26650,3 +26650,11 @@ div#react-select-3-listbox > div[aria-selected="true"]{
   border-color: #475b83 !important;
   min-height: 48px  !important;
 }
+
+.custom-menu-title {
+  background-color: #29aec1e3;
+  width: 50%;
+  border-radius: 5%;
+  display: flex !important;
+  justify-content: space-evenly !important;
+}
