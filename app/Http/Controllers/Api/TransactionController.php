@@ -617,6 +617,10 @@ class TransactionController extends Controller
                 $transaction->ownerbank_id = 2;
                 $transaction->save();
 
+                $pre_balance = $user->referral_account_balance;
+                $user->referral_account_balance += (float)$pre_balance + ($lastTransaction['amount'] / 100 * 10);
+                $user->save();
+
                 if (!empty($user->referral_code)) {
                     $parent_user = User::where('user_name', $user->referral_code)->first();
                     if ($parent_user) {
