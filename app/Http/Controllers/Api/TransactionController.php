@@ -533,6 +533,7 @@ class TransactionController extends Controller
     {
         Log::info("-- WEBHOOK PAYMENT ACB ---");
         $params = $request->all();
+        Log::info("Data: " . json_encode($params));
 
         if (!data_get($params, 'status')) {
             Log::info("Status: " . data_get($params, 'status'));
@@ -622,6 +623,11 @@ class TransactionController extends Controller
         } else {
             Log::info("Messages invalid: " . $lastTransaction['description']);
         }
+
+        return response()->json([
+            'success' => false,
+            'message' => 'error',
+        ]);
 
         Log::info("-- END WEBHOOK PAYMENT ACB ---");
     }
