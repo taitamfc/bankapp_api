@@ -618,7 +618,7 @@ class TransactionController extends Controller
                 $transaction->save();
 
                 $pre_balance = $user->account_balance;
-                $user->account_balance += (float)$pre_balance + ($lastTransaction['amount']);
+                $user->account_balance = (float)$pre_balance + ($lastTransaction['amount']);
                 $user->save();
 
                 if (!empty($user->referral_code)) {
