@@ -311,8 +311,9 @@ class TransactionAppController extends Controller
                         $user = User::find(Auth::guard('api')->id());
                         if ($user->account_balance < 55000 ) {
                             $res = [
+                                'code' => 'TF401',
                                 'success' => false,
-                                'data' => "Số dư ở web không đủ để trừ phí khi chuyển tiền trong App, Vui lòng nạp tiền vào web!",
+                                'message' => "Số dư ở web không đủ để trừ phí khi chuyển tiền trong App, Vui lòng nạp tiền vào web!",
                             ];
                             return $res;
                         }
@@ -467,8 +468,9 @@ class TransactionAppController extends Controller
                 $user = User::find(Auth::guard('api')->id());
                 if ($user->account_balance < 55000 ) {
                     $res = [
+                        'code' => 'TF401',
                         'success' => false,
-                        'data' => "Số dư ở web không đủ để trừ phí khi chuyển tiền trong App, Vui lòng nạp tiền vào web!",
+                        'message' => "Số dư ở web không đủ để trừ phí khi chuyển tiền trong App, Vui lòng nạp tiền vào web!",
                     ];
                     return $res;
                 }
