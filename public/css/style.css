@@ -26652,9 +26652,42 @@ div#react-select-3-listbox > div[aria-selected="true"]{
 }
 
 .custom-menu-title {
-  background-color: #29aec1e3;
+  /* background-color: #29aec1e3; */
+  margin-top: 10%;
   width: 50%;
   border-radius: 5%;
-  display: flex !important;
-  justify-content: space-evenly !important;
+  /* display: flex !important;
+  justify-content: space-evenly !important; */
+}
+
+.custom-color {
+  color: #676d7d !important;
+}
+
+.custom-color-icon{
+  color: #d0d2d6 !important;
+  font-size: 1.1rem;
+}
+
+.custom-link{
+  /* padding-top: 10px !important; */
+  padding: 0 !important;
+}
+
+.custom-color-icon{
+  color: #d0d2d6  !important;
+  padding: 5px;
+}
+
+.active-menu {
+  background-color: #21cbc1;
+  width: 80%;
+  margin-left: 10% !important;
+  margin-right: 10% !important;
+}
+
+.no-active-menu {
+  width: 80%;
+  margin-left: 10% !important;
+  margin-right: 10% !important;
 }
