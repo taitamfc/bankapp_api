@@ -26656,6 +26656,7 @@ div#react-select-3-listbox > div[aria-selected="true"]{
   margin-top: 10%;
   width: 50%;
   border-radius: 5%;
+  font-size: 16px !important;
   /* display: flex !important;
   justify-content: space-evenly !important; */
 }
@@ -26671,7 +26672,10 @@ div#react-select-3-listbox > div[aria-selected="true"]{
 
 .custom-link{
   /* padding-top: 10px !important; */
-  padding: 0 !important;
+  /* margin-top: 20px !important; */
+  /* padding: 0 !important; */
+  margin: 0 !important;
+  padding: 0.919rem 0 1.1875rem 20px !important;
 }
 
 .custom-color-icon{
@@ -26684,10 +26688,33 @@ div#react-select-3-listbox > div[aria-selected="true"]{
   width: 80%;
   margin-left: 10% !important;
   margin-right: 10% !important;
+  border-radius: 8px
 }
 
 .no-active-menu {
   width: 80%;
   margin-left: 10% !important;
   margin-right: 10% !important;
+}
+
+.alert-danger {
+  background: rgba(234, 84, 85, 0.12) !important;
+  color: #ea5455 !important;
+}
+
+.wraper-c-one {
+  border: 2px solid #a18f8f;
+  border-radius: 8px;
+  margin-bottom: 6% !important;
+}
+
+.wraper-c-two {
+  border: 2px solid #a18f8f;
+  border-radius: 8px;
+  margin-right: inherit;
+  margin-left: inherit
+}
+
+.custom-margin{
+  margin-top: 7px;
 }
