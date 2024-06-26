@@ -39,7 +39,7 @@ class TransactionAppController extends Controller
     public function transfer(TranferAppRequest $request){
         try {
 
-            Log::info( json_encode( $request->toArray() ) );
+            // Log::info( json_encode( $request->toArray() ) );
             $user = User::find(Auth::guard('api')->id());
             $user_bank_account = json_decode($user->active_bank_acount);
             // dd($user_bank_account->bank_number);
