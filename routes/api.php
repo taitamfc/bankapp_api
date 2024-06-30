@@ -23,7 +23,7 @@ use App\Http\Controllers\Api\BankNameBillController;
 use App\Http\Controllers\Api\PackageBillController;
 use App\Http\Controllers\Api\DeviceController;
 use App\Http\Controllers\Api\DeviceTokenController;
-
+use App\Http\Controllers\Api\RegisterDeviceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -159,6 +159,8 @@ Route::post('device-show', [DeviceController::class,'show']);
 
 // device_token
 Route::post('device-token', [DeviceTokenController::class,'save_device_token']);
+Route::post('register_devices', [RegisterDeviceController::class,'index']);
+Route::get('download/file-devices', [RegisterDeviceController::class,'download']);
 
 // dowload notification
 Route::post('users/dowload-notification', [UserController::class,'handleFeeDowloadNotification']);
