@@ -1,0 +1,173 @@
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1;
+    /* padding: 20px; */
+    text-align: center;
+}
+
+p {
+    text-align: center;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: -0.17px;
+    margin: 0;
+}
+
+.time-ios {
+    color: white;
+    font-size: 15px;
+    margin-left: 6px;
+    padding: 13px 22px;
+    line-height: 17.9px;
+    font-family: "Inter";
+    font-weight: 500;
+}
+
+.container-scb {
+    background-image: url('/asste-bill-blance/SCB/image/sacombank.png');
+    width: 375px;
+    height: 812px; 
+    background-size: contain;
+    /* margin: auto; */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+}
+
+.containerHeader {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.network {
+    height: 11px;
+    margin-left: auto;
+}
+
+.wifi {
+    height: 11px;
+    margin-left: 5px;
+}
+
+.battery {
+    display: flex;
+    align-items: center;
+    padding: 0 13px 0 4px;
+}
+
+.components {
+    width: 100%;
+    margin-top: auto;
+}
+
+.blockInfoNetwork {
+    display: flex;
+    align-items: center;
+}
+
+.icon-container {
+    position: relative;
+    width: 25px;
+    height: 15px;
+}
+
+.outer-rect {
+    position: relative;
+    top: 0.5px;
+    left: 1px;
+    width: 24px;
+    height: 12.55px;
+    border-radius: 4px;
+    border: 1.1px solid rgba(255, 255, 255, 0.4);
+}
+
+.inner-rect {
+    position: absolute;
+    top: 2.5px;
+    left: 2.5px;
+    height: 8px;
+    background-color: rgb(255, 255, 255);
+    border-radius: 2.5px;
+}
+
+.semi-circle {
+    top: 4px;
+    right: -1.5px;
+    width: 1.5px;
+    height: 5px;
+    border-top-right-radius: 100%;
+    border-bottom-right-radius: 100%;
+    background-color: rgba(255, 255, 255, 0.4);
+}
+
+.amount {
+    width: 100%;
+    margin: 0 auto;
+    font-family: "Inter";
+    color: #022D72;
+    position: absolute;
+    top: 427px;
+    left: 0;
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 20.57px;
+    text-align: center;
+}
+
+.amount-available {
+    display: flex;
+    width: 100%;
+    margin: 0 auto;
+    justify-content: center;
+}
+
+.pagination {
+    position: absolute;
+    top: 439px;
+    left: 173.5px;
+}
+
+.pagination img{
+    width: 42px;
+    height: 9px;
+}
+
+header {
+    background-color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+footer {
+    background-color: white;
+    text-align: center;
+    padding: 10px;
+}
+
+@media ((max-width: 570px)) {
+    .inner-rect {
+        top: 3px;
+        left: 3.7px;
+    }
+}
+
+@media ((min-width: 580px) and (max-width: 1602px)) {
+    .inner-rect {
+        top: 2px;
+        left: 3.7px;
+    }
+}
