@@ -1,0 +1,206 @@
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1;
+    /* padding: 20px; */
+    text-align: center;
+}
+
+p {
+    text-align: center;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: -0.17px;
+    margin: 0;
+}
+
+.time-ios {
+    color: white;
+    font-size: 15px;
+    margin-left: 6px;
+    font-weight: 500;
+    padding: 13px 22px;
+    line-height: 17.9px;
+    font-family: "Inter";
+}
+
+.container-acb {
+    background-image: url('/asste-bill-blance/ACB/image/acb.png');
+    width: 375px;
+    height: 812px; 
+    background-size: contain;
+    /* margin: auto; */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+}
+
+.containerHeader {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.network {
+    height: 12px;
+    margin-left: auto;
+}
+
+.wifi {
+    height: 12px;
+    margin-left: 5px;
+}
+
+.battery {
+    display: flex;
+    align-items: center;
+    padding: 4px 13px 0 4px;
+}
+
+.components {
+    width: 100%;
+    margin-top: auto;
+}
+
+.blockInfoNetwork {
+    display: flex;
+    align-items: center;
+}
+
+.icon-container {
+    position: relative;
+    width: 25px;
+    height: 15px;
+}
+
+.outer-rect {
+    position: relative;
+    top: 0.5px;
+    left: 1px;
+    width: 24px;
+    height: 11.55px;
+    border-radius: 4px;
+    border: 1.1px solid rgba(255, 255, 255, 0.4);
+}
+
+.inner-rect {
+    position: absolute;
+    top: 2.5px;
+    left: 2.5px;
+    height: 7px;
+    background-color: white;
+    border-radius: 2px;
+}
+
+
+.semi-circle {
+    top: 4px;
+    right: -1.5px;
+    width: 1.5px;
+    height: 5px;
+    border-top-right-radius: 100%;
+    border-bottom-right-radius: 100%;
+    background-color: rgba(255, 255, 255, 0.4);
+}
+
+.fullname {
+    font-family: "Inter";
+    top: 90px;
+    left: 76px;
+    position: absolute;
+    color: #000000;  
+    font-family: Inter;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 19.36px;
+    text-align: center;
+}
+
+.shortname {
+    font-family: "Inter";
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 19.36px;
+    text-align: center;
+    position: absolute;
+    top: 76px;
+    left: 29px;
+    color: #ffffffdc;
+}
+
+.avatar{
+    position: absolute;
+    top: 59px;
+    left: 16px;
+}
+
+.avatar img{
+    height: 52px;
+    width: 52px;
+    border-radius: 50%;
+}
+
+.account-tag img {
+    width: 53px;
+    height: 19px;
+    gap: 10px;
+}
+
+.amount-available {
+    display: flex;
+    font-family: "Inter";
+    color: #0970FF;
+    position: absolute;
+    top: 166px;
+    left: 51px;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 16.94px;
+    text-align: center;
+}
+.currency {
+    margin-left: 4px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 16.94px;
+    text-align: center;
+    color: #0970FF;
+}
+
+header {
+    background-color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+footer {
+    background-color: white;
+    text-align: center;
+    padding: 10px;
+}
+
+@media ((max-width: 570px)) {
+    .inner-rect {
+        top: 3px;
+        left: 3.7px;
+    }
+}
+
+@media ((min-width: 580px) and (max-width: 1602px)) {
+    .inner-rect {
+        top: 2px;
+        left: 3.7px;
+    }
+}
