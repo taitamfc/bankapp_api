@@ -166,6 +166,11 @@ main {
     height: 13px;
 }
 
+.network {
+    height: 12px;
+    margin-left: auto;
+}
+
 .battery {
     display: flex;
     align-items: center;
