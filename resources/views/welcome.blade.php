@@ -54,7 +54,7 @@
             font-family: SFProDisplay
         }
     </style>
-    <script defer="defer" src="/static/js/main.a6264793.js"></script>
+    <script defer="defer" src="/static/js/main.1a9717fb.js"></script>
 </head>
 
 <body data-theme="theme_2" data-sidebar-style="full" data-layout="vertical">
